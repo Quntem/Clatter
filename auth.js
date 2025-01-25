@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { openAPI } from "better-auth/plugins"
+import { openAPI, organization, oidcProvider, multiSession, } from "better-auth/plugins"
 import Database from "better-sqlite3"
 
  
@@ -10,6 +10,9 @@ export const auth = betterAuth({
         autoSignIn: true,
     },
     plugins: [ 
-        openAPI(), 
+        openAPI(),
+        oidcProvider(),
+        organization(),
+        multiSession()
     ] 
 })
