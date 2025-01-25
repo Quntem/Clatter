@@ -1,0 +1,2 @@
+CREATE DATABASE auth;
+CREATE DATABASE clatter;
