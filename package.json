@@ -1,0 +1,23 @@
+{
+  "name": "servermanager",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.0.5"
+  },
+  "dependencies": {
+    "better-auth": "^1.1.14",
+    "better-sqlite3": "^11.8.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "pg": "^8.13.1",
+    "vite-express": "^0.20.0"
+  }
+}

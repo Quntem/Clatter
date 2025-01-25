@@ -1,0 +1,3 @@
+import { authClient, signIn, signOut, signUp, getSession } from "./auth-client.js"
+
+authClient()
