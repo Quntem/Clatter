@@ -1,8 +1,8 @@
 <html>
     <head>
-        <link rel="stylesheet" href="/chat/global/styles.css" />
-        <link href="/chat/global/lucide-font/lucide.css" rel="stylesheet" />
-        <script src="/chat/global/jquery.js"></script>
+        <link rel="stylesheet" href="/client/global/styles.css" />
+        <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
+        <script src="/client/global/jquery.js"></script>
         <script>
             var collapsesidebargroup = function(obj) {
                 if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
@@ -151,5 +151,22 @@
                 </div>
             </div>
         </div>
+        <script>
+            loadfunction = function() {
+                authClient.organization.list()
+                .then(res => {
+                    $("#workspaceswitcher").html("")
+                    res.data.forEach(item => {
+                        $("#workspaceswitcher").append(`
+                            <div class="workspaceswitcheritem" onclick="switchworkspace(this)">
+                                <img class="workspaceswitcheriteminner" src="` + item.logo + `"></img>
+                            </div>
+                        `)
+                    })
+                    switchworkspace($("#workspaceswitcher").children()[0])
+                })
+            }
+        </script>
+        <script src="/auth-frontend.js" type="module"></script>
     </body>
 </html>
