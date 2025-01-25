@@ -22,6 +22,8 @@ services:
             - node_modules/
         - action: rebuild
           path: package.json
+        - action: restart
+          path: ./server.js
 
   db:
     image: postgres:15
