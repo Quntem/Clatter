@@ -2,6 +2,10 @@ import { authClient, signIn, signOut, signUp, getSession } from "./auth-client.j
 
 window.authClient = authClient
 
+authClient.getSession().then((res) => {
+    document.getElementById("header-userbutton").setAttribute("title", res.data.user.email)
+})
+
 window.auth = {
     
 }
