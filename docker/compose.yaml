@@ -9,19 +9,20 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: "postgresql://postgres:password@db:5432"
-    volumes:
-      - ../app:/app
-    command: sh -c "wait-for-it.sh db:5432 --timeout=60 -- npx @better-auth/cli generate --y && npx @better-auth/cli migrate --y && node server.js"
+      DATABASE_URL: "postgresql://postgres:password@db:5432/clatter"
+    # volumes:
+    #   - ../app:/app
+    command: sh -c "wait-for-it.sh db:5432 --timeout=60 -- npx @better-auth/cli generate --y && npx @better-auth/cli migrate --y && npx prisma migrate dev --name startup_migration && node server.js"
     develop:
       watch:
+        # - action: rebuild
+        #   path: ../app/package.json
+        - action: sync+restart
+          path: ../app/server.js
+          target: /app/server.js
         - action: sync
-          path: ./
+          path: ../app
           target: /app
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: package.json
 
   db:
     image: postgres:15
