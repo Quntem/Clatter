@@ -46,11 +46,17 @@ body {
     align-items: center;
     font-weight: 500;
     height: 40px;
-    background: rgb(102,102,102);
-    background: linear-gradient(180deg, rgba(102,102,102,1) 0%, rgba(62,62,62,1) 100%);
+    background-color: rgb(102,102,102);
+    background-color: linear-gradient(180deg, rgba(102,102,102,1) 0%, rgba(62,62,62,1) 100%);
     border-radius: 5px;
     box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
     cursor: pointer;
+    transition: .2s ease-in
+}
+
+.signin-button:hover, .signin-button:focus {
+    cursor: pointer;
+    background-color: rgb(241,78,154);
 }
 
 .signin-button-secondary {
@@ -62,17 +68,17 @@ body {
     align-items: center;
     font-weight: 500;
     height: 40px;
-    background: rgb(240,240,240);
-    background: linear-gradient(180deg, rgba(240,240,240,1) 0%, rgba(228,228,228,1) 100%);
+    background-color: rgb(240,240,240);
+    background-color: linear-gradient(180deg, rgba(240,240,240,1) 0%, rgba(228,228,228,1) 100%);
     border-radius: 5px;
     box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
     cursor: pointer;
+    transition: .2s ease-in;
 }
 
-.signin-button-secondary:hover {
+.signin-button-secondary:hover, .signin-button-secondary:focus {
     cursor: pointer;
-    background: rgb(71,185,242);
-    background: linear-gradient(180deg, rgba(71,185,242,1) 0%, rgba(41,119,158,1) 100%);
+    background-color: rgb(41,119,158);
     color: white;
 }
 
