@@ -6,4 +6,5 @@ body {
     --searchbox_foreground: white;
     --sidebar_foreground: white;
     --sidebar_border: rgb(46, 90, 141);
+    --wsinfo_sub_textcolor: #ACD5FA;
 }

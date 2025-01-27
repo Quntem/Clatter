@@ -204,7 +204,7 @@ body {
 
 #sidebar-wsinfo-sub {
     font-size: 14px;
-    color: rgb(178, 218, 255);
+    color: var(--wsinfo_sub_textcolor);
 }
 
 #mainarea-header-title {
