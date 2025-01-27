@@ -61,6 +61,23 @@ app.get("/api/channels/list", async (req, res) => {
   }
 })
 
+app.get("/api/channel/:channelid/info", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var channel = await prisma.channel.findUnique({
+      where: {
+        parentworkspace: session.session.activeOrganizationId,
+        id: req.params.channelid
+      }
+    })
+    res.json(channel)
+  } catch(err) {
+    console.log(err)
+  }
+})
+
 
 app.get("/message", (_, res) => res.send("Hello from express!"));
 

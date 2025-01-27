@@ -1,0 +1,21 @@
+<div class="mainarea-header">
+    <div class="sidebar-wsinfoarea-stack-nohover">
+        <div id="mainarea-header-title">
+            Workspace Settings
+        </div>
+        <div id="mainarea-header-sub">
+            5 Members, 2 External Members
+        </div>
+    </div>
+    <script>
+        authClient.organization.getFullOrganization()
+        .then(ao => {
+            $("#mainarea-header-sub").html(ao.data.name)
+        })
+    </script>
+</div>
+<div style="height: calc(100% - 71px); width: 100%; display: flex; flex-direction: row;">
+    <div style="height: calc(100%); min-width: 300px; background-color: white; border-right: 1px solid #e4e4e7;">
+
+    </div>
+</div>

@@ -12,7 +12,7 @@ services:
       DATABASE_URL: "postgresql://postgres:password@db:5432/clatter"
     # volumes:
     #   - ../app:/app
-    command: sh -c "wait-for-it.sh db:5432 --timeout=60 -- npx @better-auth/cli generate --y && npx @better-auth/cli migrate --y && npx prisma migrate dev --name startup_migration && node server.js"
+    command: sh -c "wait-for-it.sh db:5432 --timeout=60 -- npx @better-auth/cli generate --y && npx @better-auth/cli migrate --y && npx prisma generate && npx prisma migrate deploy && node server.js"
     develop:
       watch:
         # - action: rebuild

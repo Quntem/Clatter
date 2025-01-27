@@ -18,6 +18,7 @@ model channel {
   name               String
   type               String @default("clatter.channeltype.message")
   parentworkspace    String
+  DateCreated        DateTime @default(now())
 }
 
 model message {
@@ -26,4 +27,14 @@ model message {
   parenttype         String
   parentid           String
   content            String
+  DateCreated        DateTime @default(now())
+}
+
+model pagedocument {
+  id                 String @id @default(uuid())
+  name               String
+  content            Json
+  parentworkspace    String
+  parentchannel      String?
+  DateCreated        DateTime @default(now())
 }

@@ -3,6 +3,7 @@
         <link rel="stylesheet" href="/client/global/styles.css" />
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
+        <script src="/documenteditor.js" type="module"></script>
         <script>
             var collapsesidebargroup = function(obj) {
                 if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
@@ -17,6 +18,7 @@
             }
 
             var switchworkspace = function(obj) {
+                NavigatePage("placeholder")
                 authClient.organization.setActive({
                     organizationId: $(obj).attr("orgid")
                 })
@@ -32,6 +34,10 @@
                         $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
                     })
                 })
+            }
+
+            var NavigatePage = function(pagename) {
+                $("#mainarea").load("/client/pages/" + pagename)
             }
 
             var CreateChannel = function(name) {
@@ -57,7 +63,7 @@
                     $("#channelssblist").html("")
                     res.forEach(channel => {
                         $("#channelssblist").append(`
-                            <div class="sidebar-listitem">
+                            <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
                                 <div class="icon-hash sidebar-listitem-icon"></div>
                                 <div class="sidebar-listitem-text">` + channel.name + `</div>
                             </div>
@@ -65,10 +71,16 @@
                     })
                 })
             }
+
+            var ToggleSidebar = function() {
+                $("#workspaceswitcher").toggle()
+                $("#shellsidebar").toggle()
+            }
         </script>
     </head>
     <body>
         <header>
+            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: white;" onclick="ToggleSidebar()"></div>
             <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div>
         </header>
@@ -87,30 +99,38 @@
                     </div>
                 </div>
                 <div class="sidebar-listarea">
-                    <div class="sidebar-listitem">
+                    <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
+                        <div class="icon-settings-2 sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Workspace Settings</div>
+                    </div>
+                    <!-- <div class="sidebar-listitem">
                         <div class="icon-bell sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Notifications</div>
                     </div>
                     <div class="sidebar-listitem">
                         <div class="icon-at-sign sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Mentions</div>
+                    </div> -->
+                    <div class="sidebar-listitem" onclick="NavigatePage(`documenteditor`)">
+                        <div class="icon-file sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Documents</div>
                     </div>
                     <div class="sidebar-listitem">
                         <div class="icon-book-user sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Directory</div>
                     </div>
-                    <div class="sidebar-listitem">
+                    <!-- <div class="sidebar-listitem">
                         <div class="icon-grip sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Apps</div>
-                    </div>
-                    <div class="sidebar-listitem">
+                    </div> -->
+                    <div class="sidebar-listitem" onclick="NavigatePage(`allchannels`)">
                         <div class="icon-hash sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">All Channels</div>
                     </div>
-                    <div class="sidebar-listitem">
+                    <!-- <div class="sidebar-listitem">
                         <div class="icon-handshake sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">External Cnnections</div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="sidebar-listarea">
                     <div class="sidebar-listarea-titlearea">
@@ -159,16 +179,9 @@
                 </div>
             </div>
             <div id="mainarea">
-                <div class="mainarea-header">
-                    <div class="sidebar-wsinfoarea-stack">
-                        <div id="mainarea-header-title">
-                            #Channel-name
-                        </div>
-                        <div id="mainarea-header-sub">
-                            5 Members, 2 External Members
-                        </div>
-                    </div>
-                </div>
+                <script>
+                    NavigatePage("placeholder")
+                </script>
             </div>
         </div>
         <script>

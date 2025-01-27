@@ -1,0 +1,17 @@
+<div class="mainarea-header">
+    <div class="sidebar-wsinfoarea-stack">
+        <div id="mainarea-header-title">
+            .
+        </div>
+        <div id="mainarea-header-sub">
+            5 Members, 2 External Members
+        </div>
+    </div>
+    <script>
+        fetch("/api/channel/" + currentchannelid + "/info")
+        .then(res => res.json())
+        .then(channel => {
+            $("#mainarea-header-title").html(channel.name)
+        })
+    </script>
+</div>
