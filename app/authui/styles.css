@@ -69,6 +69,13 @@ body {
     cursor: pointer;
 }
 
+.signin-button-secondary:hover {
+    cursor: pointer;
+    background: rgb(71,185,242);
+    background: linear-gradient(180deg, rgba(71,185,242,1) 0%, rgba(41,119,158,1) 100%);
+    color: white;
+}
+
 .auth-input {
     width: calc(100% - 32px);
     display: flex;
