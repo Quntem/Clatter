@@ -1,0 +1,9 @@
+body {
+    --ws_add_button: rgb(71, 130, 196);
+    --sidebar_background: rgb(51, 98, 152);
+    --header_background: rgb(68, 130, 201);
+    --searchbox_background: rgb(70, 104, 143);
+    --searchbox_foreground: white;
+    --sidebar_foreground: white;
+    --sidebar_border: rgb(46, 90, 141);
+}

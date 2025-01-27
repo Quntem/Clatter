@@ -2,7 +2,7 @@
 header {
     height: 40px;
     width: 100%;
-    background-color: rgb(68, 130, 201);
+    background-color: var(--header_background);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -12,12 +12,13 @@ header {
 .searchbox {
     height: 25px;
     width: 33%;
-    background-color: rgb(70, 104, 143);
+    background-color: var(--searchbox_background);
     margin-left: auto;
     margin-right: auto;
     border-radius: 8px;
     border: none;
     margin: none;
+    color: var(--searchbox_foreground);
 }
 
 body {
@@ -42,11 +43,11 @@ body {
 #workspaceswitcher {
     height: 100%;
     min-width: 70px;
-    background-color: rgb(51, 98, 152);
+    background-color: var(--sidebar_background);
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-right: 2px solid rgb(46, 90, 141);
+    border-right: 2px solid var(--sidebar_border);
 }
 
 .workspaceswitcheritem {
@@ -91,7 +92,7 @@ body {
 }
 
 .workspaceswitcheradd-icon {
-    color: white;
+    color: var(--sidebar_foreground);
     font-size: 22px !important;
 }
 
@@ -114,7 +115,7 @@ body {
 
 .sidebar-listarea {
     padding: 20px;
-    border-top: 2px solid rgb(46, 90, 141);
+    border-top: 2px solid var(--sidebar_border);
     padding-bottom: 0px;
     font-weight: 400;
     transition: height 0.2s;
@@ -160,7 +161,7 @@ body {
     width: 40px;
     height: 40px;
     margin-top: 15px;
-    background-color: rgb(71, 130, 196);
+    background-color: var(--ws_add_button);
     border-radius: 8px;
     display: flex;
     flex-direction: row;
@@ -172,9 +173,9 @@ body {
 #shellsidebar {
     height: 100%;
     min-width: 300px;
-    background-color: rgb(51, 98, 152);
-    border-right: 1px solid #e4e4e7;
-    color: white;
+    background-color: var(--sidebar_background);
+    border-right: 2px solid var(--sidebar_border);
+    color: var(--sidebar_foreground);
 }
 
 .sidebar-wsinfoarea {
