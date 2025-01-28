@@ -28,6 +28,7 @@ model message {
   parentid           String
   content            String
   DateCreated        DateTime @default(now())
+  sender             String
 }
 
 model pagedocument {
@@ -37,4 +38,5 @@ model pagedocument {
   parentworkspace    String
   parentchannel      String?
   DateCreated        DateTime @default(now())
+  owner              String
 }
