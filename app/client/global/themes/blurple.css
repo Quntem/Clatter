@@ -1,0 +1,10 @@
+body {
+    --ws_add_button: #381D8B;
+    --sidebar_background: #472E97;
+    --header_background: #472E97;
+    --searchbox_background: #3B208F;
+    --searchbox_foreground: #3B208F;
+    --sidebar_foreground: #FFFFFF; /* Text Colour */
+    --sidebar_border: #381D8B;
+    --wsinfo_sub_textcolor: #74B5F0;
+}
