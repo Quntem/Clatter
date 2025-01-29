@@ -1,16 +1,29 @@
-<div class="mainarea-header">
-    <div class="sidebar-wsinfoarea-stack-nohover">
-        <div id="mainarea-header-title">
-            All Channels
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>All Channels</title>
+    </head>
+
+    <body>
+        <div class="mainarea-header">
+            <div class="sidebar-wsinfoarea-stack-nohover">
+                <div id="mainarea-header-title">
+                    All Channels
+                </div>
+
+                <div id="mainarea-header-sub">
+                    .
+                </div>
+            </div>
+
+            <script>
+                authClient.organization.getFullOrganization()
+                .then(ao => {
+                    $("#mainarea-header-sub").html(ao.data.name)
+                })
+            </script>
         </div>
-        <div id="mainarea-header-sub">
-            .
-        </div>
-    </div>
-    <script>
-        authClient.organization.getFullOrganization()
-        .then(ao => {
-            $("#mainarea-header-sub").html(ao.data.name)
-        })
-    </script>
-</div>
+    </body>
+</html>

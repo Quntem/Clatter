@@ -1,149 +1,169 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clatter Client</title>
+        <link rel="icon" type="image/png" href="global/favicon.png">
+
+        <!-- CSS and JavaScripts -->
         <link rel="stylesheet" href="/client/global/styles.css" />
-        <link rel="stylesheet" href="/client/global/themes/deep-seas.css" />
+        <link rel="stylesheet" href="/client/global/themes/sea.css" />
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
         <script src="/documenteditor.js" type="module"></script>
         <script>
-            var collapsesidebargroup = function(obj) {
-                if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
-                    $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").hide()
-                    $(obj).removeClass("icon-chevron-down")
-                    $(obj).addClass("icon-chevron-right")
-                } else {
-                    $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").show()
-                    $(obj).removeClass("icon-chevron-right")
-                    $(obj).addClass("icon-chevron-down")
+                var collapsesidebargroup = function(obj) {
+                    if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
+                        $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").hide()
+                        $(obj).removeClass("icon-chevron-down")
+                        $(obj).addClass("icon-chevron-right")
+                    } else {
+                        $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").show()
+                        $(obj).removeClass("icon-chevron-right")
+                        $(obj).addClass("icon-chevron-down")
+                    }
                 }
-            }
 
-            var switchworkspace = function(obj) {
-                NavigatePage("placeholder")
-                authClient.organization.setActive({
-                    organizationId: $(obj).attr("orgid")
-                })
-                .then(res => {
-                    authClient.organization.getFullOrganization()
-                    .then(ao => {
-                        $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
-                            $(element).removeAttr("selected")
-                        });
-                        $("#sidebar-wsinfo-name").html(ao.data.name)
-                        $("#sidebar-wsinfo-sub").html("clatter.online/ws/" + ao.data.slug)
-                        GetChannels()
-                        $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
+                var switchworkspace = function(obj) {
+                    NavigatePage("placeholder")
+                    authClient.organization.setActive({
+                        organizationId: $(obj).attr("orgid")
                     })
-                })
-            }
-
-            var NavigatePage = function(pagename) {
-                $("#mainarea").load("/client/pages/" + pagename)
-            }
-
-            var CreateChannel = function(name) {
-                fetch("/api/channels/create?channelname=" + name, {
-                    "method": "POST",
-                })
-                .then(function (response) {
-                    console.log(response.status);
-                    return response.text();
-                }).then(function (data) {
-                    console.log(data);
-                })
-                .catch(function (error) {
-                    console.log(error.message);
-                });
-            }
-
-            var GetChannels = function() {
-                fetch("/api/channels/list")
-                .then(res => res.json())
-                .then(res => {
-                    console.log(res)
-                    $("#channelssblist").html("")
-                    res.forEach(channel => {
-                        $("#channelssblist").append(`
-                            <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
-                                <div class="icon-hash sidebar-listitem-icon"></div>
-                                <div class="sidebar-listitem-text">` + channel.name + `</div>
-                            </div>
-                        `)
+                    .then(res => {
+                        authClient.organization.getFullOrganization()
+                        .then(ao => {
+                            $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
+                                $(element).removeAttr("selected")
+                            });
+                            $("#sidebar-wsinfo-name").html(ao.data.name)
+                            $("#sidebar-wsinfo-sub").html("clatter.online/ws/" + ao.data.slug)
+                            GetChannels()
+                            $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
+                        })
                     })
-                })
-            }
+                }
 
-            var ToggleSidebar = function() {
-                $("#workspaceswitcher").toggle()
-                $("#shellsidebar").toggle()
-            }
+                var NavigatePage = function(pagename) {
+                    $("#mainarea").load("/client/pages/" + pagename)
+                }
+
+                var CreateChannel = function(name) {
+                    fetch("/api/channels/create?channelname=" + name, {
+                        "method": "POST",
+                    })
+                    .then(function (response) {
+                        console.log(response.status);
+                        return response.text();
+                    }).then(function (data) {
+                        console.log(data);
+                    })
+                    .catch(function (error) {
+                        console.log(error.message);
+                    });
+                }
+
+                var GetChannels = function() {
+                    fetch("/api/channels/list")
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log(res)
+                        $("#channelssblist").html("")
+                        res.forEach(channel => {
+                            $("#channelssblist").append(`
+                                <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
+                                    <div class="icon-hash sidebar-listitem-icon"></div>
+                                    <div class="sidebar-listitem-text">` + channel.name + `</div>
+                                </div>
+                            `)
+                        })
+                    })
+                }
+
+                var ToggleSidebar = function() {
+                    $("#workspaceswitcher").toggle()
+                    $("#shellsidebar").toggle()
+                }
         </script>
     </head>
+
     <body>
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: white;" onclick="ToggleSidebar()"></div>
             <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div>
         </header>
+
         <div id="apparea">
             <div id="workspaceswitcher">
             </div>
+
             <div id="shellsidebar">
                 <div class="sidebar-wsinfoarea">
                     <div class="sidebar-wsinfoarea-stack">
                         <div id="sidebar-wsinfo-name">
                             Workspace Name
                         </div>
+
                         <div id="sidebar-wsinfo-sub">
                             clatter.online/ws/
                         </div>
                     </div>
                 </div>
+
                 <div class="sidebar-listarea">
                     <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
                         <div class="icon-settings-2 sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Workspace Settings</div>
                     </div>
+
                     <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
                         <div class="icon-settings sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">User Settings</div>
                     </div>
+
                     <!-- <div class="sidebar-listitem">
                         <div class="icon-bell sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Notifications</div>
                     </div>
+
                     <div class="sidebar-listitem">
                         <div class="icon-at-sign sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Mentions</div>
                     </div> -->
+
                     <div class="sidebar-listitem" onclick="NavigatePage(`documenteditor`)">
                         <div class="icon-file sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Documents</div>
                     </div>
+
                     <div class="sidebar-listitem">
                         <div class="icon-book-user sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Directory</div>
                     </div>
+
                     <!-- <div class="sidebar-listitem">
                         <div class="icon-grip sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Apps</div>
                     </div> -->
+
                     <div class="sidebar-listitem" onclick="NavigatePage(`allchannels`)">
                         <div class="icon-hash sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">All Channels</div>
                     </div>
+
                     <!-- <div class="sidebar-listitem">
                         <div class="icon-handshake sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">External Cnnections</div>
                     </div> -->
                 </div>
+
                 <div class="sidebar-listarea">
                     <div class="sidebar-listarea-titlearea">
                         <div class="sidebar-listarea-titletext">Channels</div>
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
                     </div>
                     <div class="sidebar-listarea-inner" id="channelssblist">
-
                     </div>
                 </div>
                 <div class="sidebar-listarea">
