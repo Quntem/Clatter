@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Quntem/Clatter/releases">
+  <a href="https://github.com/Quntem/Clatter/releases" style="text-decoration: none">
     <img src="https://img.shields.io/github/v/release/Quntem/Clatter?style=for-the-badge">
   </a>
   <img src="https://img.shields.io/github/stars/Quntem/Clatter?style=for-the-badge">
