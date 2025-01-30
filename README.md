@@ -1,5 +1,5 @@
-<p align="center" width="50" height="50">
-  <img src="app/client/global/favicon.png"/>
+<p align="center">
+  <img src="app/client/global/favicon.png/" width="50" height="50">
 </p>
 
 <p align="center">
