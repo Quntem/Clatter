@@ -1,4 +1,4 @@
-<p align="center" style="width: 2;">
+<p align="center" width="50" height="50">
   <img src="app/client/global/favicon.png"/>
 </p>
 
