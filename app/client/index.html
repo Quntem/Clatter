@@ -39,6 +39,8 @@
                             $("#sidebar-wsinfo-name").html(ao.data.name)
                             $("#sidebar-wsinfo-sub").html("clatter.online/ws/" + ao.data.slug)
                             GetChannels()
+                            $("#sidebartogglebutton").show()
+                            $("#shellsidebar").show()
                             $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
                         })
                     })
@@ -89,7 +91,7 @@
 
     <body>
         <header>
-            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground);" onclick="ToggleSidebar()"></div>
+            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground); display: none;" id="sidebartogglebutton" onclick="ToggleSidebar()"></div>
             <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div>
         </header>
@@ -98,7 +100,7 @@
             <div id="workspaceswitcher">
             </div>
 
-            <div id="shellsidebar">
+            <div id="shellsidebar" style="display: none;">
                 <div class="sidebar-wsinfoarea">
                     <div class="sidebar-wsinfoarea-stack">
                         <div id="sidebar-wsinfo-name">
@@ -132,10 +134,10 @@
                         <div class="sidebar-listitem-text">Mentions</div>
                     </div> -->
 
-                    <div class="sidebar-listitem" onclick="NavigatePage(`documenteditor`)">
+                    <!-- <div class="sidebar-listitem" onclick="NavigatePage(`documenteditor`)">
                         <div class="icon-file sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Documents</div>
-                    </div>
+                    </div> -->
 
                     <div class="sidebar-listitem">
                         <div class="icon-book-user sidebar-listitem-icon"></div>
@@ -166,7 +168,7 @@
                     <div class="sidebar-listarea-inner" id="channelssblist">
                     </div>
                 </div>
-                <div class="sidebar-listarea">
+                <!-- <div class="sidebar-listarea">
                     <div class="sidebar-listarea-titlearea">
                         <div class="sidebar-listarea-titletext">Direct Messages</div>
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
@@ -201,7 +203,7 @@
                             <div class="sidebar-listitem-text">Thread 2</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div id="mainarea">
                 <script>
@@ -222,7 +224,7 @@
                         `)
                     })
                     $("#workspaceswitcher").append(`
-                        <div class="workspaceswitcheradd">
+                        <div class="workspaceswitcheradd" onclick="createworkspace()">
                             <div class="icon-plus workspaceswitcheradd-icon"></div>
                         </div>
                     `)

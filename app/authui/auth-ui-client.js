@@ -12,3 +12,28 @@ window.signin = function() {
         window.location.replace(redirurl)
     })
 }
+
+window.signup = function() {
+    authClient.signUp.email({
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        name: document.getElementById("name").value,
+    }).then(res => {
+        window.location.replace(redirurl)
+    })
+}
+
+window.createworkspace = function() {
+    if (document.getElementById("imgurl").value == "") {
+        window.icon = "/assets/DWSI.png"
+    } else {
+        window.icon = document.getElementById("imgurl").value
+    }
+    authClient.organization.create({
+        name: document.getElementById("name").value,
+        slug: document.getElementById("slug").value,
+        logo: icon
+    }).then(res => {
+        window.location.replace(redirurl)
+    })
+}

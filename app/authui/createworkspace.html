@@ -16,23 +16,16 @@
         <div class="authboxholder" name="authboxholder">
             <img src="/public/ClatterLogo.svg" id="loginlogo" />
             <div class="authboxtext">
-                Sign Up To Clatter
+                Create Your Workspace
             </div>
             <div class="authbox" name="authbox">
-                <input type="text" class="auth-input" id="name" placeholder="Name">
-                <!-- <input type="date" class="auth-input" id="birthday" placeholder="Birthday" min="1908-06-08" max="2012-12-31">
+                <input type="url" class="auth-input" id="imgurl" placeholder="Image URL">
                 
-                <form>
-                    <select class="auth-input" id="language" style="width: 100%; cursor: auto;">
-                        <option value="English" selected="selected">English</option>
-                    </select>
-                </form> -->
-                
-                <input type="email" class="auth-input" id="email" placeholder="Email">
-                <input type="password" class="auth-input" id="password" placeholder="Password">
+                <input type="text" class="auth-input" id="name" placeholder="Workspace Name">
+                <input type="text" class="auth-input" id="slug" placeholder="Slug">
 
-                <div class="signin-button-secondary" style="margin-top: 0px;" onclick="signup()">
-                    Sign Up
+                <div class="signin-button-secondary" style="margin-top: 0px;" onclick="createworkspace()">
+                    Create Workspace
                 </div>
             </div>
         </div>

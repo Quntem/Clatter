@@ -13,4 +13,8 @@ window.auth = {
     
 }
 
+window.createworkspace = function() {
+    window.location.replace("/authui/createworkspace.html?callback=" + window.location.toString())
+}
+
 loadfunction()
