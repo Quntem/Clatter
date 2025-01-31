@@ -28,6 +28,18 @@
                     Create Workspace
                 </div>
             </div>
+            <div class="authboxtext" style="margin-top: 20px; text-align: center;">
+                Join an existing workspace (with your user id):<br><div id="userid"></div>
+            </div>
+            <script>
+                var pagefunction = function() {
+                    authClient.getSession()
+                        .then(res => {
+                            authsession = res
+                            document.getElementById("userid").innerHTML = res.data.user.id
+                        })
+                }
+            </script>
         </div>
     </body>
 </html>

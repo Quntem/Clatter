@@ -65,6 +65,21 @@
                     });
                 }
 
+                var AddUser = function(userid) {
+                    fetch("/api/workspace/users/add?id=" + userid, {
+                        "method": "POST",
+                    })
+                    .then(function (response) {
+                        console.log(response.status);
+                        return response.text();
+                    }).then(function (data) {
+                        console.log(data);
+                    })
+                    .catch(function (error) {
+                        console.log(error.message);
+                    });
+                }
+
                 var GetChannels = function() {
                     fetch("/api/channels/list")
                     .then(res => res.json())
@@ -114,14 +129,14 @@
                 </div>
 
                 <div class="sidebar-listarea">
-                    <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
+                    <!-- <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
                         <div class="icon-settings-2 sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Workspace Settings</div>
-                    </div>
+                    </div> -->
 
-                    <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
-                        <div class="icon-settings sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">User Settings</div>
+                    <div class="sidebar-listitem" onclick="AddUser(prompt(`User ID`))">
+                        <div class="icon-user-plus sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Add User</div>
                     </div>
 
                     <!-- <div class="sidebar-listitem">
@@ -139,10 +154,10 @@
                         <div class="sidebar-listitem-text">Documents</div>
                     </div> -->
 
-                    <div class="sidebar-listitem">
+                    <!-- <div class="sidebar-listitem">
                         <div class="icon-book-user sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Directory</div>
-                    </div>
+                    </div> -->
 
                     <!-- <div class="sidebar-listitem">
                         <div class="icon-grip sidebar-listitem-icon"></div>
@@ -151,7 +166,7 @@
 
                     <div class="sidebar-listitem" onclick="NavigatePage(`allchannels`)">
                         <div class="icon-hash sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">All Channels</div>
+                        <div class="sidebar-listitem-text" onclick="CreateChannel(prompt(`Channel Name`)); setTimeout(() => GetChannels(), 2000)">Add Channel</div>
                     </div>
 
                     <!-- <div class="sidebar-listitem">

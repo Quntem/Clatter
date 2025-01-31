@@ -37,3 +37,5 @@ window.createworkspace = function() {
         window.location.replace(redirurl)
     })
 }
+
+pagefunction()

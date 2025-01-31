@@ -94,6 +94,24 @@ app.get("/api/channel/:channelid/messages/list", async (req, res) => {
   res.json(messages)
 })
 
+app.post("/api/workspace/users/add", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    const x = await auth.api.addMember({
+      body: {
+          userId: req.query.id,
+          organizationId: session.session.activeOrganizationId,
+          role: "member"
+      }
+    })
+    res.json(x)
+  } catch {
+    console.log("test")
+  }
+})
+
 app.post("/api/channel/:channelid/messages/send", async (req, res) => {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),

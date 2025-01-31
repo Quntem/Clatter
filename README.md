@@ -44,3 +44,6 @@
 | --- | --- |
 | [Oscar May](https://github.com/oscarmayreal) | [Sabio Tang](https://github.com/sabioofficial)
 | Founder | Developer |
+
+### What is CardFeed
+Cardfeed was another project I built, parts of the code for it got reused into the message live updating for channels, as well as some database functions
