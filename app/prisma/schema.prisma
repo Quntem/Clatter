@@ -23,12 +23,13 @@ model channel {
 
 model message {
   id                 String @id @default(uuid())
-  messagetype        String
-  parenttype         String
-  parentid           String
+  messagetype        String @default("text")
+  parenttype         String @default("channel")
+  parentid           String @default("")
   content            String
   DateCreated        DateTime @default(now())
   sender             String
+  sendername         String
 }
 
 model pagedocument {
@@ -38,5 +39,6 @@ model pagedocument {
   parentworkspace    String
   parentchannel      String?
   DateCreated        DateTime @default(now())
+  DateModified       DateTime @default(now())
   owner              String
 }

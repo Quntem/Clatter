@@ -10,8 +10,8 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: "postgresql://postgres:password@db:5432/clatter"
-    # volumes:
-    #   - ../app:/app
+    volumes:
+      - ../app/prisma:/app/prisma
     command: sh -c "wait-for-it.sh db:5432 --timeout=60 -- npx @better-auth/cli generate --y && npx @better-auth/cli migrate --y && npx prisma generate && npx prisma migrate deploy && node server.js"
     develop:
       watch:

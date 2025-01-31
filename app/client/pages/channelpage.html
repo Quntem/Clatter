@@ -3,6 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+            socket.on("clatter.channel.join.response", (res) => {
+                console.log(res)
+            })
+            socket.on("clatter.channel.message.recieve", (res) => {
+                console.log(res)
+                element = JSON.parse(res)
+                $("#messagearea").append(`
+                    <div class="messagebox"><b>` + element.sendername + `:</b> ` + element.content + `</div>
+                `)
+            })
+        </script>
     </head>
 
     <body>
@@ -21,8 +35,66 @@
                 .then(res => res.json())
                 .then(channel => {
                     $("#mainarea-header-title").html(channel.name)
+                    socket.emit("clatter.channel.join", JSON.stringify({
+                        "room": currentchannelid
+                    }))
                 })
+
+                var loadmessagelist = function() {
+                    fetch("/api/channel/" + currentchannelid + "/messages/list")
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log(res)
+                        $("#messagearea").html("")
+                        res.forEach(element => {
+                            $("#messagearea").append(`
+                                <div class="messagebox"><b>` + element.sendername + `:</b> ` + element.content + `</div>
+                            `)
+                        });
+                    })
+                }
+
+                var sendmessage = function(msg) {
+                    fetch("/api/channel/" + currentchannelid + "/messages/send?message=" + msg, {
+                        "method": "POST",
+                    })
+                    .then(function (response) {
+                        console.log(response.status);
+                        return response.text();
+                    }).then(function (data) {
+                        console.log(data);
+                    })
+                    .catch(function (error) {
+                        console.log(error.message);
+                    });
+                    socket.emit("clatter.channel.message.send", JSON.stringify({
+                        "room": currentchannelid,
+                        "userid": authsession.data.user.id,
+                        "sendername": authsession.data.user.name,
+                        "content": msg,
+                        "type": "text"
+                    }))
+                }
+
+                var sendbuttonaction = function() {
+                    message = document.getElementById("messagebox").value
+                    sendmessage(message)
+                    document.getElementById("messagebox").value = ""
+                    loadmessagelist()
+                }
             </script>
         </div>
+        <div style="height: calc(100% - 71px); width: 100%; position: relative;">
+            <div id="messagearea"></div>
+            <div class="messagebar">
+                <input id="messagebox" placeholder="send message" />
+                <div id="sendbutton" onclick="sendbuttonaction()">
+                    <div class="icon-send"></div>
+                </div>
+            </div>
+        </div>
+        <script>
+            loadmessagelist()
+        </script>
     </body>
 </html>
