@@ -34,6 +34,10 @@ body {
     user-select: none;
 }
 
+#sidebartogglebutton {
+    -webkit-app-region: no-drag;
+}
+
 #apparea {
     height: calc(100% - 40px);
     width: 100%;

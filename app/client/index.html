@@ -37,7 +37,7 @@
                                 $(element).removeAttr("selected")
                             });
                             $("#sidebar-wsinfo-name").html(ao.data.name)
-                            $("#sidebar-wsinfo-sub").html("clatter.online/ws/" + ao.data.slug)
+                            $("#sidebar-wsinfo-sub").html("" + ao.data.slug)
                             GetChannels()
                             $("#sidebartogglebutton").show()
                             $("#shellsidebar").show()
@@ -107,6 +107,7 @@
     <body>
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground); display: none;" id="sidebartogglebutton" onclick="ToggleSidebar()"></div>
+            <div style="color: var(--sidebar_foreground);"><br>Quntem </br>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
         </header>
