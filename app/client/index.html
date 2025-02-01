@@ -106,7 +106,7 @@
 
     <body>
         <header>
-            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground); display: none;" id="sidebartogglebutton" onclick="ToggleSidebar()"></div>
+            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground); display: none; margin-left: 15px;" id="sidebartogglebutton" onclick="ToggleSidebar()"></div>
             <div style="color: var(--sidebar_foreground);"><b>Quntem </b>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
@@ -124,7 +124,7 @@
                         </div>
 
                         <div id="sidebar-wsinfo-sub">
-                            clatter.online/ws/
+                            .
                         </div>
                     </div>
                 </div>
@@ -165,9 +165,9 @@
                         <div class="sidebar-listitem-text">Apps</div>
                     </div> -->
 
-                    <div class="sidebar-listitem" onclick="NavigatePage(`allchannels`)">
+                    <div class="sidebar-listitem" onclick="CreateChannel(prompt(`Channel Name`)); setTimeout(() => GetChannels(), 2000)">
                         <div class="icon-hash sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text" onclick="CreateChannel(prompt(`Channel Name`)); setTimeout(() => GetChannels(), 2000)">Add Channel</div>
+                        <div class="sidebar-listitem-text">Add Channel</div>
                     </div>
 
                     <!-- <div class="sidebar-listitem">
