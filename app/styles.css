@@ -15,7 +15,7 @@ body {
     width: 100vw;
     height: 100vh;
     position: fixed;
-    font-family: Figtree;
+    font-family: 'Figtree', sans-serif;
     color: #666666;
 }
 
@@ -42,4 +42,31 @@ body {
 #header-topbuttonsarea {
     margin-left: auto;
     padding-top: 5px;
+}
+
+@keyframes expandSlow{
+    0% {transform: scale(100%);}
+    50% {transform: scale(102%);}
+    100% {transform: scale(100%);}
+}
+
+@keyframes expandNorm{
+    0% {transform: scale(100%);}
+    50% {transform: scale(105%);}
+    100% {transform: scale(100%);}
+}
+
+.expandSlow {
+    animation: 15s infinite expandSlow;
+}
+
+.changeBackgroundColor {
+    animation-name: changeBackgroundColorToBlue;
+    animation-duration: 2s;
+    animation-timing-function: ease;
+}
+
+@keyframes changeBackgroundColorToBlue {
+    0% {background-color: #ffffff00;}
+    100% {background-color: #074564;}
 }

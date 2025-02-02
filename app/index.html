@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <title>Clatter</title>
-        <link rel="icon" type="image/png" href="app/public/favicon.png">
+        <link rel="icon" type="image/png" href="public/favicon.png">
 
         <link rel="stylesheet" href="styles.css"/>
 
@@ -41,20 +41,30 @@
             <div class="headertitle">
                 Clatter WorkRoom
             </div>
+
+            <button style="font-family: 'Figtree', sans-serif; margin-left: auto; margin-right: 20px; background-color: rgb(14, 63, 126); border-radius: 6px; border: none; width: 80px; height: 25px;">
+                <a href="authui/signup.html" style="color: white; text-decoration: none;">
+                    Sign Up
+                </a>
+            </button>
+
+            <a href="authui/signin.html" style="color: #666666; text-decoration: none; margin-right: 20px;">
+                Sign In
+            </a>
         </header>
 
-        <h1 style="text-align: center; font-family: 'Figtree', sans-serif; font-weight: 500; font-size: 40px; margin-top: 68px; margin-left: 290px; margin-right: 290px;">
-            The only place for communication like never seen before.
+        <h1 style="text-align: center; font-family: 'Figtree', sans-serif; font-weight: 500; font-size: 40px; margin-top: 68px; margin-left: auto; margin-right: auto;">
+            The only place for communication like <span style="background-color: #074564; color: white; font-weight: 600;" class="changeBackgroundColor">never seen before</span>.
         </h1>
 
-        <img src="public/client-preview.png" width="40%" alt="The Clatter Client." class="center" style="margin-top: 50px;">
+        <img src="public/client-preview.png" width="40%" alt="The Clatter Client." class="center expandSlow" style="margin-top: 50px;">
 
         <h1 style="text-align: center; font-family: 'Figtree', sans-serif; font-weight: 500; font-size: 40px; margin-top: 97px; margin-left: 290px; margin-right: 290px;">
             Our Stand in Pricing & Quality
         </h1>
 
         <p style="text-align: center; font-weight: 400; font-size: 24px; margin-left: 283px; margin-right: 283px;">
-            We firmly support against the use of overpricing and the standard of your services being high quality, bugless and usable.
+            We firmly support against the use of overpricing and support the standard of your services being high quality, bugless and usable.
             We usually add minimal monetization so you can get the most out of our free plans.
         </p>
 
@@ -62,11 +72,12 @@
             Optimize Your Workflow Now!
         </h1>
 
-        <button style="width: 216px; height: 31px; background: linear-gradient(180deg, #05538A 0%, #0F0060 100%); box-shadow: 0px 0px 5.030213356018066px -1.2897982597351074px rgba(0, 0, 0, 0.33); border-radius: 3.87px; border: 0.97px rgba(0, 0, 0, 0.18) solid; color: white; cursor: pointer; font-family: 'Figtree', sans-serif;" class="centerB">
+        <button style="width: 216px; height: 31px; background-color: rgb(14, 63, 126); border-radius: 6px; border: none; color: white; cursor: pointer; font-family: 'Figtree', sans-serif;" class="centerB">
             <a href="authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
                 Create an Account
             </a>
         </button>
+
         <script src="auth-frontend-home.js" type="module"></script>
     </body>
 </html>
