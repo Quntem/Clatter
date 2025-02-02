@@ -40,10 +40,8 @@
 
 <!-- GITHUB CODE -->
 
-| ![Oscar May](https://avatars.githubusercontent.com/u/67429870?v=4) | ![Sabio Tang](https://avatars.githubusercontent.com/u/124608899?v=4)
-| --- | --- |
-| [Oscar May](https://github.com/oscarmayreal) | [Sabio Tang](https://github.com/sabioofficial)
-| Founder | Developer |
+![Oscar May](https://avatars.githubusercontent.com/u/67429870?v=4) <-- Oscar May, Founder of Clatter
+![Sabio Tang](https://avatars.githubusercontent.com/u/124608899?v=4) <!-- Sabio Tang, A Developer of Clatter
 
-### What is CardFeed
-Cardfeed was another project I built, parts of the code for it got reused into the message live updating for channels, as well as some database functions
+### What is CardFeed?
+Cardfeed was another project Oscar May built and parts of the code for it got reused into the message live updating for channels, as well as some database functions!
