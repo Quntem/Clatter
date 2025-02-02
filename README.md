@@ -27,11 +27,11 @@
 </h5>
 
 <h2 align="center">
-  V1.0.0
+  V1.0.1-FIX1
 </h2>
 
 <p align="center">
-  Version 1.0.0 of Clatter is the first version of Clatter and might probably be the last depending on how much time we have left on High Seas. We may or may not abandon the project in the future after High Seas depending on how much support we gain from this! If you want to support us, you can head on over and star our project!
+  Version 1.0.1 [Bug Fix V1] fixes bugs from the home screen.
 </p>
 
 <h1 align="center">
