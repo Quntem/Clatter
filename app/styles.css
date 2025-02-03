@@ -1,22 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
+/* Standard */
+
+html {
+    box-sizing: border-box;
+    display: block;
+    width: 100vw;
+    font-family: 'Figtree', sans-serif;
+}
+
 header {
-    width: 100%;
-    height: 60px;
+    height: fit-content;
     background-color: rgb(247, 247, 247);
     border-bottom: 1px solid #e4e4e7;
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding-top: 1.5vh; padding-bottom: 1.5vh;
 }
 
 body {
     margin: 0px;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
     font-family: 'Figtree', sans-serif;
     color: #666666;
+}
+
+/* h1 */
+
+h1 {
+    text-align: center;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 500;
+    font-size: clamp(1.8rem , 2.4vw, 4rem);
+    margin-top: 68px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Header Buttons */
+
+button {
+    font-family: 'Figtree', sans-serif;
+}
+
+.signUpButton {
+    margin-left: auto;
+    margin-right: 20px;
+    background-color: rgb(14, 63, 126);
+    border-radius: 6px;
+    border: none;
+    width: 80px;
+    height: 25px;
 }
 
 #headerlogo {
