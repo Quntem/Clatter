@@ -106,10 +106,11 @@
 
     <body>
         <header>
-            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground); display: none; margin-right: 25px;" id="sidebartogglebutton" onclick="ToggleSidebar()"></div>
-            <div style="color: var(--sidebar_foreground);"><b>Quntem </b>Clatter</div>
+            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground); display: none;" id="sidebartogglebutton" onclick="ToggleSidebar()"></div>
+            <div style="color: var(--sidebar_foreground); margin-left: 25px;"><b>Quntem </b>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
+            <div class="icon-log-out sidebar-listitem-icon" style="margin-left: auto; color: var(--sidebar_foreground); margin-right: 10px;" onclick="authClient.signOut(); location.reload()"></div>
         </header>
 
         <div id="apparea">
@@ -129,51 +130,57 @@
                     </div>
                 </div>
 
-                <div class="sidebar-listarea">
-                    <!-- <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
-                        <div class="icon-settings-2 sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Workspace Settings</div>
-                    </div> -->
-
-                    <div class="sidebar-listitem" onclick="AddUser(prompt(`User ID`))">
-                        <div class="icon-user-plus sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Add User</div>
+                <div class="sidebar-listarea" id="topbuttons">
+                    <div class="sidebar-listarea-titlearea">
+                        <div class="sidebar-listarea-titletext">Workspace Admin</div>
+                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
                     </div>
+                    <div class="sidebar-listarea-inner">
+                        <!-- <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
+                            <div class="icon-settings-2 sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">Workspace Settings</div>
+                        </div> -->
 
-                    <!-- <div class="sidebar-listitem">
-                        <div class="icon-bell sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Notifications</div>
+                        <div class="sidebar-listitem" onclick="AddUser(prompt(`User ID`))">
+                            <div class="icon-user-plus sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">Add User</div>
+                        </div>
+
+                        <!-- <div class="sidebar-listitem">
+                            <div class="icon-bell sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">Notifications</div>
+                        </div>
+
+                        <div class="sidebar-listitem">
+                            <div class="icon-at-sign sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">Mentions</div>
+                        </div> -->
+
+                        <!-- <div class="sidebar-listitem" onclick="NavigatePage(`documenteditor`)">
+                            <div class="icon-file sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">Documents</div>
+                        </div> -->
+
+                        <!-- <div class="sidebar-listitem">
+                            <div class="icon-book-user sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">Directory</div>
+                        </div> -->
+
+                        <!-- <div class="sidebar-listitem">
+                            <div class="icon-grip sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">Apps</div>
+                        </div> -->
+
+                        <div class="sidebar-listitem" onclick="CreateChannel(prompt(`Channel Name`)); setTimeout(() => GetChannels(), 2000)">
+                            <div class="icon-hash sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">Add Channel</div>
+                        </div>
+
+                        <!-- <div class="sidebar-listitem">
+                            <div class="icon-handshake sidebar-listitem-icon"></div>
+                            <div class="sidebar-listitem-text">External Cnnections</div>
+                        </div> -->
                     </div>
-
-                    <div class="sidebar-listitem">
-                        <div class="icon-at-sign sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Mentions</div>
-                    </div> -->
-
-                    <!-- <div class="sidebar-listitem" onclick="NavigatePage(`documenteditor`)">
-                        <div class="icon-file sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Documents</div>
-                    </div> -->
-
-                    <!-- <div class="sidebar-listitem">
-                        <div class="icon-book-user sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Directory</div>
-                    </div> -->
-
-                    <!-- <div class="sidebar-listitem">
-                        <div class="icon-grip sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Apps</div>
-                    </div> -->
-
-                    <div class="sidebar-listitem" onclick="CreateChannel(prompt(`Channel Name`)); setTimeout(() => GetChannels(), 2000)">
-                        <div class="icon-hash sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Add Channel</div>
-                    </div>
-
-                    <!-- <div class="sidebar-listitem">
-                        <div class="icon-handshake sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">External Cnnections</div>
-                    </div> -->
                 </div>
 
                 <div class="sidebar-listarea">
@@ -182,6 +189,15 @@
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
                     </div>
                     <div class="sidebar-listarea-inner" id="channelssblist">
+                    </div>
+                </div>
+
+                <div class="sidebar-listarea">
+                    <div class="sidebar-listarea-titlearea">
+                        <div class="sidebar-listarea-titletext">Manage Users</div>
+                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
+                    </div>
+                    <div class="sidebar-listarea-inner" id="userssblist">
                     </div>
                 </div>
                 <!-- <div class="sidebar-listarea">
@@ -247,6 +263,16 @@
                     authClient.organization.getFullOrganization()
                     .then(ao => {
                         switchworkspace($("[orgid=" + ao.data.id + "]"))
+                        ao.data.members.forEach(member => {
+                            if (member.user.id != authsession.data.user.id) {
+                                $("#userssblist").append(`
+                                    <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + member.user.name + `?')) authClient.organization.removeMember({ memberId: '` + member.user.id + `', organizationId: '` + ao.data.id + `'})">
+                                        <div class="icon-user sidebar-listitem-icon"></div>
+                                        <div class="sidebar-listitem-text">` + member.user.name + `</div>
+                                    </div>
+                                `)
+                            }
+                        })
                     })
                 })
             }

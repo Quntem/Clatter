@@ -7,6 +7,7 @@ authClient.getSession().then((res) => {
     if (res.data == null) {
         window.location.replace("/authui/index.html?callback=" + window.location.toString())
     }
+    loadfunction()
 })
 
 window.auth = {
@@ -16,5 +17,3 @@ window.auth = {
 window.createworkspace = function() {
     window.location.assign("/authui/createworkspace.html?callback=" + window.location.toString())
 }
-
-loadfunction()
