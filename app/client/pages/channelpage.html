@@ -95,11 +95,18 @@
 
                 var sendbuttonaction = function() {
                     message = document.getElementById("messagebox").value
-                    if(message == "") {
+                    if(message.trim().length < 1) {
                         console.log("No message present.")
                     } else {
-                        sendmessage(message)
-                        clearMessageBox()
+                        // Length Limit (including whitespaces)
+                        var lengthLimit = 500
+
+                        if(message.length < lengthLimit) {
+                            sendmessage(message)
+                            clearMessageBox()
+                        } else {
+                            alert("Message over " + lengthLimit + " characters!")
+                        }
                     }
                     
                     // loadmessagelist()
