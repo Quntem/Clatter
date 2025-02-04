@@ -75,9 +75,11 @@
                     }).then(function (data) {
                         console.log(data);
                     })
+
                     .catch(function (error) {
                         console.log(error.message);
                     });
+
                     socket.emit("clatter.channel.message.send", JSON.stringify({
                         "room": currentchannelid,
                         "userid": authsession.data.user.id,
@@ -89,21 +91,34 @@
 
                 var sendbuttonaction = function() {
                     message = document.getElementById("messagebox").value
-                    sendmessage(message)
-                    document.getElementById("messagebox").value = ""
+                    if(message == "") {
+                        console.log("No message present.")
+                    } else {
+                        sendmessage(message)
+                        document.getElementById("messagebox").value = ""
+                    }
+                    
                     // loadmessagelist()
                 }
+
+                document.addEventListener('keydown', function(event) {
+                    if(event.keyCode == 13) {
+                        sendbuttonaction()
+                    }
+                });
             </script>
         </div>
+
         <div style="height: calc(100% - 71px); width: 100%; position: relative;">
             <div id="messagearea"></div>
             <div class="messagebar">
-                <input id="messagebox" placeholder="send message" />
+                <input id="messagebox" placeholder="Send Message..."/>
                 <div id="sendbutton" onclick="sendbuttonaction()">
                     <div class="icon-send"></div>
                 </div>
             </div>
         </div>
+        
         <script>
             loadmessagelist()
         </script>
