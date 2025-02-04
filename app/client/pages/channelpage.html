@@ -15,6 +15,17 @@
                 $("#messagearea").append(`
                     <div class="messagebox"><b>` + element.sendername + `:</b> ` + element.content + `</div>
                 `)
+                
+                // Broken Code; Needs Debugging
+
+                // Notification.requestPermission().then(perm => {
+                    // if (perm === "granted") {
+                        // new Notification(element.sendername, {
+                            // Message Here
+                            // body: element.content
+                        // })
+                    // }
+                // })
             })
         </script>
     </head>
