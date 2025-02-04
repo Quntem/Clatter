@@ -59,7 +59,7 @@
                         $("#messagearea").html("")
                         res.forEach(element => {
                             $("#messagearea").append(`
-                                <div class="messagebox"><b>` + element.sendername + `:</b> ` + element.content + `</div>
+                                <div class="messagebox"><b>` + element.sendername + ` </b> ` + element.content + `</div>
                             `)
                         });
                     })
@@ -89,13 +89,17 @@
                     }))
                 }
 
+                var clearMessageBox = function() {
+                    document.getElementById("messagebox").value = ""
+                }
+
                 var sendbuttonaction = function() {
                     message = document.getElementById("messagebox").value
                     if(message == "") {
                         console.log("No message present.")
                     } else {
                         sendmessage(message)
-                        document.getElementById("messagebox").value = ""
+                        clearMessageBox()
                     }
                     
                     // loadmessagelist()
@@ -118,7 +122,7 @@
                 </div>
             </div>
         </div>
-        
+
         <script>
             loadmessagelist()
         </script>

@@ -130,6 +130,8 @@ body {
 #messagearea {
     padding: 20px;
     color: #666666;
+    height: fit-content;
+    overflow-y: scroll;
 }
 
 .messagebox {
