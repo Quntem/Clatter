@@ -64,20 +64,29 @@ body {
     overflow: hidden;
     transition: width 0.2s, height 0.2s, border 0.2s, padding 0.2s;
     border: 2px solid rgba(255, 255, 255, 0);
+    cursor: pointer;
 }
 
-/* .workspaceswitcheritem:hover {
+.workspaceswitcheritem:hover {
     width: 26px;
     height: 26px;
     margin-top: 15px;
     border-radius: 10px;
     padding: 5px;
-    border: 2px solid rgb(233, 243, 255);
-} */
+}
 
 .workspaceswitcheritem[selected="selected"] {
     width: 26px;
     height: 26px;
+    margin-top: 15px;
+    border-radius: 10px;
+    padding: 5px;
+    border: 2px solid var(--sidebar_foreground);
+}
+
+.workspaceswitcheritem[selected="selected"]:hover {
+    width: 36px;
+    height: 36px;
     margin-top: 15px;
     border-radius: 10px;
     padding: 5px;
