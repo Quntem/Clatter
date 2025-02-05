@@ -106,7 +106,7 @@
 
     <body>
         <header>
-            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground); display: none;" id="sidebartogglebutton" onclick="ToggleSidebar()"></div>
+            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
             <div style="color: var(--sidebar_foreground); margin-left: 25px;"><b>Quntem </b>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
@@ -124,7 +124,7 @@
                             Workspace Name
                         </div>
 
-                        <div id="sidebar-wsinfo-sub">
+                        <div id="sidebar-wsinfo-sub" class="skeleton">
                             .
                         </div>
                     </div>
@@ -251,13 +251,13 @@
                     $("#workspaceswitcher").html("")
                     res.data.forEach(item => {
                         $("#workspaceswitcher").append(`
-                            <div class="workspaceswitcheritem" onclick="switchworkspace(this)" orgid="` + item.id + `">
+                            <div class="workspaceswitcheritem" onclick="switchworkspace(this)" data-tooltip="` + item.name + `" orgid="` + item.id + `">
                                 <img class="workspaceswitcheriteminner" src="` + item.logo + `"></img>
                             </div>
                         `)
                     })
                     $("#workspaceswitcher").append(`
-                        <div class="workspaceswitcheradd" onclick="createworkspace()">
+                        <div class="workspaceswitcheradd" data-tooltip="Create A New Workspace" onclick="createworkspace()">
                             <div class="icon-plus workspaceswitcheradd-icon"></div>
                         </div>
                     `)
@@ -267,7 +267,7 @@
                         ao.data.members.forEach(member => {
                             if (member.user.id != authsession.data.user.id) {
                                 $("#userssblist").append(`
-                                    <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + member.user.name + `?')) authClient.organization.removeMember({ memberId: '` + member.user.id + `', organizationId: '` + ao.data.id + `'})">
+                                    <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + member.user.name + `? They will be notified of this action.')) authClient.organization.removeMember({ memberId: '` + member.user.id + `', organizationId: '` + ao.data.id + `'})">
                                         <div class="icon-user sidebar-listitem-icon"></div>
                                         <div class="sidebar-listitem-text">` + member.user.name + `</div>
                                     </div>

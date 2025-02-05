@@ -31,13 +31,46 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: #f4f4f4;
-    font-family: Figtree;
+    font-family: 'Figtree', sans-serif;
     user-select: none;
 }
 
 #sidebartogglebutton {
+    height: 18px;
+    width: 18px;
     -webkit-app-region: no-drag;
+    cursor: pointer;
+    position: relative;
+    overflow: visible;
+    visibility: visible;
 }
+
+/* Broken Code - - needs fixing !!
+    (breaks #sidebartogglebutton icon as it doesn't display,
+    otherwise functions properly. )
+
+#sidebartogglebutton::before, #sidebartogglebutton::after {
+    --scale: 0;
+    position: absolute;
+    font-family: 'Figtree', sans-serif;
+    font-size: small;
+    transform: scale(var(--scale));
+    transition: 30ms transform;
+}
+
+#sidebartogglebutton::before {
+    content: attr(data-tooltip);
+    color: white;
+    padding: .3rem;
+    border-radius: .3rem;
+    text-align: left;
+    width: max-content;
+    background: #333;
+}
+
+#sidebartogglebutton:hover::before {
+    --scale: 1;
+} */
 
 #apparea {
     height: calc(100% - 40px);
@@ -61,18 +94,34 @@ body {
     height: 36px;
     margin-top: 15px;
     border-radius: 10px;
-    overflow: hidden;
     transition: width 0.2s, height 0.2s, border 0.2s, padding 0.2s;
     border: 2px solid rgba(255, 255, 255, 0);
     cursor: pointer;
+    position: relative;
 }
 
-.workspaceswitcheritem:hover {
-    width: 30px;
-    height: 30px;
-    margin-top: 15px;
-    border-radius: 10px;
-    padding: 3px;
+.workspaceswitcheritem::before, .workspaceswitcheritem::after {
+    --scale: 0;
+    position: absolute;
+    font-size: small;
+    top: -.25rem;
+    left: 125%;
+    transform: translateY(35%) scale(var(--scale));
+    transition: 30ms transform;
+}
+
+.workspaceswitcheritem::before {
+    content: attr(data-tooltip);
+    color: white;
+    padding: .3rem;
+    border-radius: .3rem;
+    text-align: left;
+    width: max-content;
+    background: #333;
+}
+
+.workspaceswitcheritem:hover::before {
+    --scale: 1;
 }
 
 .workspaceswitcheritem[selected="selected"] {
@@ -95,6 +144,36 @@ body {
     border-radius: 10px;
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0);
+}
+
+.workspaceswitcheradd {
+    cursor: pointer;
+    position: relative;
+    overflow: visible;
+}
+
+.workspaceswitcheradd::before, .workspaceswitcheradd::after {
+    --scale: 0;
+    position: absolute;
+    font-size: small;
+    top: -.25rem;
+    left: 125%;
+    transform: translateY(50%) scale(var(--scale));
+    transition: 30ms transform;
+}
+
+.workspaceswitcheradd::before {
+    content: attr(data-tooltip);
+    color: white;
+    padding: .3rem;
+    border-radius: .3rem;
+    text-align: left;
+    width: max-content;
+    background: #333;
+}
+
+.workspaceswitcheradd:hover::before {
+    --scale: 1;
 }
 
 .workspaceswitcheradd-icon {

@@ -69,10 +69,13 @@
                     fetch("/api/channel/" + currentchannelid + "/messages/send?message=" + msg, {
                         "method": "POST",
                     })
+
                     .then(function (response) {
                         console.log(response.status);
                         return response.text();
-                    }).then(function (data) {
+                    })
+
+                    .then(function (data) {
                         console.log(data);
                     })
 
