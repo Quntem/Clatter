@@ -68,25 +68,16 @@ body {
 }
 
 .workspaceswitcheritem:hover {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     margin-top: 15px;
     border-radius: 10px;
-    padding: 5px;
+    padding: 3px;
 }
 
 .workspaceswitcheritem[selected="selected"] {
     width: 26px;
     height: 26px;
-    margin-top: 15px;
-    border-radius: 10px;
-    padding: 5px;
-    border: 2px solid var(--sidebar_foreground);
-}
-
-.workspaceswitcheritem[selected="selected"]:hover {
-    width: 36px;
-    height: 36px;
     margin-top: 15px;
     border-radius: 10px;
     padding: 5px;
