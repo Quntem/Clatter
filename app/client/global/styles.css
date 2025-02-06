@@ -267,12 +267,18 @@ body {
 }
 
 #shellsidebar {
-    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
     min-width: 300px;
     background-color: var(--sidebar_background);
     border-right: 2px solid var(--sidebar_border);
     color: var(--sidebar_foreground);
+    overflow: scroll;
 }
+
+#shellsidebar::-webkit-scrollbar {
+    display: none;
+  }
 
 .sidebar-wsinfoarea {
     height: 70px;

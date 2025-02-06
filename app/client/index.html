@@ -42,6 +42,13 @@
                             $("#sidebartogglebutton").show()
                             $("#shellsidebar").show()
                             $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
+                            authClient.organization.getActiveMember()
+                            .then(res => {
+                                if (res.data.role == "owner") {
+                                    $("#topbuttons").show()
+                                    $("#useradminarea").show()
+                                }
+                            })
                         })
                     })
                 }
@@ -106,8 +113,8 @@
 
     <body>
         <header>
-            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 25px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
-            <div style="color: var(--sidebar_foreground); margin-left: 25px;"><b>Quntem </b>Clatter</div>
+            <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 26px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
+            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
             <div class="icon-log-out sidebar-listitem-icon" style="margin-left: auto; color: var(--sidebar_foreground); margin-right: 10px;" onclick="authClient.signOut(); location.reload()"></div>
@@ -130,7 +137,7 @@
                     </div>
                 </div>
 
-                <div class="sidebar-listarea" id="topbuttons">
+                <div class="sidebar-listarea" id="topbuttons" style="display: none;">
                     <div class="sidebar-listarea-titlearea">
                         <div class="sidebar-listarea-titletext">Workspace Admin</div>
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
@@ -193,7 +200,7 @@
                     </div>
                 </div>
 
-                <div class="sidebar-listarea">
+                <div class="sidebar-listarea" id="useradminarea" style="display: none;">
                     <div class="sidebar-listarea-titlearea">
                         <div class="sidebar-listarea-titletext">Manage Users</div>
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
@@ -267,7 +274,7 @@
                         ao.data.members.forEach(member => {
                             if (member.user.id != authsession.data.user.id) {
                                 $("#userssblist").append(`
-                                    <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + member.user.name + `? They will be notified of this action.')) authClient.organization.removeMember({ memberId: '` + member.user.id + `', organizationId: '` + ao.data.id + `'})">
+                                    <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + member.user.name + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + member.user.email + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
                                         <div class="icon-user sidebar-listitem-icon"></div>
                                         <div class="sidebar-listitem-text">` + member.user.name + `</div>
                                     </div>
