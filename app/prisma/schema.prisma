@@ -19,6 +19,19 @@ model channel {
   type               String @default("clatter.channeltype.message")
   parentworkspace    String
   DateCreated        DateTime @default(now())
+  tabs               tab[] @relation("channeltab")
+  documents          document[] @relation("channeldocument")
+}
+
+model tab {
+  id                 String @id @default(uuid())
+  name               String
+  type               String @default("clatter.channeltype.message")
+  parentid           String @default("")
+  content            Json
+  DateCreated        DateTime @default(now())
+  parentchannel      channel @relation("channeltab", fields: [parentid], references: [id])
+  pinned             Boolean @default(false)
 }
 
 model message {
@@ -27,18 +40,27 @@ model message {
   parenttype         String @default("channel")
   parentid           String @default("")
   content            String
+  parentmessageid    String?
+  parentmessage      message? @relation("messagethread", fields: [parentmessageid], references: [id])
   DateCreated        DateTime @default(now())
   sender             String
   sendername         String
+  pinned             Boolean @default(false)
+  childmessages      message[] @relation("messagethread")
 }
 
-model pagedocument {
+model document {
   id                 String @id @default(uuid())
   name               String
   content            Json
   parentworkspace    String
   parentchannel      String?
+  parentchannelobj   channel? @relation("channeldocument", fields: [parentchannel], references: [id])
   DateCreated        DateTime @default(now())
   DateModified       DateTime @default(now())
   owner              String
+  type               String @default("clatter.documenttype.page")
+  pinned             Boolean @default(false)
+  allowedusers       String[]
+  public             Boolean @default(false)
 }

@@ -82,6 +82,22 @@ app.get("/api/channel/:channelid/info", async (req, res) => {
   }
 })
 
+app.get("/api/documents/listown", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var channellist = await prisma.document.findMany({
+      where: {
+        owner: session.user.id
+      }
+    })
+    res.json(channellist)
+  } catch(err) {
+    console.log(err)
+  }
+})
+
 app.get("/api/channel/:channelid/messages/list", async (req, res) => {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),

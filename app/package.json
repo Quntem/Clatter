@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "prisma": "^6.3.1",
     "vite": "^6.0.5"
   },
   "dependencies": {
@@ -20,7 +21,7 @@
     "@editorjs/header": "^2.8.8",
     "@editorjs/list": "^2.0.4",
     "@editorjs/table": "^2.4.3",
-    "@prisma/client": "^6.2.1",
+    "@prisma/client": "^6.3.1",
     "better-auth": "^1.1.14",
     "better-sqlite3": "^11.8.1",
     "body-parser": "^1.20.3",
@@ -29,7 +30,6 @@
     "editorjs-undo": "^2.0.28",
     "express": "^4.21.2",
     "pg": "^8.13.1",
-    "prisma": "^6.2.1",
     "socket.io": "^4.8.1",
     "uploadthing": "^7.4.4",
     "vite-express": "^0.20.0"
