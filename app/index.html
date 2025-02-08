@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <meta name="description" content="Your Workplace, All In One App">
+        <meta name="keywords" content="Quntem, Clatter, Quntem Clatter, Workplace, Slack, Cliq">
         
         <title>Clatter</title>
         <link rel="icon" type="image/png" href="public/favicon.png">
@@ -38,7 +41,7 @@
         <header>
             <img src="client/global/monotone-logo.svg" id="headerlogo" />
             
-            <div class="headertitle">
+            <div class="headertitle" id="headertitle">
                 Clatter WorkRoom
             </div>
 
@@ -53,31 +56,30 @@
             </a>
         </header>
 
-        <h1>
-            The only place for communication like <span style="background-color: #074564; color: white; font-weight: 600;" class="changeBackgroundColor">never seen before</span>.
-        </h1>
-
-        <img src="public/client-preview.png" width="40%" alt="The Clatter Client." class="center expandSlow" style="margin-top: 50px;">
-
-        <h1>
-            Our Stand in Pricing & Quality
-        </h1>
-
-        <p style="text-align: center; font-weight: 400; font-size: 24px; margin-left: 10%; margin-right: 10%;">
-            We firmly support against the use of overpricing and support the standard of your services being high quality, bugless and usable.
-            We usually add minimal monetization so you can get the most out of our free plans.
-        </p>
-
-        <h1>
-            Optimize Your Workflow Now!
-        </h1>
-
-        <button style="width: 216px; height: 31px; background-color: rgb(14, 63, 126); border-radius: 6px; border: none; color: white; cursor: pointer; font-family: 'Figtree', sans-serif;" class="centerB">
-            <a href="/authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
-                Create an Account
-            </a>
-        </button>
+        <div class="mainarea">
+            <h1 class="textAlignLeft">Your Workplace, All In One App</h1>
+            <p class="textAlignLeft" style="margin-left: 3.25rem;">
+                All of your workplace's basic features into one app. <br>
+                Message, upload and share to an opensourced platform for completely free. <br>
+                From the developers of other closed and opensourced tools such as Quntem Creator, All In One Link and many more.
+            </p>
+        </div>
 
         <script src="auth-frontend-home.js" type="module"></script>
     </body>
+
+    <script>
+        // Use http://127.0.0.1:3000 for debugging. https://clatterpreview.quntem.co.uk for committing.
+        if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
+            console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
+            
+            let headerTitle = document.getElementById("headertitle")
+            headertitle.innerHTML = "Clatter WorkRoom Beta"
+        } else {
+            console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
+            if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
+                alert("Please make a new issue at https://github.com/Quntem/Clatter/issues and title it Beta HeaderTitle not appearing on Beta Server due to a developer leaving http://127.0.0.1:3000 in the debug code. There is NO PROBLEM with the other features, and please continue your experience of Clatter.")
+            }
+        }
+    </script>
 </html>
