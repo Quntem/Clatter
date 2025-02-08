@@ -13,7 +13,15 @@
                 console.log(res)
                 element = JSON.parse(res)
                 $("#messagearea").append(`
-                    <div class="messagebox"><b>` + element.sendername + `:</b> ` + element.content + `</div>
+                    <div class="messagebox">
+                        <span class="message">
+                            <b>` + element.sendername + ` </b>
+                            <br>
+                            <span class="message">
+                                ` + element.content + `
+                            </span>
+                        </span>
+                    </div>
                 `)
                 
                 // Broken Code; Needs Debugging
