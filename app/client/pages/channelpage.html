@@ -34,7 +34,7 @@
         <div class="mainarea-header">
             <div class="sidebar-wsinfoarea-stack">
                 <div id="mainarea-header-title">
-                    .
+                    <!-- Blank to avoid confusion. -->
                 </div>
                 <div id="mainarea-header-sub">
                     Channel
@@ -59,7 +59,15 @@
                         $("#messagearea").html("")
                         res.forEach(element => {
                             $("#messagearea").append(`
-                                <div class="messagebox"><b>` + element.sendername + `: </b> ` + element.content + `</div>
+                                <div class="messagebox">
+                                    <span class="message">
+                                        <b>` + element.sendername + ` </b>
+                                        <br>
+                                        <span class="message">
+                                            ` + element.content + `
+                                        </span>
+                                    </span>
+                                </div>
                             `)
                         });
                     })
