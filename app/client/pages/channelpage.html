@@ -12,8 +12,23 @@
             socket.on("clatter.channel.message.recieve", (res) => {
                 console.log(res)
                 element = JSON.parse(res)
+
+                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                const d = new Date(element.DateCreated);
+
                 $("#messagearea").append(`
-                    <div class="messagebox"><b>` + element.sendername + `:</b> ` + element.content + `</div>
+                    <div class="messagebox">
+                        <span class="message">
+                            <b>` + element.sendername + ` </b>
+                            <span style="font-size: small;">
+                                ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
+                            </span>
+                            <br>
+                            <span class="message">
+                                ` + element.content + `
+                            </span>
+                        </span>
+                    </div>
                 `)
                 
                 // Broken Code; Needs Debugging
@@ -34,7 +49,7 @@
         <div class="mainarea-header">
             <div class="sidebar-wsinfoarea-stack">
                 <div id="mainarea-header-title">
-                    .
+                    <!-- Blank to avoid confusion. -->
                 </div>
                 <div id="mainarea-header-sub">
                     Channel
@@ -58,8 +73,22 @@
                         console.log(res)
                         $("#messagearea").html("")
                         res.forEach(element => {
+                            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                            const d = new Date(element.DateCreated);
+
                             $("#messagearea").append(`
-                                <div class="messagebox"><b>` + element.sendername + `: </b> ` + element.content + `</div>
+                                <div class="messagebox">
+                                    <span class="message">
+                                        <b>` + element.sendername + ` </b>
+                                        <span style="font-size: small;">
+                                            ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
+                                        </span>
+                                        <br>
+                                        <span class="message">
+                                            ` + element.content + `
+                                        </span>
+                                    </span>
+                                </div>
                             `)
                         });
                     })
