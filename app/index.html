@@ -11,30 +11,6 @@
         <link rel="icon" type="image/png" href="public/favicon.png">
 
         <link rel="stylesheet" href="styles.css"/>
-
-        <style>
-            .center {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 50%;
-            }
-
-            body {
-                position: relative;
-                height: auto;
-                margin-bottom: 82px;
-                color: #666666 !important;
-            }
-
-            .centerB {
-                margin: 0;
-                position: absolute;
-                left: 50%;
-                -ms-transform: translate(-50%);
-                transform: translate(-50%);
-            }
-        </style>
     </head>
 
     <body>
@@ -45,7 +21,7 @@
                 Clatter WorkRoom
             </div>
 
-            <button class="signUpButton">
+            <button class="signUpButton" style="border-radius: 999px;">
                 <a href="/authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
                     Sign Up
                 </a>
@@ -57,12 +33,58 @@
         </header>
 
         <div class="mainarea">
-            <h1 class="textAlignLeft">Your Workplace, All In One App</h1>
-            <p class="textAlignLeft" style="margin-left: 3.25rem;">
-                All of your workplace's basic features into one app. <br>
-                Message, upload and share to an opensourced platform for completely free. <br>
-                From the developers of other closed and opensourced tools such as Quntem Creator, All In One Link and many more.
-            </p>
+            <div class="innermainarea">
+                <h1 class="textAlignLeft" style="padding-top: 6.5rem;">Your Workplace, All In One App</h1>
+                
+                <p class="textAlignLeft" style="max-width: 36rem;">
+                    All of your workplace's basic features into one app.
+                    Message, upload and share to an opensourced platform for completely free.
+                    From the developers of other closed and opensourced tools such as Quntem Creator, All In One Link and many more.
+                </p>
+
+                <button class="mainareacreate" style="margin-bottom: 5rem;">
+                    <a href="/authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
+                        <span>
+                            Create A Workspace
+                        </span>
+                    </a>
+                </button>
+            </div>
+        </div>
+
+        <div class="infodiv">
+            <div class="informationarea">
+                <div class="innerinformationarea">
+                    <img src="public/client-preview.png" style="float: left; height: 16rem; padding-left: 3.25rem; position: absolute; top: 0; bottom: 0; margin: auto;">
+
+                    <h4 class="textAlignRt" style="padding-top: 5rem; margin-top: 0; margin-bottom: 0;">But first...</h4>
+    
+                    <h1 class="textAlignRt">
+                        What Is Clatter?
+                    </h1>
+    
+                    <p class="textAlignRt" style="max-width: 36rem; margin-left: auto; padding-bottom: 5rem;">
+                        Clatter is a free and open-source service for workplaces' digital communication!
+                        Clatter is made by a small team of developers and a lack of funding, so please, if you can, use our tool to show your support!
+                    </p>
+                </div>
+            </div>
+    
+            <div class="whyarea">
+                <div class="innerwhyarea">
+                    <h4 class="textAlignLeft" style="padding-top: 5rem;">I was wondering too... (until I realized I'm a developer for Clatter)</h4>
+
+                    <h1 class="textAlignLeft">
+                        Why Choose Clatter?
+                    </h1>
+    
+                    <p class="textAlignLeft" style="max-width: 36rem; margin-right: auto;">
+                        Clatter is open-sourced and is made by a small team of developers!
+                        We now how it's like to always have pay-wall features, so don't worry, we'll try not to add too much of them to annoy you!
+    
+                    </p>
+                </div>
+            </div>
         </div>
 
         <script src="auth-frontend-home.js" type="module"></script>
@@ -77,6 +99,7 @@
             headertitle.innerHTML = "Clatter WorkRoom Beta"
         } else {
             console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
+            
             if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
                 alert("Please make a new issue at https://github.com/Quntem/Clatter/issues and title it Beta HeaderTitle not appearing on Beta Server due to a developer leaving http://127.0.0.1:3000 in the debug code. There is NO PROBLEM with the other features, and please continue your experience of Clatter.")
             }

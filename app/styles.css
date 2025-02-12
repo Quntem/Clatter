@@ -24,7 +24,9 @@ header {
 }
 
 body {
-    margin: 0px;
+    position: relative;
+    height: auto;
+    margin: 0;
     font-family: 'Figtree', sans-serif;
     color: #666666;
 }
@@ -36,21 +38,80 @@ h1 {
     font-family: 'Figtree', sans-serif;
     font-weight: 500;
     font-size: clamp(1.6rem , 2.4vw, 4rem);
-    margin-top: 6.5rem;
     text-align: left;
+}
+
+h4 {
+    font-weight: 400;
 }
 
 /* Alignments */
 .textAlignLeft {
     text-align: left;
-    margin-left: 3.25rem;
+    padding-left: 3.25rem;
 }
 
-/* Header Buttons */
+.textAlignCent {
+    text-align: center;
+}
+
+.textAlignRt {
+    text-align: right;
+    padding-right: 3.25rem;
+}
+
+/* Buttons */
 
 button {
     font-family: 'Figtree', sans-serif;
+    font-weight: 500;
 }
+
+/* CREATE A WORKSPACE button */
+
+.mainareacreate {
+    border-radius: 999px;
+    border: none;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-left: 3.25rem;
+    background: rgb(41,119,158);
+    background: radial-gradient(ellipse farthest-corner at top left, rgba(71,185,242,1) 100%, rgba(41,119,158,1) 0%);
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    font-size: large;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.125);
+    transition: all 0.5s;
+}
+
+    .mainareacreate span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+    
+    .mainareacreate span:after {
+        content: '+';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+    
+    .mainareacreate:hover span {
+        padding-right: 25px;
+    }
+    
+    .mainareacreate:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+
 
 .signUpButton {
     margin-left: auto;
@@ -73,22 +134,39 @@ button {
     font-weight: 500;
 }
 
-#header-userbutton {
-    width: 30px;
-    height: 30px;
-    background-color: #666666;
-    border-radius: 999px;
-    margin-left: 20px;
-    margin-right: 15px;
-}
-
 #header-topbuttonsarea {
     margin-left: auto;
     padding-top: 5px;
 }
 
 .mainarea {
-    background-image: url(public/client-preview.png);
+    position: relative;
+    background-position: 50%;
     background-repeat: no-repeat;
     background-size: cover;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    color: white;
+}
+
+.mainarea::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url(public/Clatter\ Channel.png);
+    filter: brightness(12.5%);
+}
+
+.innermainarea {
+    position: relative;
+}
+
+.innerinformationarea {
+    position: relative;
+}
+
+.infodiv {
+    background: radial-gradient(#eeeeee, #ffffff);
 }
