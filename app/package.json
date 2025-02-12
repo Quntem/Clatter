@@ -21,13 +21,8 @@
     "@editorjs/header": "^2.8.8",
     "@editorjs/list": "^2.0.4",
     "@editorjs/table": "^2.4.3",
-<<<<<<< HEAD
     "@prisma/client": "^6.3.1",
-    "better-auth": "^1.1.14",
-=======
-    "@prisma/client": "^6.2.1",
     "better-auth": "^1.1.16",
->>>>>>> f5fb15e08478ab3ffbc28699d8850390d843f24e
     "better-sqlite3": "^11.8.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
