@@ -160,7 +160,7 @@ io.on("connection", (socket) => {
     argjson.DateCreated = new Date().toISOString()
     
     socket.emit("clatter.channel.message.send.response", "Sent Message")
-    socket.to(argjson.room).emit("clatter.channel.message.recieve", JSON.stringify(args))
+    socket.to(argjson.room).emit("clatter.channel.message.recieve", JSON.stringify(argjson))
   }) 
 });
 
