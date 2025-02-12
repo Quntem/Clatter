@@ -156,6 +156,8 @@ io.on("connection", (socket) => {
   }) 
   socket.on("clatter.channel.message.send", async (args) => {
     var argjson = JSON.parse(args)
+
+    args.DateCreated = new Date().toISOString()
     
     socket.emit("clatter.channel.message.send.response", "Sent Message")
     socket.to(argjson.room).emit("clatter.channel.message.recieve", args)
