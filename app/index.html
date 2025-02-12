@@ -55,7 +55,7 @@
         <div class="infodiv">
             <div class="informationarea">
                 <div class="innerinformationarea">
-                    <img src="public/client-preview.png" style="float: left; height: 16rem; padding-left: 3.25rem; position: absolute; top: 0; bottom: 0; margin: auto;">
+                    <img src="public/client-preview.png" alt="A Preview of Clatter.">
 
                     <h4 class="textAlignRt" style="padding-top: 5rem; margin-top: 0; margin-bottom: 0;">But first...</h4>
     
@@ -72,23 +72,83 @@
     
             <div class="whyarea">
                 <div class="innerwhyarea">
-                    <h4 class="textAlignLeft" style="padding-top: 5rem;">I was wondering too... (until I realized I'm a developer for Clatter)</h4>
+                    <div class="mainwhyarea">
+                        <h4 class="textAlignLeft" style="padding-top: 5rem;">I was wondering too... (until I realized I'm a developer for Clatter)</h4>
 
-                    <h1 class="textAlignLeft">
-                        Why Choose Clatter?
-                    </h1>
-    
-                    <p class="textAlignLeft" style="max-width: 36rem; margin-right: auto;">
-                        Clatter is open-sourced and is made by a small team of developers!
-                        We now how it's like to always have pay-wall features, so don't worry, we'll try not to add too much of them to annoy you!
-    
-                    </p>
+                        <h1 class="textAlignLeft">
+                            Why Choose Clatter?
+                        </h1>
+        
+                        <p class="textAlignLeft" style="max-width: 36rem;">
+                            These are the reasons of why you should choose Clatter and not other workplace-targetted chatting platforms such as Cliq or Slack:
+                        </p>
+                    </div>
+
+                    <div class="textAlignRt secondarywhyarea" style="padding-top: 5rem; max-width: 36rem;">
+                        <div class="why-freecard">
+                            <h2 style="font-size: large; font-weight: bold;">It's Free</h2>
+                            <p>
+                                Clatter is free and have no plans currently of changing that, so join us in changing the world of pay walls and overpriced subscriptions!
+                            </p>
+                        </div>
+
+                        <div class="why-opencard">
+                            <h2 style="font-size: large; font-weight: bold;">It's Open Sourced</h2>
+                            <p>
+                                Clatter is open-sourced and currently also has no plans to change that!
+                                Visit Clatter's Repository at <a href="https://github.com/Quntem/Clatter">www.github.com/Quntem/Clatter</a>.
+                            </p>
+                        </div>
+
+                        <div class="why-regupdcard">
+                            <h2 style="font-size: large; font-weight: bold;">Regularly Updated</h2>
+                            <p>
+                                Clatter is regularly updated and is one of the main projects that Quntem, the team behind the development of Clatter, is prioritizing.
+                                We see a bright future for Clatter, and we need your support to keep going.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <div w3-include-html="footer.html" class="footer-area" style="margin-top: 4rem;"></div>
+
         <script src="auth-frontend-home.js" type="module"></script>
     </body>
+
+    <script>
+        function includeHTML() {
+            var z, i, elmnt, file, xhttp;
+            /* Loop through a collection of all HTML elements: */
+            z = document.getElementsByTagName("*");
+
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                /*search for elements with a certain atrribute:*/
+                file = elmnt.getAttribute("w3-include-html");
+                if (file) {
+                    /* Make an HTTP request using the attribute value as the file name: */
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4) {
+                        if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                        if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                        /* Remove the attribute, and call this function once more: */
+                        elmnt.removeAttribute("w3-include-html");
+                        includeHTML();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    /* Exit the function: */
+                    return;
+                }
+            }
+        }
+
+        includeHTML();
+    </script>
 
     <script>
         // Use http://127.0.0.1:3000 for debugging. https://clatterpreview.quntem.co.uk for committing.

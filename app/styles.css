@@ -8,6 +8,8 @@ html {
     width: 100vw;
     font-family: 'Figtree', sans-serif;
     scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    background: radial-gradient(#eeeeee, #ffffff);
 }
 
 header {
@@ -67,6 +69,34 @@ button {
     font-weight: 500;
 }
 
+/* Header Styling */
+
+.signUpButton {
+    margin-left: auto;
+    margin-right: 20px;
+    background-color: rgb(14, 63, 126);
+    border-radius: 6px;
+    border: none;
+    width: 80px;
+    height: 25px;
+}
+
+#headerlogo {
+    height: 22px;
+    width: auto;
+    margin-left: 18px;
+}
+
+.headertitle {
+    margin-left: 15px;
+    font-weight: 500;
+}
+
+#header-topbuttonsarea {
+    margin-left: auto;
+    padding-top: 5px;
+}
+
 /* CREATE A WORKSPACE button */
 
 .mainareacreate {
@@ -112,31 +142,10 @@ button {
         right: 0;
     }
 
+/* Main Area Styling */
 
-.signUpButton {
-    margin-left: auto;
-    margin-right: 20px;
-    background-color: rgb(14, 63, 126);
-    border-radius: 6px;
-    border: none;
-    width: 80px;
-    height: 25px;
-}
-
-#headerlogo {
-    height: 22px;
-    width: auto;
-    margin-left: 18px;
-}
-
-.headertitle {
-    margin-left: 15px;
-    font-weight: 500;
-}
-
-#header-topbuttonsarea {
-    margin-left: auto;
-    padding-top: 5px;
+.innermainarea {
+    position: relative;
 }
 
 .mainarea {
@@ -159,14 +168,35 @@ button {
     filter: brightness(12.5%);
 }
 
-.innermainarea {
-    position: relative;
-}
-
 .innerinformationarea {
     position: relative;
 }
 
-.infodiv {
-    background: radial-gradient(#eeeeee, #ffffff);
+.innerinformationarea img {
+    float: left;
+    height: 14rem;
+    padding-left: 3.25rem;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    cursor: pointer;
+    -webkit-user-drag: none;
+
+    transition: all 250ms ease;
+}
+
+.innerinformationarea img:hover {
+    height: 16rem;
+}
+
+.innerwhyarea {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.secondarywhyarea {
+    margin-left: auto;
 }
