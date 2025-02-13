@@ -4,10 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <meta name="description" content="Your Workplace, All In One App">
-        <meta name="keywords" content="Quntem, Clatter, Quntem Clatter, Workplace, Slack, Cliq">
+        <meta name="description" content="Beta Clatter, Experience New Features Early">
+        <meta name="keywords" content="Quntem, Clatter, Quntem Clatter, Workplace, Clatter Beta, Quntem Clatter Beta">
         
-        <title>Clatter</title>
+        <title>Clatter Beta</title>
         <link rel="icon" type="image/png" href="public/favicon.png">
 
         <link rel="stylesheet" href="styles.css"/>
@@ -18,7 +18,7 @@
             <img src="client/global/monotone-logo.svg" id="headerlogo" />
             
             <div class="headertitle" id="headertitle">
-                Clatter WorkRoom
+                Clatter WorkRoom Beta
             </div>
 
             <button class="signUpButton" style="border-radius: 999px;">
@@ -152,21 +152,5 @@
         }
 
         includeHTML();
-    </script>
-
-    <script>
-        // Use http://127.0.0.1:3000 for debugging. https://clatterpreview.quntem.co.uk for committing.
-        if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
-            console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
-            
-            let headerTitle = document.getElementById("headertitle")
-            headertitle.innerHTML = "Clatter WorkRoom Beta"
-        } else {
-            console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
-            
-            if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
-                alert("Please make a new issue at https://github.com/Quntem/Clatter/issues and title it Beta HeaderTitle not appearing on Beta Server due to a developer leaving http://127.0.0.1:3000 in the debug code. There is NO PROBLEM with the other features, and please continue your experience of Clatter.")
-            }
-        }
     </script>
 </html>
