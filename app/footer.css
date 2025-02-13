@@ -8,20 +8,20 @@
 }
 
 .footer-container {
-    background-color: #eeeeee;
+    background-color: #f3f3f3;
 }
 
 .footer {
     width: 80%;
     height: 40vh;
-    background-color: #eeeeee;
+    background-color: #f3f3f3;
     color: black;
     display: flex;
     justify-content: left;
     flex-wrap: wrap;
-    margin: 0 auto;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    margin-left: 3.25rem;
+    padding-top: 3.25rem;
+    padding-bottom: 3.25rem;
 }
 
 .footer-heading {
