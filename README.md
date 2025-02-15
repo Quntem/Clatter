@@ -31,4 +31,4 @@
 
 ### FaQ
 ## Are there any reused code?
-Yes, Cardfeed (another chatting application) was another project Oscar May, Founder of Clatter, built and parts of the code for it got reused into the message live updating for channels, as well as some database functions!
+Yes, Cardfeed was another project Oscar May, Founder of Clatter, built and parts of the code for it got reused into the message live updating for channels, as well as some database functions!
