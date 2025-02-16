@@ -36,7 +36,7 @@
             <div class="innermainarea">
                 <h1 class="textAlignLeft" style="padding-top: 6.5rem;">Your Workplace, All In One App</h1>
                 
-                <p class="textAlignLeft" style="max-width: 36rem;">
+                <p class="textAlignLeft" style="max-width: 36rem; margin-top: 1rem;">
                     All of your workplace's basic features into one app.
                     Message, upload and share to an opensourced platform for completely free.
                     From the developers of other closed and opensourced tools such as Quntem Creator, All In One Link and many more.
@@ -116,7 +116,7 @@
             </div>
         </div>
 
-        <div w3-include-html="footer.html" class="footer-area" style="margin-top: 4rem;"></div>
+        <div html-snippet="footer.html" class="footer-area" style="margin-top: 4rem;"></div>
 
         <script src="auth-frontend-home.js" type="module"></script>
     </body>
@@ -130,7 +130,7 @@
             for (i = 0; i < z.length; i++) {
                 elmnt = z[i];
                 /*search for elements with a certain atrribute:*/
-                file = elmnt.getAttribute("w3-include-html");
+                file = elmnt.getAttribute("html-snippet");
                 if (file) {
                     /* Make an HTTP request using the attribute value as the file name: */
                     xhttp = new XMLHttpRequest();
@@ -139,7 +139,7 @@
                         if (this.status == 200) {elmnt.innerHTML = this.responseText;}
                         if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
                         /* Remove the attribute, and call this function once more: */
-                        elmnt.removeAttribute("w3-include-html");
+                        elmnt.removeAttribute("html-snippet");
                         includeHTML();
                         }
                     }
