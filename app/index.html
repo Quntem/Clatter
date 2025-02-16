@@ -152,5 +152,15 @@
         }
 
         includeHTML();
+
+        if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
+            console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
+            document.title = "Clatter Beta";
+
+            let headerTitle = document.getElementById("headertitle")
+            headertitle.innerHTML = "Clatter WorkRoom Beta"
+        } else {
+            console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
+        }
     </script>
 </html>

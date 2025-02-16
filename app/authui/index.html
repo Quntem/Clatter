@@ -7,7 +7,7 @@
         <meta name="description" content="Clatter Client">
         <meta name="keywords" content="Quntem, Clatter, Quntem Clatter, Clatter Client, Quntem Clatter Client, Workplace, Slack, Cliq">
 
-        <title>Clatter Client</title>
+        <title>Clatter Authentication</title>
         <link rel="icon" type="image/svg+xml" href="data:image/svg+xml, %3Csvg width='21' height='21' viewBox='0 0 21 21' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.5 5.25C10.5 2.35051 12.8505 0 15.75 0V0C18.6495 0 21 2.35051 21 5.25V10.5H15.75C12.8505 10.5 10.5 8.14949 10.5 5.25V5.25Z' fill='%23666666'/%3E%3Cpath d='M0 5.25C0 2.35051 2.35051 0 5.25 0V0C8.14949 0 10.5 2.35051 10.5 5.25V5.25C10.5 8.14949 8.14949 10.5 5.25 10.5H0V5.25Z' fill='%23666666'/%3E%3Cpath d='M10.5 15.75C10.5 12.8505 12.8505 10.5 15.75 10.5H21V15.75C21 18.6495 18.6495 21 15.75 21V21C12.8505 21 10.5 18.6495 10.5 15.75V15.75Z' fill='%23666666'/%3E%3Cpath d='M0 10.5H5.25C8.14949 10.5 10.5 12.8505 10.5 15.75V15.75C10.5 18.6495 8.14949 21 5.25 21V21C2.35051 21 0 18.6495 0 15.75V10.5Z' fill='%23666666'/%3E%3C/svg%3E%0A">
 
         <link rel="stylesheet" href="styles.css"/>
@@ -30,4 +30,13 @@
             </div>
         </div>
     </body>
+
+    <script>
+        if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
+            console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
+            document.title = "Clatter Authentication Beta";
+        } else {
+            console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
+        }
+    </script>
 </html>
