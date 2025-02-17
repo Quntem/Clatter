@@ -134,7 +134,7 @@
             <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
-            <div class="icon-log-out sidebar-listitem-icon" style="margin-left: auto; color: var(--sidebar_foreground); margin-right: 10px;" onclick="authClient.signOut(); location.reload()"></div>
+            <div class="icon-log-out sidebar-listitem-icon" style="margin-left: auto; color: var(--sidebar_foreground); margin-right: 10px;" onclick="authClient.signOut().then(() => location.reload())"></div>
         </header>
 
         <div id="apparea">
