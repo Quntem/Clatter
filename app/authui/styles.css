@@ -106,3 +106,12 @@ body {
     margin-bottom: 20px;
     font-size: 18px;
 }
+
+.back-btn {
+    position: absolute;
+    cursor: pointer;
+    font-size: 24px !important;
+    left: 12px;
+    top: 12px;
+    padding: 10px;
+}

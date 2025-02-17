@@ -10,9 +10,12 @@
         <!-- CSS -->
         <link rel="stylesheet" href="styles.css"/>
         <script src="auth-ui-client.js" type="module"></script>
+        <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
     </head>
 
     <body>
+        <div class="icon-arrow-left back-btn" id="back-btn" onclick="window.location.href = 'index.html';"></div>
+
         <div class="authboxholder" name="authboxholder">
             <img src="/public/ClatterLogo.svg" id="loginlogo" />
             
@@ -39,5 +42,12 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            window.onbeforeunload = function() {
+                // Returns Custom Confirmation Message for Old Browsers (Modern Browsers DO NOT Support This!)
+                return "Are you sure you want to leave this page? If you leave this page, your current signing up process will be discarded!";
+            };
+        </script>
     </body>
 </html>
