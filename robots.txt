@@ -1,0 +1,9 @@
+User-agent: *
+User-agent: Googlebot
+User-agent: Googlebot-Mobile
+User-agent: bingbot
+Allow: /
+Disallow: /app/public
+Disallow: /app/assets
+
+Sitemap: https://clatter.quntem.co.uk/app/sitemap.xml
