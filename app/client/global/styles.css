@@ -238,6 +238,7 @@ body {
 
 .sidebar-listitem-icon {
     font-size: 18px !important;
+    cursor: pointer;
 }
 
 .sidebar-listarea-titlecollapse {
@@ -385,6 +386,8 @@ body {
 }
 
 #messagebox {
+    position: sticky;
+    top: 0;
     border: none;
     outline: none;
     width: calc(100% - 40px);
@@ -395,6 +398,8 @@ body {
 }
 
 #sendbutton {
+    position: sticky;
+    top: 0;
     height: 40px;
     width: 40px;
     background-color: #29a083;
@@ -404,4 +409,25 @@ body {
     justify-content: center;
     color: white;
     cursor: pointer;
+}
+
+.sidebar-profile {
+    aspect-ratio: 1;
+    width: 20px;
+    margin-left: auto;
+    margin-right: 12px;
+    background-color: #ffffff70;
+    background-image: url(default-pfp/Bubbleblue.png);
+    background-size: contain;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 100ms ease;
+}
+
+.sidebar-profile:hover {
+    filter: brightness(50%);
+}
+
+.sidebar-profile input {
+    visibility: hidden;
 }

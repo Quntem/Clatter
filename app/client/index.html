@@ -18,11 +18,13 @@
                 person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
             })
         </script>
+
         <link rel="stylesheet" href="/client/global/styles.css" />
         <link rel="stylesheet" href="/client/global/themes/sea.css" />
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
         <script src="/documenteditor.js" type="module"></script>
+
         <script>
                 var collapsesidebargroup = function(obj) {
                     if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
@@ -38,17 +40,6 @@
 
                 var switchworkspace = function(obj) {
                     NavigatePage("placeholder")
-
-                    // Mobile UI
-                    if(window.screen.width <= 600) {
-                        console.log("Mobile Screen Detected. Current Screen Width: " + window.screen.width + "px");
-                        
-                        // Debug Mania
-
-                        // console.log("Before: " + $("#shellsidebar").width())
-                        // $("#shellsidebar").width("100%");
-                        // console.log("After: " + $("#shellsidebar").width())
-                    }
                     
                     authClient.organization.setActive({
                         organizationId: $(obj).attr("orgid")
@@ -141,8 +132,13 @@
             <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
-            <div class="icon-log-out sidebar-listitem-icon" style="margin-left: auto; color: var(--sidebar_foreground); margin-right: 10px;" onclick="authClient.signOut().then(() => location.reload())"></div>
+            <div class="sidebar-profile"></div>
+            <div class="icon-log-out sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px;" onclick="authClient.signOut().then(() => location.reload())"></div>
         </header>
+
+        <div>
+
+        </div>
 
         <div id="apparea">
             <div id="workspaceswitcher">
@@ -160,6 +156,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- <div class="sidebar-listarea">
                     <div class="sidebar-listitem" onclick="NavigatePage(`documentlist`)">
                         <div class="icon-file sidebar-listitem-icon"></div>
