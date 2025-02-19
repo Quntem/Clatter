@@ -1,8 +1,10 @@
 import { authClient, signIn, signOut, signUp, getSession } from "../auth-client.js"
+import DOMPurify from 'dompurify';
 
 window.authClient = authClient
 const params = new URLSearchParams(document.location.search);
-const redirurl = params.get("callback");
+let redirurl = params.get("callback");
+redirurl = DOMPurify.sanitize(redirurl);
 
 window.signin = function() {
     authClient.signIn.email({
