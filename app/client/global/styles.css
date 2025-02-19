@@ -238,6 +238,7 @@ body {
 
 .sidebar-listitem-icon {
     font-size: 18px !important;
+    cursor: pointer;
 }
 
 .sidebar-listarea-titlecollapse {
@@ -425,4 +426,8 @@ body {
 
 .sidebar-profile:hover {
     filter: brightness(50%);
+}
+
+.sidebar-profile input {
+    visibility: hidden;
 }
