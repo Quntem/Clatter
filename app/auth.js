@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { openAPI, organization, oidcProvider, multiSession, } from "better-auth/plugins"
 import pg from "pg"
+import { expo } from "@better-auth/expo"
 var { Pool } = pg
 // import Database from "better-sqlite3"
 
@@ -18,6 +19,7 @@ export const auth = betterAuth({
         openAPI(),
         oidcProvider(),
         organization(),
-        multiSession()
+        multiSession(),
+        expo()
     ],
 })
