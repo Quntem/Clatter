@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <div class="mainarea-header">
+            <div class="sidebar-wsinfoarea-stack-nohover">
+                <div id="mainarea-header-title">
+                    Meeting
+                </div>
+                <div id="mainarea-header-sub">
+                    Meeting Room
+                </div>
+            </div>
+            
+            <div class="icon-log-out sidebar-listitem-icon" style="margin-right: 25px; margin-left: auto; color: rgb(205, 50, 50);" onclick="authClient.signOut(); location.reload()"></div>
+
+            <script>
+                const domain = 'jitsi_int.quntem.co.uk';
+                const options = {
+                    roomName: 'JitsiMeetAPIExample',
+                    width: "100%",
+                    height: "100%",
+                    parentNode: document.querySelector('#meet'),
+                    lang: "en",
+                    userInfo: {
+                        email: authsession.data.user.email,
+                        displayName: authsession.data.user.name
+                    }
+                };
+                const api = new JitsiMeetExternalAPI(domain, options);
+            </script>
+        </div>
+
+        <div style="height: calc(100% - 71px); width: 100%; display: flex; flex-direction: row;" id="meet">
+            
+        </div>
+    </body>
+</html>
