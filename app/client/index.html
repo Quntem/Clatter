@@ -26,6 +26,12 @@
         <script src="/documenteditor.js" type="module"></script>
 
         <script>
+                function sanitizeHTML(text) {
+                    var element = document.createElement('div');
+                    element.innerText = text;
+                    return element.innerHTML;
+                }
+
                 var collapsesidebargroup = function(obj) {
                     if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
                         $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").hide()
@@ -51,8 +57,8 @@
                             $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
                                 $(element).removeAttr("selected")
                             });
-                            $("#sidebar-wsinfo-name").html(ao.data.name)
-                            $("#sidebar-wsinfo-sub").html("" + ao.data.slug)
+                            $("#sidebar-wsinfo-name").text(ao.data.name)
+                            $("#sidebar-wsinfo-sub").text("" + ao.data.slug)
                             GetChannels()
                             $("#sidebartogglebutton").show()
                             $("#shellsidebar").show()
@@ -112,7 +118,7 @@
                             $("#channelssblist").append(`
                                 <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
                                     <div class="icon-hash sidebar-listitem-icon"></div>
-                                    <div class="sidebar-listitem-text">` + channel.name + `</div>
+                                    <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
                                 </div>
                             `)
                         })
