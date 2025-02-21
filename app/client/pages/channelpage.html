@@ -5,6 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            function sanitizeHTML(text) {
+            var element = document.createElement('div');
+            element.innerText = text;
+            return element.innerHTML;
+            }
+
             const socket = io();
             socket.on("clatter.channel.join.response", (res) => {
                 console.log(res)
@@ -19,7 +25,7 @@
                 $("#messagearea").append(`
                     <div class="messagebox">
                         <span class="message">
-                            <b>` + element.sendername + ` </b>
+                            <b>` + sanitizeHTML(element.sendername) + ` </b>
                             
                             <span style="font-size: small;">
                                 ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
@@ -28,7 +34,7 @@
                             <br>
 
                             <span class="message">
-                                ` + element.content + `
+                                ` + sanitizeHTML(element.content) + `
                             </span>
                         </span>
                     </div>
@@ -82,13 +88,13 @@
                             $("#messagearea").append(`
                                 <div class="messagebox">
                                     <span class="message">
-                                        <b>` + element.sendername + ` </b>
+                                        <b>` + sanitizeHTML(element.sendername) + ` </b>
                                         <span style="font-size: small;">
                                             ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
                                         </span>
                                         <br>
                                         <span class="message">
-                                            ` + element.content + `
+                                            ` + sanitizeHTML(element.content) + `
                                         </span>
                                     </span>
                                 </div>
