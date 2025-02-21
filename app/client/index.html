@@ -303,7 +303,7 @@
                                 $("#userssblist").append(`
                                     <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + member.user.name + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + member.user.email + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
                                         <div class="icon-user sidebar-listitem-icon"></div>
-                                        <div class="sidebar-listitem-text">` + member.user.name + `</div>
+                                        <div class="sidebar-listitem-text">` + sanitizeHTML(member.user.name) + `</div>
                                     </div>
                                 `)
                             }
