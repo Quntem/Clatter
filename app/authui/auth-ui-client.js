@@ -25,6 +25,27 @@ window.signup = function() {
     })
 }
 
+window.ResetPassword = async function() {
+    window.fpoutput = await authClient.forgetPassword({
+        email: document.getElementById("email").value,
+        redirectTo: "/authui/reset-password",
+    });
+
+    console.log(window.fpoutput)
+}
+
+window.ResetPasswordFinish = async function() {
+    const token = new URLSearchParams(window.location.search).get("token");
+    if (!token) {
+        window.location.replace("/authui/resetpassword")
+    }
+    window.fpoutput = await authClient.resetPassword({
+        newPassword: document.getElementById("password").value,
+        token,
+    });
+    window.location.replace("/client/")
+}
+
 window.createworkspace = function() {
     if (document.getElementById("imgurl").value == "") {
         window.icon = "/assets/DWSI.png"
