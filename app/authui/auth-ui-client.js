@@ -25,19 +25,21 @@ window.signup = function() {
     })
 }
 
-winodw.ResetPassword = async function() {
-    const { data, error } = await authClient.forgetPassword({
+window.ResetPassword = async function() {
+    window.fpoutput = await authClient.forgetPassword({
         email: document.getElementById("email").value,
         redirectTo: "/authui/reset-password",
     });
+
+    console.log(window.fpoutput)
 }
 
-winodw.ResetPasswordFinish = async function() {
+window.ResetPasswordFinish = async function() {
     const token = new URLSearchParams(window.location.search).get("token");
     if (!token) {
         window.location.replace("/authui/resetpassword")
     }
-    const { data, error } = await authClient.resetPassword({
+    window.fpoutput = await authClient.resetPassword({
         newPassword: document.getElementById("password").value,
         token,
     });
