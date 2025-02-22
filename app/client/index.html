@@ -57,6 +57,8 @@
                             $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
                                 $(element).removeAttr("selected")
                             });
+                            $("#topbuttons").hide()
+                            $("#useradminarea").hide()
                             $("#sidebar-wsinfo-name").text(ao.data.name)
                             $("#sidebar-wsinfo-sub").text("" + ao.data.slug)
                             GetChannels()
