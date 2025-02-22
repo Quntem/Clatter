@@ -180,42 +180,13 @@
                         <div class="sidebar-listitem-text">Workspace Settings</div>
                     </div>
                 </div>
-                <div class="sidebar-listarea" id="topbuttons" style="display: none;">
-                    <div class="sidebar-listarea-titlearea">
-                        <div class="sidebar-listarea-titletext">Workspace Admin</div>
-                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
-                    </div>
-                    
-                    <div class="sidebar-listarea-inner">
-
-                        <div class="sidebar-listitem" onclick="AddUser(prompt(`User ID`))">
-                            <div class="icon-user-plus sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Add User</div>
-                        </div>
-
-                        <div class="sidebar-listitem" onclick="CreateChannel(prompt(`Channel Name`)); setTimeout(() => GetChannels(), 2000)">
-                            <div class="icon-hash sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Add Channel</div>
-                        </div>
-                        
-                    </div>
-                </div>
-
+                
                 <div class="sidebar-listarea">
                     <div class="sidebar-listarea-titlearea">
                         <div class="sidebar-listarea-titletext">Channels</div>
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
                     </div>
                     <div class="sidebar-listarea-inner" id="channelssblist">
-                    </div>
-                </div>
-
-                <div class="sidebar-listarea" id="useradminarea" style="display: none;">
-                    <div class="sidebar-listarea-titlearea">
-                        <div class="sidebar-listarea-titletext">Manage Users</div>
-                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
-                    </div>
-                    <div class="sidebar-listarea-inner" id="userssblist">
                     </div>
                 </div>
             </div>
