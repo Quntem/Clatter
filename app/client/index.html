@@ -23,132 +23,122 @@
         <link rel="stylesheet" href="/client/global/themes/sea.css" />
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
+        <script src="/client/global/splash.js"></script>
         <script src="/documenteditor.js" type="module"></script>
 
         <script>
-                function sanitizeHTML(text) {
-                    var element = document.createElement('div');
-                    element.innerText = text;
-                    return element.innerHTML;
-                } 
 
-                var collapsesidebargroup = function(obj) {
-                    if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
-                        $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").hide()
-                        $(obj).removeClass("icon-chevron-down")
-                        $(obj).addClass("icon-chevron-right")
-                    } else {
-                        $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").show()
-                        $(obj).removeClass("icon-chevron-right")
-                        $(obj).addClass("icon-chevron-down")
-                    }
+            finishedpageload = false
+
+            function sanitizeHTML(text) {
+                var element = document.createElement('div');
+                element.innerText = text;
+                return element.innerHTML;
+            } 
+
+            var collapsesidebargroup = function(obj) {
+                if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
+                    $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").hide()
+                    $(obj).removeClass("icon-chevron-down")
+                    $(obj).addClass("icon-chevron-right")
+                } else {
+                    $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").show()
+                    $(obj).removeClass("icon-chevron-right")
+                    $(obj).addClass("icon-chevron-down")
                 }
+            }
 
-                var switchworkspace = function(obj) {
-                    NavigatePage("placeholder")
-                    
-                    authClient.organization.setActive({
-                        organizationId: $(obj).attr("orgid")
-                    })
+            var switchworkspace = function(obj) {
+                NavigatePage("placeholder")
+                
+                authClient.organization.setActive({
+                    organizationId: $(obj).attr("orgid")
+                })
 
-                    .then(res => {
-                        authClient.organization.getFullOrganization()
-                        .then(ao => {
-                            $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
-                                $(element).removeAttr("selected")
-                            });
-                            $("#topbuttons").hide()
-                            $("#useradminarea").hide()
-                            $("#sidebar-wsinfo-name").text(ao.data.name)
-                            $("#sidebar-wsinfo-sub").text("" + ao.data.slug)
-                            GetChannels()
-                            $("#sidebartogglebutton").show()
-                            $("#shellsidebar").show()
-                            $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
-                            authClient.organization.getActiveMember()
-                            .then(res => {
-                                if (res.data.role == "owner") {
-                                    $("#userssblist").html("")
-                                    $("#topbuttons").show()
-                                    $("#useradminarea").show()
-                                    authClient.organization.getFullOrganization()
-                                    .then(ao => {
-                                        ao.data.members.forEach(member => {
-                                            if (member.user.id != authsession.data.user.id) {
-                                                $("#userssblist").append(`
-                                                    <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
-                                                        <div class="icon-user sidebar-listitem-icon"></div>
-                                                        <div class="sidebar-listitem-text">` + sanitizeHTML(member.user.name) + `</div>
-                                                    </div>
-                                                `)
-                                            }
-                                        })
-                                    })
-                                }
-                            })
-                        })
+                .then(res => {
+                    authClient.organization.getFullOrganization()
+                    .then(ao => {
+                        $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
+                            $(element).removeAttr("selected")
+                        });
+                        $("#topbuttons").hide()
+                        $("#useradminarea").hide()
+                        $("#sidebar-wsinfo-name").text(ao.data.name)
+                        $("#sidebar-wsinfo-sub").text("" + ao.data.slug)
+                        GetChannels()
+                        $("#sidebartogglebutton").show()
+                        $("#shellsidebar").show()
+                        $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
+                        if (finishedpageload == false ) {
+                            finishedpageload  = true
+                            fadeoutsplash()
+                        }
                     })
-                }
+                })
+            }
 
-                var NavigatePage = function(pagename) {
-                    $("#mainarea").load("/client/pages/" + pagename)
-                }
+            var NavigatePage = function(pagename) {
+                $("#mainarea").load("/client/pages/" + pagename)
+            }
 
-                var CreateChannel = function(name) {
-                    fetch("/api/channels/create?channelname=" + name, {
-                        "method": "POST",
-                    })
-                    .then(function (response) {
-                        console.log(response.status);
-                        return response.text();
-                    }).then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-                }
+            var CreateChannel = function(name) {
+                fetch("/api/channels/create?channelname=" + name, {
+                    "method": "POST",
+                })
+                .then(function (response) {
+                    console.log(response.status);
+                    return response.text();
+                }).then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error.message);
+                });
+            }
 
-                var AddUser = function(userid) {
-                    fetch("/api/workspace/users/add?id=" + userid, {
-                        "method": "POST",
-                    })
-                    .then(function (response) {
-                        console.log(response.status);
-                        return response.text();
-                    }).then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-                }
+            var AddUser = function(userid) {
+                fetch("/api/workspace/users/add?id=" + userid, {
+                    "method": "POST",
+                })
+                .then(function (response) {
+                    console.log(response.status);
+                    return response.text();
+                }).then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error.message);
+                });
+            }
 
-                var GetChannels = function() {
-                    fetch("/api/channels/list")
-                    .then(res => res.json())
-                    .then(res => {
-                        console.log(res)
-                        $("#channelssblist").html("")
-                        res.forEach(channel => {
-                            $("#channelssblist").append(`
-                                <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
-                                    <div class="icon-hash sidebar-listitem-icon"></div>
-                                    <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
-                                </div>
-                            `)
-                        })
+            var GetChannels = function() {
+                fetch("/api/channels/list")
+                .then(res => res.json())
+                .then(res => {
+                    console.log(res)
+                    $("#channelssblist").html("")
+                    res.forEach(channel => {
+                        $("#channelssblist").append(`
+                            <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
+                                <div class="icon-hash sidebar-listitem-icon"></div>
+                                <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
+                            </div>
+                        `)
                     })
-                }
+                })
+            }
 
-                var ToggleSidebar = function() {
-                    $("#workspaceswitcher").toggle()
-                    $("#shellsidebar").toggle()
-                }
+            var ToggleSidebar = function() {
+                $("#workspaceswitcher").toggle()
+                $("#shellsidebar").toggle()
+            }
         </script>
     </head>
 
     <body>
+
+        <beacon-splash imgsrc="/public/ClatterLogo.svg" awr="true"></beacon-splash>
+
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 26px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
             <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
@@ -158,9 +148,6 @@
             <div class="icon-log-out sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px;" onclick="authClient.signOut().then(() => location.reload())"></div>
         </header>
 
-        <div>
-
-        </div>
 
         <div id="apparea">
             <div id="workspaceswitcher">
@@ -179,61 +166,21 @@
                     </div>
                 </div>
 
-                <!-- <div class="sidebar-listarea">
-                    <div class="sidebar-listitem" onclick="NavigatePage(`documentlist`)">
-                        <div class="icon-file sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Documents</div>
+                <div class="sidebar-listarea">
+                    <div class="sidebar-listitem" onclick="NavigatePage(`directory`)">
+                        <div class="icon-book-user sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Directory</div>
                     </div>
-                </div> -->
-                <div class="sidebar-listarea" id="topbuttons" style="display: none;">
-                    <div class="sidebar-listarea-titlearea">
-                        <div class="sidebar-listarea-titletext">Workspace Admin</div>
-                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
+                    <div class="sidebar-listitem" onclick="NavigatePage(`allchannels`)">
+                        <div class="icon-hash sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">All Channels</div>
                     </div>
-                    
-                    <div class="sidebar-listarea-inner">
-                        <!-- <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
-                            <div class="icon-settings-2 sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Workspace Settings</div>
-                        </div> -->
-
-                        <div class="sidebar-listitem" onclick="AddUser(prompt(`User ID`))">
-                            <div class="icon-user-plus sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Add User</div>
-                        </div>
-
-                        <!-- <div class="sidebar-listitem">
-                            <div class="icon-bell sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Notifications</div>
-                        </div>
-
-                        <div class="sidebar-listitem">
-                            <div class="icon-at-sign sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Mentions</div>
-                        </div> -->
-
-                        <!-- <div class="sidebar-listitem">
-                            <div class="icon-book-user sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Directory</div>
-                        </div> -->
-
-                        <!-- <div class="sidebar-listitem">
-                            <div class="icon-grip sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Apps</div>
-                        </div> -->
-
-                        <div class="sidebar-listitem" onclick="CreateChannel(prompt(`Channel Name`)); setTimeout(() => GetChannels(), 2000)">
-                            <div class="icon-hash sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Add Channel</div>
-                        </div>
-
-                        <!-- <div class="sidebar-listitem">
-                            <div class="icon-handshake sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">External Cnnections</div>
-                        </div> -->
+                    <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
+                        <div class="icon-settings-2 sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Workspace Settings</div>
                     </div>
                 </div>
-
+                
                 <div class="sidebar-listarea">
                     <div class="sidebar-listarea-titlearea">
                         <div class="sidebar-listarea-titletext">Channels</div>
@@ -242,51 +189,6 @@
                     <div class="sidebar-listarea-inner" id="channelssblist">
                     </div>
                 </div>
-
-                <div class="sidebar-listarea" id="useradminarea" style="display: none;">
-                    <div class="sidebar-listarea-titlearea">
-                        <div class="sidebar-listarea-titletext">Manage Users</div>
-                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
-                    </div>
-                    <div class="sidebar-listarea-inner" id="userssblist">
-                    </div>
-                </div>
-                <!-- <div class="sidebar-listarea">
-                    <div class="sidebar-listarea-titlearea">
-                        <div class="sidebar-listarea-titletext">Direct Messages</div>
-                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
-                    </div>
-                    <div class="sidebar-listarea-inner">
-                        <div class="sidebar-listitem">
-                            <div class="icon-user sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">User 1</div>
-                        </div>
-                        <div class="sidebar-listitem">
-                            <div class="icon-user sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">User 2</div>
-                        </div>
-                        <div class="sidebar-listitem">
-                            <div class="icon-users sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Group 1</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sidebar-listarea">
-                    <div class="sidebar-listarea-titlearea">
-                        <div class="sidebar-listarea-titletext">Threads</div>
-                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
-                    </div>
-                    <div class="sidebar-listarea-inner">
-                        <div class="sidebar-listitem">
-                            <div class="icon-message-square sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Thread 1</div>
-                        </div>
-                        <div class="sidebar-listitem">
-                            <div class="icon-message-square sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Thread 2</div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <div id="mainarea">
                 <script>
@@ -298,20 +200,39 @@
             loadfunction = function() {
                 authClient.organization.list()
                 .then(res => {
-                    $("#workspaceswitcher").html("")
-                    res.data.forEach(item => {
+                    if(res.data.length > 0) {
+                        $("#workspaceswitcher").html("")
+                        res.data.forEach(item => {
+                            $("#workspaceswitcher").append(`
+                                <div class="workspaceswitcheritem" onclick="switchworkspace(this)" data-tooltip="` + item.name + `" orgid="` + item.id + `">
+                                    <img class="workspaceswitcheriteminner" src="` + item.logo + `"></img>
+                                </div>
+                            `)
+                        })
                         $("#workspaceswitcher").append(`
-                            <div class="workspaceswitcheritem" onclick="switchworkspace(this)" data-tooltip="` + item.name + `" orgid="` + item.id + `">
-                                <img class="workspaceswitcheriteminner" src="` + item.logo + `"></img>
+                            <div class="workspaceswitcheradd" data-tooltip="Create A New Workspace" onclick="createworkspace()">
+                                <div class="icon-plus workspaceswitcheradd-icon"></div>
                             </div>
                         `)
-                    })
-                    $("#workspaceswitcher").append(`
-                        <div class="workspaceswitcheradd" data-tooltip="Create A New Workspace" onclick="createworkspace()">
-                            <div class="icon-plus workspaceswitcheradd-icon"></div>
-                        </div>
-                    `)
-                    switchworkspace($("[orgid=" + ao.data.id + "]"))
+                        authClient.organization.getFullOrganization()
+                            .then(ao => {
+                                try {
+                                    switchworkspace($("[orgid=" + ao.data.id + "]"))
+                                } catch {
+                                    console.log("no active org")
+                                    if (finishedpageload == false ) {
+                                        finishedpageload  = true
+                                        fadeoutsplash()
+                                    }
+                                }
+                            })
+
+                    } else {
+                        if (finishedpageload == false ) {
+                            finishedpageload  = true
+                            fadeoutsplash()
+                        }
+                    }
                 })
             }
 

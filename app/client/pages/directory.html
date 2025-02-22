@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>All Channels</title>
+    </head>
+
+    <body>
+        <div class="mainarea-header">
+            <div class="sidebar-wsinfoarea-stack-nohover">
+                <div id="mainarea-header-title">
+                    Directory
+                </div>
+
+                <div id="mainarea-header-sub">
+                    .
+                </div>
+            </div>
+            
+            <div id="addchannelbutton" class="icon-plus sidebar-listitem-icon" style="display: none; margin-right: 25px; margin-left: auto; color: #666666;" onclick="AddUser(prompt(`User ID`))"></div>
+        </div>
+        <div style="height: calc(100% - 71px); padding-top: 20px; overflow-y: scroll; width: 100%;">
+            <div class="channellistcontainer" id="channellistcontainer">
+
+            </div>
+        </div>
+        <script>
+            authClient.organization.getFullOrganization()
+                .then(ao => {
+                    $("#mainarea-header-sub").html(ao.data.name)
+                    authClient.organization.getFullOrganization()
+                        .then(ao => {
+                            authClient.organization.getActiveMember()
+                                .then(res => {
+                                    ao.data.members.forEach(member => {
+                                        $("#channellistcontainer").html("")
+                                        if (member.user.id != authsession.data.user.id) {
+                                            if (res.data.role == "owner") {
+                                                $("#channellistcontainer").append(`
+                                                    <div class="channellistitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
+                                                        <div class="icon-user channellistitem-icon"></div>
+                                                        <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
+                                                    </div>
+                                                `)
+                                            } else {
+                                                $("#channellistcontainer").append(`
+                                                <div class="channellistitem">
+                                                    <div class="icon-user channellistitem-icon"></div>
+                                                    <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
+                                                </div>
+                                            `) 
+                                            }
+                                        } else {
+                                            $("#channellistcontainer").append(`
+                                                <div class="channellistitem">
+                                                    <div class="icon-user channellistitem-icon"></div>
+                                                    <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + ` (you)</div>
+                                                </div>
+                                            `)
+                                        }
+                                    })
+                                })
+                        })
+                })
+        </script>
+    </body>
+</html>

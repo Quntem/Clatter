@@ -19,7 +19,7 @@
                 $("#messagearea").append(`
                     <div class="messagebox">
                         <span class="message">
-                            <b>` + sanitizeHTML(element.sendername) + ` </b>
+                            <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
                             
                             <span style="font-size: small;">
                                 ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
@@ -82,7 +82,7 @@
                             $("#messagearea").append(`
                                 <div class="messagebox">
                                     <span class="message">
-                                        <b>` + sanitizeHTML(element.sendername) + ` </b>
+                                        <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
                                         <span style="font-size: small;">
                                             ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
                                         </span>
