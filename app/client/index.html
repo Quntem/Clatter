@@ -306,23 +306,39 @@
             loadfunction = function() {
                 authClient.organization.list()
                 .then(res => {
-                    $("#workspaceswitcher").html("")
-                    res.data.forEach(item => {
+                    if(res.data.length > 0) {
+                        $("#workspaceswitcher").html("")
+                        res.data.forEach(item => {
+                            $("#workspaceswitcher").append(`
+                                <div class="workspaceswitcheritem" onclick="switchworkspace(this)" data-tooltip="` + item.name + `" orgid="` + item.id + `">
+                                    <img class="workspaceswitcheriteminner" src="` + item.logo + `"></img>
+                                </div>
+                            `)
+                        })
                         $("#workspaceswitcher").append(`
-                            <div class="workspaceswitcheritem" onclick="switchworkspace(this)" data-tooltip="` + item.name + `" orgid="` + item.id + `">
-                                <img class="workspaceswitcheriteminner" src="` + item.logo + `"></img>
+                            <div class="workspaceswitcheradd" data-tooltip="Create A New Workspace" onclick="createworkspace()">
+                                <div class="icon-plus workspaceswitcheradd-icon"></div>
                             </div>
                         `)
-                    })
-                    $("#workspaceswitcher").append(`
-                        <div class="workspaceswitcheradd" data-tooltip="Create A New Workspace" onclick="createworkspace()">
-                            <div class="icon-plus workspaceswitcheradd-icon"></div>
-                        </div>
-                    `)
-                    authClient.organization.getFullOrganization()
-                        .then(ao => {
-                            switchworkspace($("[orgid=" + ao.data.id + "]"))
-                        })
+                        authClient.organization.getFullOrganization()
+                            .then(ao => {
+                                try {
+                                    switchworkspace($("[orgid=" + ao.data.id + "]"))
+                                } catch {
+                                    console.log("no active org")
+                                    if (finishedpageload == false ) {
+                                        finishedpageload  = true
+                                        fadeoutsplash()
+                                    }
+                                }
+                            })
+
+                    } else {
+                        if (finishedpageload == false ) {
+                            finishedpageload  = true
+                            fadeoutsplash()
+                        }
+                    }
                 })
             }
 
