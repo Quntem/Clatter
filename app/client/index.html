@@ -187,12 +187,20 @@
                     </div>
                 </div>
 
-                <!-- <div class="sidebar-listarea">
-                    <div class="sidebar-listitem" onclick="NavigatePage(`documentlist`)">
-                        <div class="icon-file sidebar-listitem-icon"></div>
-                        <div class="sidebar-listitem-text">Documents</div>
+                <div class="sidebar-listarea">
+                    <div class="sidebar-listitem">
+                        <div class="icon-book-user sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Directory</div>
                     </div>
-                </div> -->
+                    <div class="sidebar-listitem" onclick="NavigatePage(`allchannels`)">
+                        <div class="icon-hash sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">All Channels</div>
+                    </div>
+                    <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
+                        <div class="icon-settings-2 sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Workspace Settings</div>
+                    </div>
+                </div>
                 <div class="sidebar-listarea" id="topbuttons" style="display: none;">
                     <div class="sidebar-listarea-titlearea">
                         <div class="sidebar-listarea-titletext">Workspace Admin</div>
@@ -200,45 +208,17 @@
                     </div>
                     
                     <div class="sidebar-listarea-inner">
-                        <!-- <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
-                            <div class="icon-settings-2 sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Workspace Settings</div>
-                        </div> -->
 
                         <div class="sidebar-listitem" onclick="AddUser(prompt(`User ID`))">
                             <div class="icon-user-plus sidebar-listitem-icon"></div>
                             <div class="sidebar-listitem-text">Add User</div>
                         </div>
 
-                        <!-- <div class="sidebar-listitem">
-                            <div class="icon-bell sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Notifications</div>
-                        </div>
-
-                        <div class="sidebar-listitem">
-                            <div class="icon-at-sign sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Mentions</div>
-                        </div> -->
-
-                        <!-- <div class="sidebar-listitem">
-                            <div class="icon-book-user sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Directory</div>
-                        </div> -->
-
-                        <!-- <div class="sidebar-listitem">
-                            <div class="icon-grip sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Apps</div>
-                        </div> -->
-
                         <div class="sidebar-listitem" onclick="CreateChannel(prompt(`Channel Name`)); setTimeout(() => GetChannels(), 2000)">
                             <div class="icon-hash sidebar-listitem-icon"></div>
                             <div class="sidebar-listitem-text">Add Channel</div>
                         </div>
-
-                        <!-- <div class="sidebar-listitem">
-                            <div class="icon-handshake sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">External Cnnections</div>
-                        </div> -->
+                        
                     </div>
                 </div>
 
@@ -259,42 +239,6 @@
                     <div class="sidebar-listarea-inner" id="userssblist">
                     </div>
                 </div>
-                <!-- <div class="sidebar-listarea">
-                    <div class="sidebar-listarea-titlearea">
-                        <div class="sidebar-listarea-titletext">Direct Messages</div>
-                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
-                    </div>
-                    <div class="sidebar-listarea-inner">
-                        <div class="sidebar-listitem">
-                            <div class="icon-user sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">User 1</div>
-                        </div>
-                        <div class="sidebar-listitem">
-                            <div class="icon-user sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">User 2</div>
-                        </div>
-                        <div class="sidebar-listitem">
-                            <div class="icon-users sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Group 1</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sidebar-listarea">
-                    <div class="sidebar-listarea-titlearea">
-                        <div class="sidebar-listarea-titletext">Threads</div>
-                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
-                    </div>
-                    <div class="sidebar-listarea-inner">
-                        <div class="sidebar-listitem">
-                            <div class="icon-message-square sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Thread 1</div>
-                        </div>
-                        <div class="sidebar-listitem">
-                            <div class="icon-message-square sidebar-listitem-icon"></div>
-                            <div class="sidebar-listitem-text">Thread 2</div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <div id="mainarea">
                 <script>

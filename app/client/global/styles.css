@@ -306,7 +306,7 @@ body {
     overflow: scroll;
 }
 
-#shellsidebar::-webkit-scrollbar {
+*::-webkit-scrollbar {
     display: none;
   }
 
@@ -440,4 +440,43 @@ body {
 
 .sidebar-profile input {
     visibility: hidden;
+}
+
+.channellistcontainer {
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #e4e4e7;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+
+.channellistitem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #e4e4e7;
+    cursor: pointer;
+}
+
+.channellistitem:last-child {
+    border-bottom: 0px solid #e4e4e7;
+}
+
+.channellistitem:hover {
+    background-color: #6d6d6d0a;
+}
+
+
+.channellistitem-icon {
+    font-size: 20px;
+    color: #666666;
+}
+
+.channellistitem-text {
+    font-size: 16px;
+    color: #666666;
+    padding-left: 10px;
 }

@@ -17,13 +17,34 @@
                     .
                 </div>
             </div>
-
-            <script>
-                authClient.organization.getFullOrganization()
-                .then(ao => {
-                    $("#mainarea-header-sub").html(ao.data.name)
-                })
-            </script>
         </div>
+        <div style="height: calc(100% - 71px); padding-top: 20px; overflow-y: scroll; width: 100%;">
+            <div class="channellistcontainer" id="channellistcontainer">
+                <div class="channellistitem">
+                    <div class="icon-hash channellistitem-icon"></div>
+                    <div class="channellistitem-text">Channel Name</div>
+                </div>
+            </div>
+        </div>
+        <script>
+            authClient.organization.getFullOrganization()
+            .then(ao => {
+                $("#mainarea-header-sub").html(ao.data.name)
+                fetch("/api/channels/list")
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log(res)
+                        $("#channellistcontainer").html("")
+                        res.forEach(channel => {
+                            $("#channellistcontainer").append(`
+                                <div class="channellistitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
+                                    <div class="icon-hash channellistitem-icon"></div>
+                                    <div class="channellistitem-text">` + sanitizeHTML(channel.name) + `</div>
+                                </div>
+                            `)
+                        })
+                    })
+            })
+        </script>
     </body>
 </html>
