@@ -37,13 +37,21 @@ app.post("/api/channels/create", async (req, res) => {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
     });
-    var newchannel = await prisma.channel.create({
-      data: {
-        parentworkspace: session.session.activeOrganizationId,
-        name: req.query.channelname,
-      },
-    })
-    res.send("done")
+    console.log(session)
+    const orgmember = await auth.api.getActiveMember({
+      headers: fromNodeHeaders(req.headers),
+    });
+    if( orgmember.role = "owner") {
+      var newchannel = await prisma.channel.create({
+        data: {
+          parentworkspace: session.session.activeOrganizationId,
+          name: req.query.channelname,
+        },
+      })
+      res.send("done")
+    } else {
+      res.send("not permitted")
+    }
   } catch(err) {
     console.log(err)
   }
@@ -115,14 +123,21 @@ app.post("/api/workspace/users/add", async (req, res) => {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
     });
-    const x = await auth.api.addMember({
-      body: {
-          userId: req.query.id,
-          organizationId: session.session.activeOrganizationId,
-          role: "member"
-      }
-    })
-    res.json(x)
+    const orgmember = await auth.api.getActiveMember({
+      headers: fromNodeHeaders(req.headers),
+    });
+    if( orgmember.role = "owner") {
+      const x = await auth.api.addMember({
+        body: {
+            userId: req.query.id,
+            organizationId: session.session.activeOrganizationId,
+            role: "member"
+        }
+      })
+      res.json(x)
+    } else {
+      res.send("not permitted")
+    }
   } catch {
     console.log("test")
   }
