@@ -69,31 +69,10 @@
                         $("#sidebartogglebutton").show()
                         $("#shellsidebar").show()
                         $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
-                        authClient.organization.getActiveMember()
-                        .then(res => {
-                            if (res.data.role == "owner") {
-                                $("#userssblist").html("")
-                                $("#topbuttons").show()
-                                $("#useradminarea").show()
-                                authClient.organization.getFullOrganization()
-                                .then(ao => {
-                                    ao.data.members.forEach(member => {
-                                        if (member.user.id != authsession.data.user.id) {
-                                            $("#userssblist").append(`
-                                                <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
-                                                    <div class="icon-user sidebar-listitem-icon"></div>
-                                                    <div class="sidebar-listitem-text">` + sanitizeHTML(member.user.name) + `</div>
-                                                </div>
-                                            `)
-                                        }
-                                    })
-                                    if (finishedpageload == false ) {
-                                        finishedpageload  = true
-                                        fadeoutsplash()
-                                    }
-                                })
-                            }
-                        })
+                        if (finishedpageload == false ) {
+                            finishedpageload  = true
+                            fadeoutsplash()
+                        }
                     })
                 })
             }
@@ -188,7 +167,7 @@
                 </div>
 
                 <div class="sidebar-listarea">
-                    <div class="sidebar-listitem">
+                    <div class="sidebar-listitem" onclick="NavigatePage(`directory`)">
                         <div class="icon-book-user sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Directory</div>
                     </div>
