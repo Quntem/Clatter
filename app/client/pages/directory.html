@@ -26,6 +26,12 @@
             </div>
         </div>
         <script>
+            authClient.organization.getActiveMember()
+                .then(res => {
+                    if (res.data.role == "owner") {
+                        $("#addchannelbutton").show()
+                    }
+                })
             authClient.organization.getFullOrganization()
                 .then(ao => {
                     $("#mainarea-header-sub").html(ao.data.name)
