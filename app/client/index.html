@@ -23,132 +23,143 @@
         <link rel="stylesheet" href="/client/global/themes/sea.css" />
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
+        <script src="/client/global/splash.js"></script>
         <script src="/documenteditor.js" type="module"></script>
 
         <script>
-                function sanitizeHTML(text) {
-                    var element = document.createElement('div');
-                    element.innerText = text;
-                    return element.innerHTML;
-                } 
 
-                var collapsesidebargroup = function(obj) {
-                    if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
-                        $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").hide()
-                        $(obj).removeClass("icon-chevron-down")
-                        $(obj).addClass("icon-chevron-right")
-                    } else {
-                        $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").show()
-                        $(obj).removeClass("icon-chevron-right")
-                        $(obj).addClass("icon-chevron-down")
-                    }
+            finishedpageload = false
+
+            function sanitizeHTML(text) {
+                var element = document.createElement('div');
+                element.innerText = text;
+                return element.innerHTML;
+            } 
+
+            var collapsesidebargroup = function(obj) {
+                if ($(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").is(":visible")) {
+                    $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").hide()
+                    $(obj).removeClass("icon-chevron-down")
+                    $(obj).addClass("icon-chevron-right")
+                } else {
+                    $(obj).closest(".sidebar-listarea").find(".sidebar-listarea-inner").show()
+                    $(obj).removeClass("icon-chevron-right")
+                    $(obj).addClass("icon-chevron-down")
                 }
+            }
 
-                var switchworkspace = function(obj) {
-                    NavigatePage("placeholder")
-                    
-                    authClient.organization.setActive({
-                        organizationId: $(obj).attr("orgid")
-                    })
+            var switchworkspace = function(obj) {
+                NavigatePage("placeholder")
+                
+                authClient.organization.setActive({
+                    organizationId: $(obj).attr("orgid")
+                })
 
-                    .then(res => {
-                        authClient.organization.getFullOrganization()
-                        .then(ao => {
-                            $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
-                                $(element).removeAttr("selected")
-                            });
-                            $("#topbuttons").hide()
-                            $("#useradminarea").hide()
-                            $("#sidebar-wsinfo-name").text(ao.data.name)
-                            $("#sidebar-wsinfo-sub").text("" + ao.data.slug)
-                            GetChannels()
-                            $("#sidebartogglebutton").show()
-                            $("#shellsidebar").show()
-                            $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
-                            authClient.organization.getActiveMember()
-                            .then(res => {
-                                if (res.data.role == "owner") {
-                                    $("#userssblist").html("")
-                                    $("#topbuttons").show()
-                                    $("#useradminarea").show()
-                                    authClient.organization.getFullOrganization()
-                                    .then(ao => {
-                                        ao.data.members.forEach(member => {
-                                            if (member.user.id != authsession.data.user.id) {
-                                                $("#userssblist").append(`
-                                                    <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
-                                                        <div class="icon-user sidebar-listitem-icon"></div>
-                                                        <div class="sidebar-listitem-text">` + sanitizeHTML(member.user.name) + `</div>
-                                                    </div>
-                                                `)
-                                            }
-                                        })
+                .then(res => {
+                    authClient.organization.getFullOrganization()
+                    .then(ao => {
+                        $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
+                            $(element).removeAttr("selected")
+                        });
+                        $("#topbuttons").hide()
+                        $("#useradminarea").hide()
+                        $("#sidebar-wsinfo-name").text(ao.data.name)
+                        $("#sidebar-wsinfo-sub").text("" + ao.data.slug)
+                        GetChannels()
+                        $("#sidebartogglebutton").show()
+                        $("#shellsidebar").show()
+                        $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
+                        authClient.organization.getActiveMember()
+                        .then(res => {
+                            if (res.data.role == "owner") {
+                                $("#userssblist").html("")
+                                $("#topbuttons").show()
+                                $("#useradminarea").show()
+                                authClient.organization.getFullOrganization()
+                                .then(ao => {
+                                    ao.data.members.forEach(member => {
+                                        if (member.user.id != authsession.data.user.id) {
+                                            $("#userssblist").append(`
+                                                <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
+                                                    <div class="icon-user sidebar-listitem-icon"></div>
+                                                    <div class="sidebar-listitem-text">` + sanitizeHTML(member.user.name) + `</div>
+                                                </div>
+                                            `)
+                                        }
                                     })
-                                }
-                            })
+                                    if (finishedpageload == false ) {
+                                        finishedpageload  = true
+                                        fadeoutsplash()
+                                    }
+                                })
+                            }
                         })
                     })
-                }
+                })
+            }
 
-                var NavigatePage = function(pagename) {
-                    $("#mainarea").load("/client/pages/" + pagename)
-                }
+            var NavigatePage = function(pagename) {
+                $("#mainarea").load("/client/pages/" + pagename)
+            }
 
-                var CreateChannel = function(name) {
-                    fetch("/api/channels/create?channelname=" + name, {
-                        "method": "POST",
-                    })
-                    .then(function (response) {
-                        console.log(response.status);
-                        return response.text();
-                    }).then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-                }
+            var CreateChannel = function(name) {
+                fetch("/api/channels/create?channelname=" + name, {
+                    "method": "POST",
+                })
+                .then(function (response) {
+                    console.log(response.status);
+                    return response.text();
+                }).then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error.message);
+                });
+            }
 
-                var AddUser = function(userid) {
-                    fetch("/api/workspace/users/add?id=" + userid, {
-                        "method": "POST",
-                    })
-                    .then(function (response) {
-                        console.log(response.status);
-                        return response.text();
-                    }).then(function (data) {
-                        console.log(data);
-                    })
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-                }
+            var AddUser = function(userid) {
+                fetch("/api/workspace/users/add?id=" + userid, {
+                    "method": "POST",
+                })
+                .then(function (response) {
+                    console.log(response.status);
+                    return response.text();
+                }).then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log(error.message);
+                });
+            }
 
-                var GetChannels = function() {
-                    fetch("/api/channels/list")
-                    .then(res => res.json())
-                    .then(res => {
-                        console.log(res)
-                        $("#channelssblist").html("")
-                        res.forEach(channel => {
-                            $("#channelssblist").append(`
-                                <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
-                                    <div class="icon-hash sidebar-listitem-icon"></div>
-                                    <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
-                                </div>
-                            `)
-                        })
+            var GetChannels = function() {
+                fetch("/api/channels/list")
+                .then(res => res.json())
+                .then(res => {
+                    console.log(res)
+                    $("#channelssblist").html("")
+                    res.forEach(channel => {
+                        $("#channelssblist").append(`
+                            <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
+                                <div class="icon-hash sidebar-listitem-icon"></div>
+                                <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
+                            </div>
+                        `)
                     })
-                }
+                })
+            }
 
-                var ToggleSidebar = function() {
-                    $("#workspaceswitcher").toggle()
-                    $("#shellsidebar").toggle()
-                }
+            var ToggleSidebar = function() {
+                $("#workspaceswitcher").toggle()
+                $("#shellsidebar").toggle()
+            }
         </script>
     </head>
 
     <body>
+
+        <beacon-splash imgsrc="/public/ClatterLogo.svg" awr="true"></beacon-splash>
+
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 26px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
             <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
@@ -158,9 +169,6 @@
             <div class="icon-log-out sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px;" onclick="authClient.signOut().then(() => location.reload())"></div>
         </header>
 
-        <div>
-
-        </div>
 
         <div id="apparea">
             <div id="workspaceswitcher">
@@ -311,7 +319,10 @@
                             <div class="icon-plus workspaceswitcheradd-icon"></div>
                         </div>
                     `)
-                    switchworkspace($("[orgid=" + ao.data.id + "]"))
+                    authClient.organization.getFullOrganization()
+                        .then(ao => {
+                            switchworkspace($("[orgid=" + ao.data.id + "]"))
+                        })
                 })
             }
 
