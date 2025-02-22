@@ -16,7 +16,7 @@
 </p>
 
 <h1 align="center">
-  Clatter V0.0.2
+  Clatter V0.1.2
 </h1>
 
 <p align="center">
