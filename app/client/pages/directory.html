@@ -29,33 +29,36 @@
                     $("#mainarea-header-sub").html(ao.data.name)
                     authClient.organization.getFullOrganization()
                         .then(ao => {
-                            ao.data.members.forEach(member => {
-                                $("#channellistcontainer").html("")
-                                if (member.user.id != authsession.data.user.id) {
-                                    if (res.data.role == "owner") {
-                                        $("#channellistcontainer").append(`
-                                            <div class="channellistitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
-                                                <div class="icon-user channellistitem-icon"></div>
-                                                <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
-                                            </div>
-                                        `)
-                                    } else {
-                                        $("#channellistcontainer").append(`
-                                        <div class="channellistitem">
-                                            <div class="icon-user channellistitem-icon"></div>
-                                            <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
-                                        </div>
-                                    `) 
-                                    }
-                                } else {
-                                    $("#channellistcontainer").append(`
-                                        <div class="channellistitem">
-                                            <div class="icon-user channellistitem-icon"></div>
-                                            <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + ` (you)</div>
-                                        </div>
-                                    `)
-                                }
-                            })
+                            authClient.organization.getActiveMember()
+                                .then(res => {
+                                    ao.data.members.forEach(member => {
+                                        $("#channellistcontainer").html("")
+                                        if (member.user.id != authsession.data.user.id) {
+                                            if (res.data.role == "owner") {
+                                                $("#channellistcontainer").append(`
+                                                    <div class="channellistitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
+                                                        <div class="icon-user channellistitem-icon"></div>
+                                                        <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
+                                                    </div>
+                                                `)
+                                            } else {
+                                                $("#channellistcontainer").append(`
+                                                <div class="channellistitem">
+                                                    <div class="icon-user channellistitem-icon"></div>
+                                                    <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
+                                                </div>
+                                            `) 
+                                            }
+                                        } else {
+                                            $("#channellistcontainer").append(`
+                                                <div class="channellistitem">
+                                                    <div class="icon-user channellistitem-icon"></div>
+                                                    <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + ` (you)</div>
+                                                </div>
+                                            `)
+                                        }
+                                    })
+                                })
                         })
                 })
         </script>

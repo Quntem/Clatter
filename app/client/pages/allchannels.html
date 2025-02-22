@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="icon-plus sidebar-listitem-icon" style="margin-right: 25px; margin-left: auto; color: #666666;" onclick="CreateChannelPrompt()"></div>
+            <div id="addchannelbutton" class="icon-plus sidebar-listitem-icon" style="display: none; margin-right: 25px; margin-left: auto; color: #666666;" onclick="CreateChannelPrompt()"></div>
 
         </div>
         <div style="height: calc(100% - 71px); padding-top: 20px; overflow-y: scroll; width: 100%;">
@@ -27,6 +27,12 @@
             </div>
         </div>
         <script>
+            authClient.organization.getActiveMember()
+                .then(res => {
+                    if (res.data.role == "owner") {
+                        $("#addchannelbutton").show()
+                    }
+                })
 
             var CreateChannelPrompt = function() {
                 chname = prompt(`Channel Name`)
