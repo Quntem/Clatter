@@ -309,21 +309,7 @@
                             <div class="icon-plus workspaceswitcheradd-icon"></div>
                         </div>
                     `)
-                    authClient.organization.getFullOrganization()
-                    .then(ao => {
-                        switchworkspace($("[orgid=" + ao.data.id + "]"))
-                        $("#userssblist").html("")
-                        ao.data.members.forEach(member => {
-                            if (member.user.id != authsession.data.user.id) {
-                                $("#userssblist").append(`
-                                    <div class="sidebar-listitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload()">
-                                        <div class="icon-user sidebar-listitem-icon"></div>
-                                        <div class="sidebar-listitem-text">` + sanitizeHTML(member.user.name) + `</div>
-                                    </div>
-                                `)
-                            }
-                        })
-                    })
+                    switchworkspace($("[orgid=" + ao.data.id + "]"))
                 })
             }
 
