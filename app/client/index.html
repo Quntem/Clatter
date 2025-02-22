@@ -71,7 +71,6 @@
                                     $("#useradminarea").show()
                                     authClient.organization.getFullOrganization()
                                     .then(ao => {
-                                        switchworkspace($("[orgid=" + ao.data.id + "]"))
                                         ao.data.members.forEach(member => {
                                             if (member.user.id != authsession.data.user.id) {
                                                 $("#userssblist").append(`
