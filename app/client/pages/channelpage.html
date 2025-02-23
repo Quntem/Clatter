@@ -33,17 +33,6 @@
                         </span>
                     </div>
                 `)
-                
-                // Broken Code
-
-                // Notification.requestPermission().then(perm => {
-                    // if (perm === "granted") {
-                        // new Notification(element.sendername, {
-                            // Message Here
-                            // body: element.content
-                        // })
-                    // }
-                // })
             })
         </script>
     </head>
@@ -147,10 +136,20 @@
                     // loadmessagelist()
                 }
 
-                document.addEventListener('keydown', function(event) {
-                    if(event.keyCode == 13) {
-                        sendbuttonaction()
-                    }
+                let keysPressed = {};
+                let messageBoxSelected = false;
+
+                document.addEventListener('keydown', (event) => {
+                   keysPressed[event.key] = true;
+
+                   if (keysPressed['Shift'] && event.key == 'Enter') {
+                       sendbuttonaction()
+                   }
+                });
+
+                document.addEventListener('keyup', (event) => {
+                    keysPressed = {};
+                    delete keysPressed[event.key];
                 });
             </script>
         </div>
