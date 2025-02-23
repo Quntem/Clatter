@@ -214,6 +214,7 @@ body {
 
 #messagearea {
     padding: 20px;
+    padding-top: 10px;
     color: #666666;
     height: fit-content;
     overflow-y: scroll;
@@ -222,6 +223,8 @@ body {
 .messagebox {
     margin-top: 15px;
     border-radius: 5px;
+    display: flex;
+    flex-direction: row;
 }
 
 .message-sendername {
@@ -240,9 +243,13 @@ body {
 } */
 
 .message {
-    margin-left: .75rem;
-    margin-top: .5rem;
     user-select: text;
+    font-size: 16px;
+    color: #666666;
+}
+
+.messagetext {
+    padding-top: 3px
 }
 
 .sidebar-listitem-icon {
@@ -478,4 +485,15 @@ body {
     font-size: 16px;
     color: #666666;
     padding-left: 10px;
+}
+
+.messageprofilepicture {
+    aspect-ratio: 1;
+    width: 38px;
+    height: 38px;
+    background-color: #ffffff70;
+    border-radius: 8px;
+    transition: all 100ms ease;
+    margin-right: 10px;
+    border: 1px solid #e4e4e7;
 }

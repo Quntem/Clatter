@@ -58,6 +58,7 @@
                 .then(res => {
                     authClient.organization.getFullOrganization()
                     .then(ao => {
+                        fullorg = ao
                         $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
                             $(element).removeAttr("selected")
                         });
