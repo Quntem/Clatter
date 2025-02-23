@@ -24,13 +24,15 @@
             socket.on("clatter.channel.message.recieve", (res) => {
                 console.log(res)
                 element = JSON.parse(res)
+                console.log(element)
                 currentpfp = ""
                 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 const d = new Date(element.DateCreated);
-                if (element.parentmessageid == undefined) {
+                console.log(element.parentmessageid,)
+                if (element.parentmessageid == currentmessageid) {
                     if (lastsenderid == element.userid) {
                         $("#messagearea").append(`
-                            <div class="messagebox" style="margin-top: 10px; margin-left: 50px;" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
+                            <div class="messagebox" style="margin-top: 10px; margin-left: 50px;">
                                 <span class="">
                                     <span class="message">
                                         ` + sanitizeHTML(element.content) + `
@@ -50,7 +52,7 @@
                             }
                         })
                         $("#messagearea").append(`
-                            <div class="messagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
+                            <div class="messagebox">
                                 <img src="` + currentpfp + `" class="messageprofilepicture" />
                                 <span class="message">
                                     <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
@@ -86,10 +88,10 @@
         <div class="mainarea-header">
             <div class="sidebar-wsinfoarea-stack">
                 <div id="mainarea-header-title">
-                    <!-- Blank to avoid confusion. -->
+                    Thread
                 </div>
                 <div id="mainarea-header-sub">
-                    Channel
+                    <!-- Blank to avoid confusion. -->
                 </div>
             </div>
 
@@ -97,14 +99,14 @@
                 fetch("/api/channel/" + currentchannelid + "/info")
                 .then(res => res.json())
                 .then(channel => {
-                    $("#mainarea-header-title").html(channel.name)
+                    $("#mainarea-header-sub").html(channel.name)
                     socket.emit("clatter.channel.join", JSON.stringify({
                         "room": currentchannelid
                     }))
                 })
 
-                var loadmessagelist = function() {
-                    fetch("/api/channel/" + currentchannelid + "/messages/list")
+                var loadthreadmessagelist = function() {
+                    fetch("/api/channel/" + currentchannelid + "/thread/" + currentmessageid + "/messages/list")
                     .then(res => res.json())
                     .then(res => {
                         currentpfp = ""
@@ -122,7 +124,7 @@
                             }
                             if (lastsenderid == element.sender) {
                                 $("#messagearea").append(`
-                                    <div class="messagebox" style="margin-top: 10px; margin-left: 50px;" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
+                                    <div class="messagebox" style="margin-top: 10px; margin-left: 50px;">
                                         <span class="">
                                             <span class="message">
                                                 ` + sanitizeHTML(element.content) + `
@@ -143,7 +145,7 @@
                                     }
                                 })
                                 $("#messagearea").append(`
-                                    <div class="messagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
+                                    <div class="messagebox">
                                         <img src="` + currentpfp + `" class="messageprofilepicture" />
                                         <span class="message">
                                             <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
@@ -164,8 +166,48 @@
                     })
                 }
 
+                var loadoriginalmessage = function() {
+                    fetch("/api/channel/" + currentchannelid + "/message/" + currentmessageid + "/info")
+                    .then(res => res.json())
+                    .then(res => {
+                        currentpfp = ""
+                        lastsenderid = ""
+                        console.log(res)
+                        element = res
+                        $("#messageareaoriginal").html("")
+                        currentpfp = ""
+                        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                        const d = new Date(element.DateCreated);
+                        fullorg.data.members.forEach(member => {
+                            if (member.userId == element.sender) {
+                                console.log("found")
+                                if(member.user.image == null) {
+                                    currentpfp = "/assets/defaultpfp.png"
+                                } else {
+                                    currentpfp = member.user.image
+                                }
+                            }
+                        })
+                        $("#messageareaoriginal").append(`
+                            <div class="messagebox">
+                                <img src="` + currentpfp + `" class="messageprofilepicture" />
+                                <span class="message">
+                                    <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
+                                    <span style="font-size: small;">
+                                        ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
+                                    </span>
+                                    <br>
+                                    <div class="messagetext">
+                                        ` + sanitizeHTML(element.content) + `
+                                    </div>
+                                </span>
+                            </div>
+                        `)
+                    })
+                }
+
                 var sendmessage = function(msg) {
-                    fetch("/api/channel/" + currentchannelid + "/messages/send?message=" + msg, {
+                    fetch("/api/channel/" + currentchannelid + "/thread/" + currentmessageid + "/send?message=" + msg, {
                         "method": "POST",
                     })
 
@@ -187,7 +229,8 @@
                         "userid": authsession.data.user.id,
                         "sendername": authsession.data.user.name,
                         "content": msg,
-                        "type": "text"
+                        "type": "text",
+                        "parentmessageid": currentmessageid
                     }))
                 }
 
@@ -223,7 +266,10 @@
         </div>
 
         <div style="height: calc(100% - 71px); width: 100%; position: relative;">
-            <div id="messagearea" style="max-height: calc(100% - 100px); overflow-y: scroll;"></div>
+            <div style="height: calc(100% - 180px);">
+                <div id="messageareaoriginal" style="min-height: fit-content; overflow-y: scroll; border-bottom: 1px solid #e4e4e7;"></div>
+                <div id="messagearea" style="height: 100%; overflow-y: scroll;"></div>
+            </div>
             <div class="messagebar">
                 <input id="messagebox" maxlength="500" placeholder="Send Message..."/>
                 <div id="sendbutton" onclick="sendbuttonaction()">
@@ -233,7 +279,8 @@
         </div>
 
         <script>
-            loadmessagelist()
+            loadoriginalmessage()
+            loadthreadmessagelist()
         </script>
     </body>
 </html>
