@@ -58,6 +58,7 @@
                 .then(res => {
                     authClient.organization.getFullOrganization()
                     .then(ao => {
+                        fullorg = ao
                         $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
                             $(element).removeAttr("selected")
                         });
@@ -144,7 +145,8 @@
             <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
-            <div class="sidebar-profile"></div>
+            <!-- <div class="sidebar-profile"></div> -->
+            <div class="icon-settings sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px; margin-left: auto;" onclick="NavigatePage(`usersettings`)"></div>
             <div class="icon-log-out sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px;" onclick="authClient.signOut().then(() => location.reload())"></div>
         </header>
 

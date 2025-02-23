@@ -39,8 +39,8 @@
                         .then(ao => {
                             authClient.organization.getActiveMember()
                                 .then(res => {
+                                    $("#channellistcontainer").html("")
                                     ao.data.members.forEach(member => {
-                                        $("#channellistcontainer").html("")
                                         if (member.user.id != authsession.data.user.id) {
                                             if (res.data.role == "owner") {
                                                 $("#channellistcontainer").append(`
@@ -51,11 +51,11 @@
                                                 `)
                                             } else {
                                                 $("#channellistcontainer").append(`
-                                                <div class="channellistitem">
-                                                    <div class="icon-user channellistitem-icon"></div>
-                                                    <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
-                                                </div>
-                                            `) 
+                                                    <div class="channellistitem">
+                                                        <div class="icon-user channellistitem-icon"></div>
+                                                        <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
+                                                    </div>
+                                                `) 
                                             }
                                         } else {
                                             $("#channellistcontainer").append(`

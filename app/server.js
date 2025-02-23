@@ -112,7 +112,11 @@ app.get("/api/channel/:channelid/messages/list", async (req, res) => {
   });
   var messages = await prisma.message.findMany({
     where: {
-      parentid: req.params.channelid
+      parentid: req.params.channelid,
+      parentmessageid: null
+    },
+    include: {
+      childmessages: true
     }
   })
   res.json(messages)
@@ -156,6 +160,55 @@ app.post("/api/channel/:channelid/messages/send", async (req, res) => {
     }
   })
   res.json(message)
+})
+
+app.post("/api/channel/:channelid/thread/:messageid/send", async (req, res) => {
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers),
+  });
+  var message = await prisma.message.create({
+    data: {
+      content: req.query.message,
+      sender: session.session.userId,
+      parentid: req.params.channelid,
+      sendername: session.user.name,
+      parentmessageid: req.params.messageid,
+    }
+  })
+  res.json(message)
+})
+
+app.get("/api/channel/:channelid/thread/:messageid/messages/list", async (req, res) => {
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers),
+  });
+  var messages = await prisma.message.findMany({
+    where: {
+      parentid: req.params.channelid,
+      parentmessageid: req.params.messageid
+    },
+    include: {
+      childmessages: true
+    }
+  })
+  res.json(messages)
+})
+
+app.get("/api/channel/:channelid/message/:messageid/info", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var message = await prisma.message.findUnique({
+      where: {
+        parentid: req.params.channelid,
+        id: req.params.messageid
+      }
+    })
+    res.json(message)
+  } catch(err) {
+    console.log(err)
+  }
 })
 
 io.on("connection", (socket) => {
