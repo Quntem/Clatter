@@ -39,8 +39,8 @@
                         .then(ao => {
                             authClient.organization.getActiveMember()
                                 .then(res => {
+                                    $("#channellistcontainer").html("")
                                     ao.data.members.forEach(member => {
-                                        $("#channellistcontainer").html("")
                                         if (member.user.id != authsession.data.user.id) {
                                             if (res.data.role == "owner") {
                                                 $("#channellistcontainer").append(`
