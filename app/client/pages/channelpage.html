@@ -5,6 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            try {
+                var lastsenderid = ""
+            } catch {
+                lastsenderid = ""
+            }
+
             const socket = io();
             socket.on("clatter.channel.join.response", (res) => {
                 console.log(res)
@@ -16,23 +22,33 @@
                 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 const d = new Date(element.DateCreated);
 
-                $("#messagearea").append(`
-                    <div class="messagebox">
-                        <span class="message">
-                            <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                            
-                            <span style="font-size: small;">
-                                ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
+                if (lastsenderid == element.sender) {
+                    $("#messagearea").append(`
+                        <div class="messagebox" style="margin-top: 5px;">
+                            <span class="">
+                                <span class="message">
+                                    ` + sanitizeHTML(element.content) + `
+                                </span>
                             </span>
-
-                            <br>
-
+                        </div>
+                    `)
+                } else {
+                    $("#messagearea").append(`
+                        <div class="messagebox">
                             <span class="message">
-                                ` + sanitizeHTML(element.content) + `
+                                <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
+                                <span style="font-size: small;">
+                                    ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
+                                </span>
+                                <br>
+                                <span class="message">
+                                    ` + sanitizeHTML(element.content) + `
+                                </span>
                             </span>
-                        </span>
-                    </div>
-                `)
+                        </div>
+                    `)
+                }
+                lastsenderid = element.sender
                 
                 // Broken Code
 
@@ -73,26 +89,39 @@
                     fetch("/api/channel/" + currentchannelid + "/messages/list")
                     .then(res => res.json())
                     .then(res => {
+                        lastsenderid = ""
                         console.log(res)
                         $("#messagearea").html("")
                         res.forEach(element => {
                             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                             const d = new Date(element.DateCreated);
-
-                            $("#messagearea").append(`
-                                <div class="messagebox">
-                                    <span class="message">
-                                        <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                                        <span style="font-size: small;">
-                                            ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
+                            if (lastsenderid == element.userid) {
+                                $("#messagearea").append(`
+                                    <div class="messagebox" style="margin-top: 5px;">
+                                        <span class="">
+                                            <span class="message">
+                                                ` + sanitizeHTML(element.content) + `
+                                            </span>
                                         </span>
-                                        <br>
+                                    </div>
+                                `)
+                            } else {
+                                $("#messagearea").append(`
+                                    <div class="messagebox">
                                         <span class="message">
-                                            ` + sanitizeHTML(element.content) + `
+                                            <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
+                                            <span style="font-size: small;">
+                                                ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
+                                            </span>
+                                            <br>
+                                            <span class="message">
+                                                ` + sanitizeHTML(element.content) + `
+                                            </span>
                                         </span>
-                                    </span>
-                                </div>
-                            `)
+                                    </div>
+                                `)
+                            }
+                            lastsenderid = element.userid
                         });
                     })
                 }
