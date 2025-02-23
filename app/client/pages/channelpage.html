@@ -18,13 +18,12 @@
             socket.on("clatter.channel.message.recieve", (res) => {
                 console.log(res)
                 element = JSON.parse(res)
-
+                currentpfp = ""
                 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 const d = new Date(element.DateCreated);
-
-                if (lastsenderid == element.sender) {
+                if (lastsenderid == element.userid) {
                     $("#messagearea").append(`
-                        <div class="messagebox" style="margin-top: 5px;">
+                        <div class="messagebox" style="margin-top: 10px; margin-left: 50px;">
                             <span class="">
                                 <span class="message">
                                     ` + sanitizeHTML(element.content) + `
@@ -33,22 +32,33 @@
                         </div>
                     `)
                 } else {
+                    fullorg.data.members.forEach(member => {
+                        if (member.userId == element.userid) {
+                            console.log("found")
+                            if(member.user.image == null) {
+                                currentpfp = "/assets/defaultpfp.png"
+                            } else {
+                                currentpfp = member.user.image
+                            }
+                        }
+                    })
                     $("#messagearea").append(`
                         <div class="messagebox">
+                            <img src="` + currentpfp + `" class="messageprofilepicture" />
                             <span class="message">
                                 <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
                                 <span style="font-size: small;">
                                     ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
                                 </span>
                                 <br>
-                                <span class="message">
+                                <div class="messagetext">
                                     ` + sanitizeHTML(element.content) + `
-                                </span>
+                                </div>
                             </span>
                         </div>
                     `)
                 }
-                lastsenderid = element.sender
+                lastsenderid = element.userid
                 
                 // Broken Code
 
@@ -90,6 +100,7 @@
                     .then(res => res.json())
                     .then(res => {
                         currentpfp = ""
+                        lastsenderid = ""
                         console.log(res)
                         $("#messagearea").html("")
                         res.forEach(element => {
