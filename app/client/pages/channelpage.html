@@ -11,13 +11,13 @@
                 lastsenderid = ""
             }
 
-            socket = ""
             try {
                 var socket = io();
             } catch {
                 socket = io();
             }
-            socket.off()
+            socket.off("clatter.channel.message.recieve")
+            socket.off("clatter.channel.join.response")
             socket.on("clatter.channel.join.response", (res) => {
                 console.log(res)
             })
@@ -225,7 +225,7 @@
         <div style="height: calc(100% - 71px); width: 100%; position: relative;">
             <div id="messagearea" style="max-height: calc(100% - 100px); overflow-y: scroll;"></div>
             <div class="messagebar">
-                <input id="messagebox" maxlength="500" placeholder="Send Message..."/>
+                <input id="messagebox" autocomplete="off" maxlength="500" placeholder="Send Message..."/>
                 <div id="sendbutton" onclick="sendbuttonaction()">
                     <div class="icon-send"></div>
                 </div>
