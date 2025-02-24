@@ -248,6 +248,7 @@ body {
     border-radius: 5px;
     display: flex;
     flex-direction: row;
+    overflow-wrap: anywhere;
 }
 
 .message-sendername {
@@ -272,7 +273,8 @@ body {
 }
 
 .messagetext {
-    padding-top: 3px
+    padding-top: 3px;
+    user-select: text;
 }
 
 .sidebar-listitem-icon {
