@@ -205,11 +205,10 @@ body {
 }
 
 .sidebar-listarea {
-    padding: 20px;
+    padding: 16px;
     border-top: 2px solid var(--sidebar_border);
-    padding-bottom: 0px;
     font-weight: 400;
-    transition: height 0.2s;
+    transition: all 0.2s;
 }
 
 #messagearea {
@@ -303,8 +302,18 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 4px;
     cursor: pointer;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 4px;
+    padding-right: 4px;
+    transition: background-color 100ms ease;
+}
+
+.sidebar-listitem:hover {
+    background-color: #2E5A8D;
+    border-radius: 8px;
 }
 
 .sidebar-listarea-titlearea {
