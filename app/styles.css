@@ -1,103 +1,106 @@
+/* Import Font */
+
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
 /* Standard */
 
-html {
-    box-sizing: border-box;
-    display: block;
-    width: 100vw;
-    font-family: 'Figtree', sans-serif;
-    scroll-behavior: smooth;
-    text-rendering: optimizeLegibility;
-    background: radial-gradient(#eeeeee, #ffffff);
-}
+    html {
+        box-sizing: border-box;
+        display: block;
+        width: 100vw;
+        font-family: 'Figtree', sans-serif;
+        scroll-behavior: smooth;
+        text-rendering: optimizeLegibility;
+        background: radial-gradient(#eeeeee, #ffffff);
+    }
 
-header {
-    height: fit-content;
-    background-color: rgb(247, 247, 247);
-    border-bottom: 1px solid #e4e4e7;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-top: 1.5vh; padding-bottom: 1.5vh;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 2;
-}
+    header {
+        height: fit-content;
+        background-color: rgb(247, 247, 247);
+        border-bottom: 1px solid #e4e4e7;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-top: 1.5vh; padding-bottom: 1.5vh;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 2;
+    }
 
-body {
-    position: relative;
-    height: auto;
-    margin: 0;
-    font-family: 'Figtree', sans-serif;
-    color: #666666;
-}
+    body {
+        position: relative;
+        height: auto;
+        margin: 0;
+        font-family: 'Figtree', sans-serif;
+        color: #666666;
+    }
 
 /* h1 */
 
-h1 {
-    text-align: center;
-    font-family: 'Figtree', sans-serif;
-    font-weight: 500;
-    font-size: clamp(1.6rem , 2.4vw, 4rem);
-    text-align: left;
-}
+    h1 {
+        text-align: center;
+        font-family: 'Figtree', sans-serif;
+        font-weight: 500;
+        font-size: clamp(1.6rem , 2.4vw, 4rem);
+        text-align: left;
+    }
 
-h4 {
-    font-weight: 400;
-}
+    h4 {
+        font-weight: 400;
+    }
 
 /* Alignments */
-.textAlignLeft {
-    text-align: left;
-    padding-left: 3.25rem;
-}
 
-.textAlignCent {
-    text-align: center;
-}
+    .textAlignLeft {
+        text-align: left;
+        padding-left: 3.25rem;
+    }
 
-.textAlignRt {
-    text-align: right;
-    padding-right: 3.25rem;
-}
+    .textAlignCent {
+        text-align: center;
+    }
+
+    .textAlignRt {
+        text-align: right;
+        padding-right: 3.25rem;
+    }
 
 /* Buttons */
 
-button {
-    font-family: 'Figtree', sans-serif;
-    font-weight: 500;
-}
+    button {
+        font-family: 'Figtree', sans-serif;
+        font-weight: 500;
+    }
 
 /* Header Styling */
 
-.signUpButton {
-    margin-left: auto;
-    margin-right: 20px;
-    background-color: rgb(14, 63, 126);
-    border-radius: 6px;
-    border: none;
-    width: 80px;
-    height: 25px;
-}
+    #headerlogo {
+        height: 22px;
+        width: auto;
+        margin-left: 18px;
+    }
 
-#headerlogo {
-    height: 22px;
-    width: auto;
-    margin-left: 18px;
-}
+    .headertitle {
+        margin-left: 15px;
+        font-weight: 500;
+    }
 
-.headertitle {
-    margin-left: 15px;
-    font-weight: 500;
-}
+    #header-topbuttonsarea {
+        margin-left: auto;
+        padding-top: 5px;
+    }
 
-#header-topbuttonsarea {
-    margin-left: auto;
-    padding-top: 5px;
-}
+    .signUpButton {
+        margin-left: auto;
+        margin-right: 20px;
+        background-color: rgb(14, 63, 126);
+        border-radius: 6px;
+        border: none;
+        width: 80px;
+        height: 25px;
+    }
 
-/* CREATE A WORKSPACE button */
+/* Create A Workspace button */
 
 .mainareacreate {
     border-radius: 999px;
