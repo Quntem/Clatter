@@ -243,11 +243,30 @@ body {
 }
 
 .messagebox {
-    margin-top: 15px;
+    padding-top: .125rem;
+    padding-bottom: .125rem;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
     overflow-wrap: anywhere;
+    transition: all 100ms ease;
+}
+
+.expandedmessagebox {
+    margin-top: 2rem;
+}
+
+.messagebox:hover {
+    padding-left: 8px; padding-right: 8px;
+    background-color: hsla(0, 0%, 40%, 0.1);
+}
+
+.thread-btn {
+    font-size: 1.2rem !important;
+    color: #66666688;
+    margin-left: auto;
+    margin-top: auto; margin-bottom: auto;
+    cursor: pointer;
 }
 
 .message-sendername {
@@ -509,7 +528,6 @@ body {
 .channellistitem:hover {
     background-color: #6d6d6d0a;
 }
-
 
 .channellistitem-icon {
     font-size: 20px;
