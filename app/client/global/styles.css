@@ -9,6 +9,7 @@ header {
     align-items: center;
     -webkit-app-region: drag;
     border-bottom: 2px solid var(--sidebar_border);
+    position: relative;
 }
 
 .searchbox {
@@ -21,6 +22,9 @@ header {
     border: none;
     margin: none;
     color: var(--searchbox_foreground);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 body {

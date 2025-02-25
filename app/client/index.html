@@ -133,6 +133,13 @@
                 $("#workspaceswitcher").toggle()
                 $("#shellsidebar").toggle()
             }
+
+            var searchkeypress = function(event) {
+                if (event.key === 'Enter') {
+                    searchterm = $(".searchbox").val()
+                    NavigatePage("searchpage")
+                }
+            }
         </script>
     </head>
 
@@ -143,8 +150,8 @@
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 26px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
             <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
-            <!-- <input class="searchbox"></input>
-            <div id="user-button" style="margin-right: 10px;"></div> -->
+            <input class="searchbox" onkeypress="searchkeypress(event)"></input>
+            <!-- <div id="user-button" style="margin-right: 10px;"></div> -->
             <!-- <div class="sidebar-profile"></div> -->
             <div class="icon-settings sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px; margin-left: auto;" onclick="NavigatePage(`usersettings`)"></div>
             <div class="icon-log-out sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px;" onclick="authClient.signOut().then(() => location.reload())"></div>

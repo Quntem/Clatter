@@ -194,6 +194,44 @@ app.get("/api/channel/:channelid/thread/:messageid/messages/list", async (req, r
   res.json(messages)
 })
 
+app.get("/api/search/channels/", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var channels = await prisma.channel.findMany({
+      where: {
+        name: {
+          search: req.query.q.replace(" ", " & ")
+        },
+        parentworkspace: session.session.activeOrganizationId
+      },
+    })
+    res.json(channels)
+  } catch {
+    console.log(req.query.q)
+  }
+})
+
+app.get("/api/search/messages/", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var messages = prisma.message.findMany({
+      where: {
+        content: {
+          search: req.query.q.replace(" ", " & ")
+        },
+        par
+      }
+    })
+    res.json(messages)
+  } catch {
+    console.log(req.query.q)
+  }
+})
+
 app.get("/api/channel/:channelid/message/:messageid/info", async (req, res) => {
   try {
     const session = await auth.api.getSession({
