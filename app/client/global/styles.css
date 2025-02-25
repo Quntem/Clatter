@@ -308,12 +308,13 @@ body {
     padding-bottom: 7px;
     padding-left: 4px;
     padding-right: 4px;
-    transition: background-color 100ms ease;
+    transition: all 100ms ease;
 }
 
 .sidebar-listitem:hover {
     background-color: #2E5A8D;
     border-radius: 8px;
+    padding-left: 12px;
 }
 
 .sidebar-listarea-titlearea {
