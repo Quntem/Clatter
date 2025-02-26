@@ -35,6 +35,10 @@ body {
     user-select: none;
 }
 
+h1 {
+    color: #666666;
+}
+
 #sidebartogglebutton {
     height: 18px;
     width: 18px;
