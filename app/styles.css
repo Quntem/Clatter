@@ -1,274 +1,297 @@
+/* Import Font */
+
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
 /* Standard */
 
-html {
-    box-sizing: border-box;
-    display: block;
-    width: 100vw;
-    font-family: 'Figtree', sans-serif;
-    scroll-behavior: smooth;
-    text-rendering: optimizeLegibility;
-    background: radial-gradient(#eeeeee, #ffffff);
-}
+    html {
+        box-sizing: border-box;
+        display: block;
+        width: 100vw;
+        font-family: 'Figtree', sans-serif;
+        scroll-behavior: smooth;
+        text-rendering: optimizeLegibility;
+        background: radial-gradient(#eeeeee, #ffffff);
+    }
 
-header {
-    height: fit-content;
-    background-color: rgb(247, 247, 247);
-    border-bottom: 1px solid #e4e4e7;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-top: 1.5vh; padding-bottom: 1.5vh;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 2;
-}
+    header {
+        height: fit-content;
+        background-color: rgb(247, 247, 247);
+        border-bottom: 1px solid #e4e4e7;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-top: 1.5vh; padding-bottom: 1.5vh;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 2;
+    }
 
-body {
-    position: relative;
-    height: auto;
-    margin: 0;
-    font-family: 'Figtree', sans-serif;
-    color: #666666;
-}
+    body {
+        position: relative;
+        height: auto;
+        margin: 0;
+        font-family: 'Figtree', sans-serif;
+        color: #666666;
+    }
 
 /* h1 */
 
-h1 {
-    text-align: center;
-    font-family: 'Figtree', sans-serif;
-    font-weight: 500;
-    font-size: clamp(1.6rem , 2.4vw, 4rem);
-    text-align: left;
-}
+    h1 {
+        text-align: center;
+        font-family: 'Figtree', sans-serif;
+        font-weight: 500;
+        font-size: clamp(1.6rem , 2.4vw, 4rem);
+        text-align: left;
+    }
 
-h4 {
-    font-weight: 400;
-}
+    h4 {
+        font-weight: 400;
+    }
 
 /* Alignments */
-.textAlignLeft {
-    text-align: left;
-    padding-left: 3.25rem;
-}
-
-.textAlignCent {
-    text-align: center;
-}
-
-.textAlignRt {
-    text-align: right;
-    padding-right: 3.25rem;
-}
-
-/* Buttons */
-
-button {
-    font-family: 'Figtree', sans-serif;
-    font-weight: 500;
-}
-
-/* Header Styling */
-
-.signUpButton {
-    margin-left: auto;
-    margin-right: 20px;
-    background-color: rgb(14, 63, 126);
-    border-radius: 6px;
-    border: none;
-    width: 80px;
-    height: 25px;
-}
-
-#headerlogo {
-    height: 22px;
-    width: auto;
-    margin-left: 18px;
-}
-
-.headertitle {
-    margin-left: 15px;
-    font-weight: 500;
-}
-
-#header-topbuttonsarea {
-    margin-left: auto;
-    padding-top: 5px;
-}
-
-/* CREATE A WORKSPACE button */
-
-.mainareacreate {
-    border-radius: 999px;
-    border: none;
-    font-weight: 700;
-    margin-top: 1rem;
-    margin-left: 3.25rem;
-    background: rgb(41,119,158);
-    background: radial-gradient(ellipse farthest-corner at top left, rgba(71,185,242,1) 100%, rgba(41,119,158,1) 0%);
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    font-size: large;
-    text-transform: uppercase;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.125);
-    transition: all 0.5s;
-}
-
-    .mainareacreate span {
-        cursor: pointer;
-        display: inline-block;
-        position: relative;
-        transition: 0.5s;
-    }
-    
-    .mainareacreate span:after {
-        content: '+';
-        position: absolute;
-        opacity: 0;
-        top: 0;
-        right: -20px;
-        transition: 0.5s;
-    }
-    
-    .mainareacreate:hover span {
-        padding-right: 25px;
-    }
-    
-    .mainareacreate:hover span:after {
-        opacity: 1;
-        right: 0;
-    }
-
-/* Main Area Styling */
-
-.innermainarea {
-    position: relative;
-}
-
-.mainarea {
-    position: relative;
-    background-position: 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    max-width: 100%;
-    height: auto;
-    margin: 0;
-    color: white;
-}
-
-.mainarea::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image: url(public/Clatter\ Channel.png);
-    filter: brightness(12.5%);
-}
-
-.innerinformationarea {
-    position: relative;
-}
-
-.innerinformationarea img {
-    float: left;
-    height: 14rem;
-    padding-left: 3.25rem;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-
-    cursor: pointer;
-    -webkit-user-drag: none;
-
-    transition: all 250ms ease;
-}
-
-.innerinformationarea img:hover {
-    height: 16rem;
-}
-
-.innerwhyarea {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-}
-
-.secondarywhyarea {
-    margin-left: auto;
-}
-
-@media screen and (max-width: 1150px) {
-    h1 {
-        margin-top: 0.5rem; margin-bottom: 0.5rem;
-    }
-}
-
-@media screen and (max-width: 1040px) {
-    .innerinformationarea img {
-        float: none;
-        position: relative;
-        padding-left: 0;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 7rem;
-    }
 
     .textAlignLeft {
-        text-align: center;
-        margin-right: 0;
-        padding-left: 0;
-        margin-left: auto; margin-right: auto;
+        text-align: left;
+        padding-left: 3.25rem;
     }
-    
+
     .textAlignCent {
         text-align: center;
     }
-    
+
     .textAlignRt {
-        text-align: center;
-        margin-left: auto; margin-right: auto;
-        padding-right: 0;
+        text-align: right;
+        padding-right: 3.25rem;
     }
 
-    body p {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+/* Buttons */
+
+    button {
+        font-family: 'Figtree', sans-serif;
+        font-weight: 500;
     }
 
-    body h1 {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+/* Header Styling */
+
+    #headerlogo {
+        height: 22px;
+        width: auto;
+        margin-left: 18px;
     }
 
-    body h4 {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+    .headertitle {
+        margin-left: 15px;
+        font-weight: 500;
     }
 
-    .innerinformationarea h4 {
-        padding-top: 3rem !important;
+    #header-topbuttonsarea {
+        margin-left: auto;
+        padding-top: 5px;
     }
+
+    .signUpButton {
+        margin-left: auto;
+        margin-right: 20px;
+        background-color: rgb(14, 63, 126);
+        border-radius: 6px;
+        border: none;
+        width: 80px;
+        height: 25px;
+    }
+
+/* Create A Workspace button */
 
     .mainareacreate {
-        display: block;
-        margin: 0 auto;
+        border-radius: 999px;
+        border: none;
+        font-weight: 700;
         margin-top: 1rem;
+        margin-left: 3.25rem;
+        background: rgb(41,119,158);
+        background: radial-gradient(ellipse farthest-corner at top left, rgba(71,185,242,1) 100%, rgba(41,119,158,1) 0%);
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        font-size: large;
+        text-transform: uppercase;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.125);
+        transition: all 0.5s;
+    }
+
+        .mainareacreate span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .mainareacreate span:after {
+            content: '+';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        .mainareacreate:hover span {
+            padding-right: 25px;
+        }
+
+        .mainareacreate:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+/* Main Area Styling */
+
+    .innermainarea {
+        position: relative;
+    }
+
+    .mainarea {
+        position: relative;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        max-width: 100%;
+        height: auto;
+        margin: 0;
+        color: white;
     }
 
     .mainarea::before {
-        padding-bottom: 5rem;
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-image: url(public/Clatter\ Channel.png);
+        filter: brightness(12.5%);
     }
 
-    .innerwhyarea {
-        display: inline;
+/* Information Area Styling */
+
+    .innerinformationarea {
+        position: relative;
     }
 
-    .innerwhyarea h4 {
-        margin-top: 0.5rem;
+    .innerinformationarea img {
+        float: left;
+        height: 14rem;
+        padding-left: 3.25rem;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+
+        cursor: pointer;
+        -webkit-user-drag: none;
+
+        transition: all 250ms ease;
     }
-}
+
+    .innerinformationarea img:hover {
+        height: 16rem;
+    }
+
+    /* Why Area Styling */
+
+        .innerwhyarea {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .secondarywhyarea {
+            margin-left: auto;
+        }
+
+/* Responsive Styling */
+
+    @media screen and (max-width: 1150px) {
+        /* Text Fix */
+
+        h1 {
+            margin-top: 0.5rem; margin-bottom: 0.5rem;
+        }
+    }
+
+    @media screen and (max-width: 1040px) {
+        /* Text Aligning Fixes */
+
+            .textAlignLeft {
+                text-align: center;
+                margin-right: 0;
+                padding-left: 0;
+                margin-left: auto; margin-right: auto;
+            }
+            
+            .textAlignCent {
+                text-align: center;
+            }
+            
+            .textAlignRt {
+                text-align: center;
+                margin-left: auto; margin-right: auto;
+                padding-right: 0;
+            }
+
+        /* Body Fixes */
+
+            body p {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+            body h1 {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+            body h4 {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+
+        /* Image Fixes */
+
+            .innerinformationarea img {
+                float: none;
+                position: relative;
+                padding-left: 0;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 7rem;
+            }
+
+        /* Text Fixes */
+
+            .innerinformationarea h4 {
+                padding-top: 3rem !important;
+            }
+
+        /* Button Fixes */
+
+            .mainareacreate {
+                display: block;
+                margin: 0 auto;
+                margin-top: 1rem;
+            }
+
+        /* Other Fixes */
+
+            .mainarea::before {
+                padding-bottom: 5rem;
+            }
+
+            .innerwhyarea {
+                display: inline;
+            }
+
+            .innerwhyarea h4 {
+                margin-top: 0.5rem;
+            }
+    }
