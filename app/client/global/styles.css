@@ -205,11 +205,10 @@ body {
 }
 
 .sidebar-listarea {
-    padding: 20px;
+    padding: 16px;
     border-top: 2px solid var(--sidebar_border);
-    padding-bottom: 0px;
     font-weight: 400;
-    transition: height 0.2s;
+    transition: all 0.2s;
 }
 
 #messagearea {
@@ -244,11 +243,30 @@ body {
 }
 
 .messagebox {
-    margin-top: 15px;
+    padding-top: .125rem;
+    padding-bottom: .125rem;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
     overflow-wrap: anywhere;
+    transition: all 100ms ease;
+}
+
+.expandedmessagebox {
+    margin-top: 2rem;
+}
+
+.messagebox:hover {
+    padding-left: 8px; padding-right: 8px;
+    background-color: hsla(0, 0%, 40%, 0.1);
+}
+
+.thread-btn {
+    font-size: 1.2rem !important;
+    color: #66666688;
+    margin-left: auto;
+    margin-top: auto; margin-bottom: auto;
+    cursor: pointer;
 }
 
 .message-sendername {
@@ -303,8 +321,19 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 4px;
     cursor: pointer;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 4px;
+    padding-right: 4px;
+    transition: all 100ms ease;
+}
+
+.sidebar-listitem:hover {
+    background-color: #2E5A8D;
+    border-radius: 8px;
+    padding-left: 12px;
 }
 
 .sidebar-listarea-titlearea {
@@ -499,7 +528,6 @@ body {
 .channellistitem:hover {
     background-color: #6d6d6d0a;
 }
-
 
 .channellistitem-icon {
     font-size: 20px;
