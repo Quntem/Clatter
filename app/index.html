@@ -5,12 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <meta name="description" content="Your Workplace, All In One App">
-        <meta name="keywords" content="Quntem, Clatter, Quntem Clatter, Workplace, Slack, Cliq">
+        <meta name="keywords" content="Quntem, Clatter, Quntem Clatter, Slack Alternative">
         
         <title>Clatter</title>
         <link rel="icon" type="image/png" href="public/favicon.png">
 
         <link rel="stylesheet" href="styles.css"/>
+        <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script>
             !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
             posthog.init('phc_6PSUoIZsnC4dikeD4BE7zPxzooOBInc5cpRwMtLl3Zs', {
@@ -22,110 +23,14 @@
 
     <body>
         <header>
-            <img src="client/global/monotone-logo.svg" id="headerlogo" />
-            
-            <div class="headertitle" id="headertitle">
-                Clatter WorkRoom
-            </div>
-
-            <button class="signUpButton" style="border-radius: 999px;">
-                <a href="/authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
-                    Sign Up
-                </a>
-            </button>
-
-            <a href="/authui/index.html?callback=/client/" style="color: #666666; text-decoration: none; margin-right: 20px;">
-                Sign In
-            </a>
+            <img src="public/Logo.svg" style="height: 1.625rem; width: auto;">
+            <p style="margin-left: 1rem; margin-top: 0; margin-bottom: 0;"><span style="font-weight: 600;">Clatter</span> Workroom</p>
+            <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none; margin-left: auto;"><div class="icon-github github_header-btn"></div></a>
+            <button class="try_web-btn">Try Web<div class="icon-globe" style="margin-left: 0.5rem; color: white; font-size: 12px !important;"></div></button>
         </header>
 
-        <div class="mainarea">
-            <div class="innermainarea">
-                <h1 class="textAlignLeft" style="padding-top: 6.5rem;">Your Workplace, All In One App</h1>
-                
-                <p class="textAlignLeft" style="max-width: 36rem; margin-top: 1rem;">
-                    All of your workplace's basic features into one app.
-                    Message, upload and share to an opensourced platform for completely free.
-                    From the developers of other closed and opensourced tools such as Quntem Creator, All In One Link and many more.
-                </p>
-
-                <button class="mainareacreate" style="margin-bottom: 5rem;">
-                    <a href="/authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
-                        <span>
-                            Create A Workspace
-                        </span>
-                    </a>
-                </button>
-            </div>
-        </div>
-
-        <div class="infodiv">
-            <div class="informationarea">
-                <div class="innerinformationarea">
-                    <img src="public/client-preview.png" alt="A Preview of Clatter.">
-
-                    <h4 class="textAlignRt" style="padding-top: 5rem; margin-top: 0; margin-bottom: 0;">But first...</h4>
-    
-                    <h1 class="textAlignRt">
-                        What Is Clatter?
-                    </h1>
-    
-                    <p class="textAlignRt" style="max-width: 36rem; margin-left: auto; padding-bottom: 5rem;">
-                        Clatter is a free and open-source service for workplaces' digital communication!
-                        Clatter is made by a small team of developers and a lack of funding, so please, if you can, use our tool to show your support!
-                    </p>
-                </div>
-            </div>
-    
-            <div class="whyarea">
-                <div class="innerwhyarea">
-                    <div class="mainwhyarea">
-                        <h4 class="textAlignLeft" style="padding-top: 5rem;">I was wondering too... (until I realized I'm a developer for Clatter)</h4>
-
-                        <h1 class="textAlignLeft">
-                            Why Choose Clatter?
-                        </h1>
-        
-                        <p class="textAlignLeft" style="max-width: 36rem;">
-                            These are the reasons of why you should choose Clatter and not other workplace-targetted chatting platforms such as Cliq or Slack:
-                        </p>
-                    </div>
-
-                    <div class="textAlignRt secondarywhyarea" style="padding-top: 5rem; max-width: 36rem;">
-                        <div class="why-freecard">
-                            <h2 style="font-size: large; font-weight: bold;">It's Free</h2>
-                            <p>
-                                Clatter is free and have no plans currently of changing that, so join us in changing the world of pay walls and overpriced subscriptions!
-                            </p>
-                        </div>
-
-                        <br>
-
-                        <div class="why-opencard">
-                            <h2 style="font-size: large; font-weight: bold;">It's Open Sourced</h2>
-                            <p>
-                                Clatter is open-sourced and currently also has no plans to change that!
-                                Visit Clatter's Repository at <a href="https://github.com/Quntem/Clatter">www.github.com/Quntem/Clatter</a>.
-                            </p>
-                        </div>
-
-                        <br>
-
-                        <div class="why-regupdcard">
-                            <h2 style="font-size: large; font-weight: bold;">Regularly Updated</h2>
-                            <p>
-                                Clatter is regularly updated and is one of the main projects that Quntem, the team behind the development of Clatter, is prioritizing.
-                                We see a bright future for Clatter, and we need your support to keep going.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div html-snippet="footer.html" class="footer-area" style="margin-top: 4rem;"></div>
-
-        <script src="auth-frontend-home.js" type="module"></script>
+        <div class="beta_badge-div"><div class="icon-code-xml" style="margin-right: .5rem;"></div>Beta</div>
+        <h1 style="font-weight: normal; font-size: 3.75rem;">Your Workspace, In <span class="highlighted_h1-span">One App</span></h1>
     </body>
 
     <script>
