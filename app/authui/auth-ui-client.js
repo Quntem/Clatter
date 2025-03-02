@@ -11,7 +11,7 @@ window.signin = function() {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value
     }).then(res => {
-        window.location.replace(redirurl)
+        // window.location.replace(redirurl)
     })
 }
 
@@ -20,6 +20,7 @@ window.signup = function() {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
         name: document.getElementById("name").value,
+        callbackURL: "/client"
     }).then(res => {
         window.location.replace(redirurl)
     })

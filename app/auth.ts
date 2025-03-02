@@ -244,6 +244,5 @@ export const auth = betterAuth({
         oidcProvider(),
         organization(),
         multiSession(),
-        expo()
     ] 
 })

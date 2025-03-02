@@ -13,8 +13,8 @@
     "vite": "^6.0.5"
   },
   "dependencies": {
-    "@better-auth/cli": "^1.1.16",
-    "@better-auth/expo": "^1.1.18",
+    "@better-auth/cli": "^1.2.0",
+    "@better-auth/expo": "^1.2.0",
     "@editorjs/checklist": "^1.6.0",
     "@editorjs/code": "^2.9.3",
     "@editorjs/editorjs": "^2.30.7",
@@ -23,7 +23,7 @@
     "@editorjs/list": "^2.0.4",
     "@editorjs/table": "^2.4.3",
     "@prisma/client": "^6.3.1",
-    "better-auth": "^1.1.16",
+    "better-auth": "^1.2.0",
     "better-sqlite3": "^11.8.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",

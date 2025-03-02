@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>VOXA from Quntem</title>
+        <link rel="stylesheet" href="/voxa/styles.css" />
+        <script>
+            var switchsidebartab = function(obj) {
+                $(".sidebar-header-tabbar").find(".sidebar-header-tabbar-item").toArray().forEach(element => {
+                    $(element).removeAttr("selected")
+                });
+                $(obj).attr("selected", "selected")
+            }
+        </script>
+        <script src="/client/global/jquery.js"></script>
+    </head>
+    <body>
+        <div class="sidebar">
+            <div class="sidebar-header-title">
+                <div class="sidebar-header-title-profileimage"></div>
+                <div class="sidebar-header-title-text">Chats</div>
+                <div class="upgradebutton">Upgrade</div>
+            </div>
+            <div class="sidebar-header-tabbar">
+                <div class="sidebar-header-tabbar-item" selected="selected" onclick="switchsidebartab(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div class="sidebar-header-tabbar-item" onclick="switchsidebartab(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="sidebar-header-tabbar-item" onclick="switchsidebartab(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+                </div>
+                <div class="sidebar-header-tabbar-item" onclick="switchsidebartab(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
