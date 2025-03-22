@@ -9,7 +9,8 @@ export default defineConfig({
     allowedHosts: [
       "clatter.quntem.co.uk",
       "clatterpreview.quntem.co.uk",
-      "clatter.work"
+      "clatter.work",
+      "beta.clatter.work"
     ],
     port: 3000,      // Matches the exposed port in docker-compose
   },
