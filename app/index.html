@@ -23,54 +23,77 @@
 
     <body>
         <header>
-            <img src="public/Logo.svg" style="height: 1.625rem; width: auto;">
-            <p style="margin-left: 1rem; margin-top: 0; margin-bottom: 0;"><span style="font-weight: 600;">Clatter</span> Workroom</p>
+            <img src="public/Logo.svg" height="26" width="26" style="height: 1.625rem; width: auto;">
+            <p style="margin-left: 1rem; margin-top: 0; margin-bottom: 0;" id="headertitle"><span style="font-weight: 600;">Clatter</span> Workroom</p>
             <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none; margin-left: auto;"><div class="icon-github github_header-btn"></div></a>
-            <button class="try_web-btn">Try Web<div class="icon-globe" style="margin-left: 0.5rem; color: white; font-size: 12px !important;"></div></button>
+            <button class="try_web-btn" onclick="window.location.pathname = '/authui/'">Try Web<div class="icon-globe" style="margin-left: 0.5rem; color: white; font-size: .75rem !important;"></div></button>
         </header>
 
-        <div class="beta_badge-div"><div class="icon-code-xml" style="margin-right: .5rem;"></div>Beta</div>
-        <h1 style="font-weight: normal; font-size: 3.75rem;">Your Workspace, In <span class="highlighted_h1-span">One App</span></h1>
+        <div style="text-align: center;">
+            <div class="beta_badge-div"><div class="icon-code-xml" style="margin-right: .5rem;"></div>Beta</div>
+            <h1 style="font-weight: normal; font-size: 3.75rem; margin-top: 1.5rem; margin-bottom: 1.5rem;">Your Workspace, In <span class="highlighted_h1-span">One App</span></h1>
+            <p>A <span style="font-weight: 500;">new </span>and <span style="font-weight: 500;">beautifully</span> designed application for workplaces <span style="font-weight: 500;">big</span> and <span style="font-weight: 500;">small</span> alike.
+                <br>We care about <span style="font-weight: 500;">your</span> experience with us, and <span style="font-weight: 500; text-decoration: underline; text-decoration-thickness: 10%;">not your data</span>.
+            </p>
+            <div style="display: flex; align-items: center; margin-top: 2rem;">
+                <button class="try_clatter_now-btn" onclick="window.location.pathname = '/authui/'">Try Clatter Now <div class="icon-arrow-right" style="color: white; margin-left: .25rem; font-size: .75rem !important;"></div></button>
+                <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="display: flex; align-items: center; margin-right: auto; font-weight: 500; margin-left: 1.375rem; text-decoration: none; font-size: .875rem;">Contribute<div class="icon-github" style="margin-left: .5rem;"></div></a>
+            </div>
+            <img src="public/client-preview.png" height="228px" width="auto" style="aspect-ratio: 1.508771929 / 1; margin-top: 4rem;">
+            <p style="margin-top: .5rem; font-weight: .75rem;">Not Actual Screenshot <span style="font-weight: 500;">Yet</span>; Planned Design.</p>
+            <div style="text-align: left; margin-left: 18dvw; display: flex; margin-top: 4rem;">
+                <div style="display: flex; flex-direction: column;">
+                    <h1 style="font-weight: normal; font-size: 2.25rem; margin-bottom: 0;">We're <span style="font-weight: 500; text-decoration: underline;">Open Sourced</span>.</h1>
+                    <p style="width: 35.5rem; margin-top: 1rem; margin-bottom: 0;">
+                        Our software is open sourced and is open for any developers to contribute to the development of Clatter Workroom.
+                        For more information on contributing to Clatter,
+                        you can visit our Developer's documentation for Clatter.
+                    </p>
+                </div>
+                <div style="display: flex; flex-direction: column; margin-left: auto; margin-right: 18dvw; margin-top: auto;">
+                    <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none;"><button class="visit_github-btn">Visit Our GitHub <div class="icon-github" style="font-size: .75rem !important; color: white; margin-left: .5rem;"></div></button></a>
+                    <!-- <button class="developers_documentation-btn">Developer's Documentation <div class="icon-book" style="font-size: .75rem !important; color: white; margin-left: .5rem;"></div></button> -->
+                </div>
+            </div>
+        </div>
+        
     </body>
 
     <script>
-        function includeHTML() {
+        /* function includeHTML() {
             var z, i, elmnt, file, xhttp;
-            /* Loop through a collection of all HTML elements: */
+            // Loop through a collection of all HTML elements:
             z = document.getElementsByTagName("*");
 
             for (i = 0; i < z.length; i++) {
                 elmnt = z[i];
-                /*search for elements with a certain atrribute:*/
+                // search for elements with a certain atrribute:
                 file = elmnt.getAttribute("html-snippet");
                 if (file) {
-                    /* Make an HTTP request using the attribute value as the file name: */
+                    // Make an HTTP request using the attribute value as the file name:
                     xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                         if (this.readyState == 4) {
                         if (this.status == 200) {elmnt.innerHTML = this.responseText;}
                         if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-                        /* Remove the attribute, and call this function once more: */
+                        // Remove the attribute, and call this function once more:
                         elmnt.removeAttribute("html-snippet");
                         includeHTML();
                         }
                     }
                     xhttp.open("GET", file, true);
                     xhttp.send();
-                    /* Exit the function: */
+                    // Exit the function:
                     return;
                 }
             }
-        }
+        } */
 
-        includeHTML();
+        // includeHTML();
 
         if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
             console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
             document.title = "Clatter Beta";
-
-            let headerTitle = document.getElementById("headertitle")
-            headertitle.innerHTML = "Clatter WorkRoom Beta"
         } else {
             console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
         }

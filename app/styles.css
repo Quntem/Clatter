@@ -4,11 +4,38 @@
 
 * {
     font-family: 'Figtree', sans-serif;
-    color: #666666;
+    color: rgba(102, 102, 102, 1);
 }
 
 body {
     margin: 0;
+}
+
+:root {
+    /* to be migrated to rgba */
+    --btn_color: #189BDC;
+    --btn_hovered_color: rgba(41, 119, 158, 1);
+    --btn_alt_color: rgba(241, 78, 154, 1);
+    --btn_alt_hovered_color: rgba(169, 23, 91, 1);
+    --btn_grey_color: rgba(102, 102, 102, 1);
+    --btn_grey_hovered_color: rgb(78, 78, 78);
+}
+
+button {
+    transition: all 150ms ease;
+
+    color: white;
+
+    border-radius: 8px;
+    border: none;
+
+    padding: .5rem;
+    padding-left: .88rem;
+    padding-right: .88rem;
+
+    cursor: pointer;
+
+    width: fit-content;
 }
 
 /* header styling */
@@ -28,7 +55,7 @@ body {
         display: flex;
         align-items: center;
 
-        background-color: #189BDC;
+        background-color: var(--btn_color);
         color: white;
 
         padding: .5rem;
@@ -52,7 +79,7 @@ body {
         padding-left: 1rem;
         padding-right: 1rem;
 
-        background-color: #29779E;
+        background-color: var(--btn_hovered_color);
     }
 
     .github_header-btn {
@@ -66,7 +93,7 @@ body {
     }
 
     .github_header-btn:hover {
-        background-color: rgb(102, 102, 102, 85%);
+        background-color: rgb(102, 102, 102, 100%);
         color: white;
 
         padding: 0.25rem;
@@ -78,34 +105,129 @@ body {
 
 /* main content */
 
-.beta_badge-div {
-    display: flex;
+    .beta_badge-div {
+        display: flex;
 
-    width: fit-content;
+        width: fit-content;
 
-    margin-top: 5.5rem;
+        margin-top: 5.5rem;
 
-    margin-left: auto;
-    margin-right: auto;
+        margin-left: auto;
+        margin-right: auto;
 
-    padding: 1rem;
-    padding-top: 0.625rem;
-    padding-bottom: 0.625rem;
+        padding: 1rem;
+        padding-top: 0.625rem;
+        padding-bottom: 0.625rem;
 
-    background-color: rgb(150, 150, 150, 12%);
+        background-color: rgb(150, 150, 150, 12%);
 
-    text-align: center;
+        text-align: center;
 
-    border-radius: 6.25rem;
-}
+        border-radius: 6.25rem;
+    }
 
-.highlighted_h1-span {
-    font-weight: 500;
-    text-decoration: underline;
-    text-decoration-thickness: 5.5%;
-    text-decoration-color: linear-gradient(180deg, rgba(71,185,242,1) 0%, rgba(241,78,154,1) 100%);
-    background: -webkit-linear-gradient(180deg,rgba(71,185,242,1) 0%, rgba(241,78,154,1) 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+    .highlighted_h1-span {
+        position: relative;
+
+        font-weight: 500;
+
+        /* cool css tricks */
+
+            /* Text Gradient Trick via Background-Clip */
+
+                background: -webkit-linear-gradient(0deg,rgba(71,185,242,1) 0%, rgba(241,78,154,1) 100%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+    }
+
+    .highlighted_h1-span::before {
+        content: "";
+        position: absolute;
+
+        top: 85%;
+        left: 0;
+
+        width: 100%;
+        height: 4px;
+
+        border-radius: 100%;
+        
+        background: linear-gradient(90deg, rgba(71,185,242,1) 0%, rgba(241,78,154,1) 100%);
+    }
+
+    .try_clatter_now-btn {
+        margin-left: auto;
+
+        display: flex;
+        align-items: center;
+
+        background-color: var(--btn_color);
+        color: white;
+
+        padding: .5rem;
+        padding-left: .875rem;
+        padding-right: .875rem;
+
+        border-radius: 8px;
+        border: none;
+
+        cursor: pointer;
+
+        font-weight: 600;
+        font-size: .75rem;
+
+        filter: drop-shadow(0px 2px 2px rgba(24, 155, 220, 25%));
+
+        transition: all 150ms ease;
+    }
+    
+    .try_clatter_now-btn:hover {
+        padding-left: 1.35rem;
+        padding-right: 1.35rem;
+
+        background-color: var(--btn_hovered_color);
+    }
+
+/* we're open sourced or something */
+
+    .visit_github-btn {
+        display: flex;
+        
+        background-color: var(--btn_alt_color);
+
+        box-shadow: 0px 2px 2px 0px rgba(241, 78, 154, 0.25);
+
+        font-size: .75rem;
+    }
+
+    .visit_github-btn:hover {
+        padding: .6rem;
+        padding-left: 1.35rem;
+        padding-right: 1.35rem;
+
+        font-size: .8rem;
+
+        background-color: var(--btn_alt_hovered_color);
+    }
+
+    .developers_documentation-btn {
+        margin-top: .75rem;
+
+        display: flex;
+        
+        background-color: var(--btn_grey_color);
+
+        box-shadow: 0px 2px 2px 0px rgba(102, 102, 102, 0.25);
+
+        font-size: .75rem;
+    }
+
+    .developers_documentation-btn:hover {
+        padding: .6rem;
+        padding-left: 1.35rem;
+        padding-right: 1.35rem;
+
+        font-size: .8rem;
+        background-color: var(--btn_grey_hovered_color);
+    }
