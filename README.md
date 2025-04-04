@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://clatter.quntem.co.uk/client/global/favicon.png" width="80" height="80">
+  <img src="https://clatter.work/client/global/favicon.png" width="80" height="80">
 </p>
 
 <p align="center">
