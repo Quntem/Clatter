@@ -25,15 +25,15 @@
         <header>
             <img src="public/Logo.svg" height="26" width="26" style="height: 1.625rem; width: auto;">
             <p style="margin-left: 1rem; margin-top: 0; margin-bottom: 0;" id="headertitle"><span style="font-weight: 600;">Clatter</span> Workroom</p>
-            <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none; margin-left: auto;"><div class="icon-github github_header-btn"></div></a>
-            <button class="try_web-btn" onclick="window.location.pathname = '/authui/'">Try Web<div class="icon-globe" style="margin-left: 0.5rem; color: white; font-size: .75rem !important;"></div></button>
+            <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none; margin-left: auto;"><div class="icon-github github_header-btn" style="height: 1rem; width: 1rem;"></div></a>
+            <button class="try_web-btn" onclick="window.location.pathname = '/authui/'">Try Web<div class="icon-globe" style="margin-left: 0.5rem; color: white; font-size: .75rem !important; height: .75rem; width: .75rem;"></div></button>
         </header>
 
         <div style="text-align: center;">
-            <div class="beta_badge-div"><div class="icon-code-xml" style="margin-right: .5rem;"></div>Beta</div>
-            <h1 style="font-weight: normal; font-size: 3.75rem; margin-top: 1.5rem; margin-bottom: 1.5rem;">Your Workspace, In <span class="highlighted_h1-span">One App</span></h1>
+            <div class="beta_badge-div"><div class="icon-code-xml" style="margin-right: .5rem; height: 1rem; width: 1rem;"></div>Beta</div>
+            <h1 style="font-weight: normal; font-size: 3.75rem; margin-top: 1.5rem; margin-bottom: 1.5rem;">Your Workspace, In <span class="highlighted_h1-span">One <span id="slug_change">App</span></span></h1>
             <p>A <span style="font-weight: 500;">new </span>and <span style="font-weight: 500;">beautifully</span> designed application for workplaces <span style="font-weight: 500;">big</span> and <span style="font-weight: 500;">small</span> alike.
-                <br>We care about <span style="font-weight: 500;">your</span> experience with us, and <span style="font-weight: 500; text-decoration: underline; text-decoration-thickness: 10%;">not your data</span>.
+                <br>We care about <span style="font-weight: 500;">your</span> experience with us, and <span style="font-weight: 500; text-decoration: underline; text-decoration-thickness: 7.5%;">not your data</span>.
             </p>
             <div style="display: flex; align-items: center; margin-top: 2rem;">
                 <button class="try_clatter_now-btn" onclick="window.location.pathname = '/authui/'">Try Clatter Now <div class="icon-arrow-right" style="color: white; margin-left: .25rem; font-size: .75rem !important;"></div></button>
@@ -51,8 +51,8 @@
                     </p>
                 </div>
                 <div style="display: flex; flex-direction: column; margin-left: auto; margin-right: 18dvw; margin-top: auto;">
-                    <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none;"><button class="visit_github-btn">Visit Our GitHub <div class="icon-github" style="font-size: .75rem !important; color: white; margin-left: .5rem;"></div></button></a>
-                    <!-- <button class="developers_documentation-btn">Developer's Documentation <div class="icon-book" style="font-size: .75rem !important; color: white; margin-left: .5rem;"></div></button> -->
+                    <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none;"><button class="visit_github-btn">Visit Our GitHub <div class="icon-github" style="font-size: .75rem !important; color: white; margin-left: .5rem; height: .75rem; width: .75rem;"></div></button></a>
+                    <a href="https://docs.quntem.co.uk/editing/clatter" target="_blank" style="text-decoration: none;"><button class="developers_documentation-btn">Developer's Documentation <div class="icon-book" style="font-size: .75rem !important; color: white; margin-left: .5rem;"></div></button></a>
                 </div>
             </div>
         </div>
@@ -60,42 +60,42 @@
     </body>
 
     <script>
-        /* function includeHTML() {
-            var z, i, elmnt, file, xhttp;
-            // Loop through a collection of all HTML elements:
-            z = document.getElementsByTagName("*");
-
-            for (i = 0; i < z.length; i++) {
-                elmnt = z[i];
-                // search for elements with a certain atrribute:
-                file = elmnt.getAttribute("html-snippet");
-                if (file) {
-                    // Make an HTTP request using the attribute value as the file name:
-                    xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                        if (this.readyState == 4) {
-                        if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-                        if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-                        // Remove the attribute, and call this function once more:
-                        elmnt.removeAttribute("html-snippet");
-                        includeHTML();
-                        }
-                    }
-                    xhttp.open("GET", file, true);
-                    xhttp.send();
-                    // Exit the function:
-                    return;
-                }
+        const elements = {
+            slug_change: document.getElementById("slug_change")
+        };
+    
+        const slug_change_texts = [
+            "App",
+            "Platform",
+            "Website",
+            "Software",
+            "Service",
+            "Tool",
+            "Experience"
+        ];
+        
+        window.addEventListener("load", () => {
+            checkBeta();
+            let currentIndex = 1;
+    
+            setInterval(() => {
+                // elements.slug_change.classList.remove("morph-in");
+                // elements.slug_change.classList.add("morph-out");
+                setTimeout(() => {
+                    elements.slug_change.innerHTML = slug_change_texts[currentIndex];
+                    // elements.slug_change.classList.remove("morph-out");
+                    // elements.slug_change.classList.add("morph-in");
+                    currentIndex = (currentIndex + 1) % slug_change_texts.length;
+                }, 300);
+            }, 2000);
+        });
+    
+        function checkBeta() {
+            if (window.location.origin === "https://clatterpreview.quntem.co.uk" || window.location.origin === "https://beta.clatter.work") {
+                document.title = "Clatter Beta";
+            } else {
+                console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin);
             }
-        } */
-
-        // includeHTML();
-
-        if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
-            console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
-            document.title = "Clatter Beta";
-        } else {
-            console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
         }
-    </script>
+    </script>    
 </html>

@@ -12,13 +12,13 @@ body {
 }
 
 :root {
-    /* to be migrated to rgba */
-    --btn_color: #189BDC;
-    --btn_hovered_color: rgba(41, 119, 158, 1);
-    --btn_alt_color: rgba(241, 78, 154, 1);
-    --btn_alt_hovered_color: rgba(169, 23, 91, 1);
-    --btn_grey_color: rgba(102, 102, 102, 1);
-    --btn_grey_hovered_color: rgb(78, 78, 78);
+    /* non-transparent colors should be hex, transparent should be rgba */
+    --btn_color: #1097DA;
+    --btn_hovered_color: #107CB2;
+    --btn_alt_color: #DA3910;
+    --btn_alt_hovered_color: #B23010;
+    --btn_grey_color: #505050;
+    --btn_grey_hovered_color: #474747;
 }
 
 button {
@@ -96,7 +96,7 @@ button {
         background-color: rgb(102, 102, 102, 100%);
         color: white;
 
-        padding: 0.25rem;
+        padding: 0.375rem;
         padding-left: 0.375rem;
         padding-right: 0.375rem;
 
@@ -156,6 +156,19 @@ button {
         background: linear-gradient(90deg, rgba(71,185,242,1) 0%, rgba(241,78,154,1) 100%);
     }
 
+    #slug_change {
+        display: inline-block;
+        /* transition: opacity 0.3s ease-in-out; */
+    }
+    
+    /* #slug_change.morph-out {
+        opacity: 0;
+    }
+
+    #slug_change.morph-in {
+        opacity: 1;
+    }     */
+
     .try_clatter_now-btn {
         margin-left: auto;
 
@@ -196,7 +209,7 @@ button {
         
         background-color: var(--btn_alt_color);
 
-        box-shadow: 0px 2px 2px 0px rgba(241, 78, 154, 0.25);
+        box-shadow: 0px 2px 2px 0px var(--btn_alt_color, 25%);
 
         font-size: .75rem;
     }
