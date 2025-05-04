@@ -1,1 +1,19 @@
-Redirect 301 / https://clatter.quntem.co.uk
+RewriteEngine on
+
+# Redirect to domain with www.
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule .* http://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# Same for HTTPS:
+RewriteCond %{HTTPS} on
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule .* https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 301 Redirect URLs.
+Redirect 301 https://clatter.quntem.co.uk https://www.clatter.work
+
+# Prevent viewing of htaccess file.
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>

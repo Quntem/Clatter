@@ -13,10 +13,14 @@
   <a href="https://github.com/Quntem/Clatter/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/Quntem/Clatter?style=for-the-badge">
   </a>
+
+  <a href="https://clatter.status.phare.io" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fclatter.status.phare.io%2Fshield-badges%2Favailability.json&style=for-the-badge" loading="lazy" alt="Phare badge">
+  </a>
 </p>
 
 <h1 align="center">
-  Clatter V0.2.0
+  Clatter
 </h1>
 
 <p align="center">

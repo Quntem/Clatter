@@ -43,14 +43,14 @@
                             if (member.userId == element.userid) {
                                 console.log("found")
                                 if(member.user.image == null) {
-                                    currentpfp = "/assets/defaultpfp.png"
+                                    currentpfp = "app/client/global/default-pfp/Bubbleblue.png"
                                 } else {
                                     currentpfp = member.user.image
                                 }
                             }
                         })
                         $("#messagearea").append(`
-                            <div class="messagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
+                            <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
                                 <img src="` + currentpfp + `" class="messageprofilepicture" />
                                 <span class="message">
                                     <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
@@ -143,7 +143,7 @@
                                     }
                                 })
                                 $("#messagearea").append(`
-                                    <div class="messagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
+                                    <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
                                         <img src="` + currentpfp + `" class="messageprofilepicture" />
                                         <span class="message">
                                             <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>

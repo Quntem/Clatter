@@ -1,59 +1,65 @@
+/* Font Importing */
+
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Figtree', sans-serif;
-}
+/* Footer Formatting */
 
-.footer-container {
-    background-color: #f3f3f3;
-}
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Figtree', sans-serif;
+    }
 
-.footer {
-    width: 80%;
-    height: 40vh;
-    background-color: #f3f3f3;
-    color: black;
-    display: flex;
-    justify-content: left;
-    flex-wrap: wrap;
-    margin-left: 3.25rem;
-    padding-top: 3.25rem;
-    padding-bottom: 3.25rem;
-}
+    .footer-container {
+        background-color: #f3f3f3;
+    }
 
-.footer-heading {
-    display: flex;
-    flex-direction: column;
-    margin-right: 4rem;
-}
-
-.footer-heading h2 {
-    margin-bottom: 2rem;
-}
-
-.footer-heading a {
-    color: black;
-    text-decoration: none;
-    margin-bottom: 0.5rem;
-}
-
-@media screen and (max-width: 1150px) {
     .footer {
-        height: 50vh;
+        width: 80%;
+        height: 40vh;
+        background-color: #f3f3f3;
+        color: black;
+        display: flex;
+        justify-content: left;
+        flex-wrap: wrap;
+        margin-left: 3.25rem;
+        padding-top: 3.25rem;
+        padding-bottom: 3.25rem;
     }
-}
 
-@media screen and (max-width: 820px) {
-    .footer {
-        padding-top: 2rem;
+    .footer-heading {
+        display: flex;
+        flex-direction: column;
+        margin-right: 4rem;
     }
-}
 
-@media screen and (max-width: 720px) {
-    .footer-3 {
-        display: none;
+    .footer-heading h2 {
+        margin-bottom: 2rem;
     }
-}
+
+    .footer-heading a {
+        color: black;
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+    }
+
+/* Responsive Layout */
+
+    @media screen and (max-width: 1150px) {
+        .footer {
+            height: 50vh;
+        }
+    }
+
+    @media screen and (max-width: 820px) {
+        .footer {
+            padding-top: 2rem;
+        }
+    }
+
+    @media screen and (max-width: 720px) {
+        .footer-3 {
+            display: none;
+        }
+    }

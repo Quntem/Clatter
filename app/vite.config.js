@@ -8,7 +8,9 @@ export default defineConfig({
     host: '0.0.0.0', // Ensures Vite is accessible from the container
     allowedHosts: [
       "clatter.quntem.co.uk",
-      "clatterpreview.quntem.co.uk"
+      "clatterpreview.quntem.co.uk",
+      "clatter.work",
+      "beta.clatter.work"
     ],
     port: 3000,      // Matches the exposed port in docker-compose
   },
