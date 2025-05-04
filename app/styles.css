@@ -196,20 +196,100 @@ button {
     }
     
     .try_clatter_now-btn:hover {
-        padding-left: 1.35rem;
-        padding-right: 1.35rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        rotate: 4deg;
 
         background-color: var(--btn_hovered_color);
     }
 
+    .contribute-btn {
+        margin-left: 1.375rem;
+        margin-right: auto;
+
+        display: flex;
+        align-items: center;
+        
+        font-weight: 500;
+        font-size: .875rem;
+        text-decoration: none;
+
+        transition: all 150ms ease;
+    }
+
+    .contribute-btn:hover {
+        rotate: -4deg;
+    }
+
 /* we're open sourced or something */
+
+    .wavy_text-span {
+        display: inline-block;
+        animation: wave 1s ease-in-out infinite;
+        font-size: 2.25rem;
+        white-space: pre;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(1) {
+        animation-delay: 0ms;
+    }
+    
+    .wavy_text .wavy_text-span:nth-child(2) {
+        animation-delay: 150ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(3) {
+        animation-delay: 300ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(4) {
+        animation-delay: 450ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(5) {
+        animation-delay: 600ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(6) {
+        animation-delay: 750ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(7) {
+        animation-delay: 900ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(8) {
+        animation-delay: 1050ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(9) {
+        animation-delay: 1200ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(10) {
+        animation-delay: 1350ms;
+    }
+
+    .wavy_text .wavy_text-span:nth-child(11) {
+        animation-delay: 1500ms;
+    }
+
+    @keyframes wave {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-0.25rem);
+        }
+    }
 
     .visit_github-btn {
         display: flex;
         
-        background-color: var(--btn_alt_color);
+        background-color: var(--btn_color);
 
-        box-shadow: 0px 2px 2px 0px var(--btn_alt_color, 25%);
+        box-shadow: 0px 2px 2px 0px var(--btn_color, 25%);
 
         font-size: .75rem;
     }
@@ -221,7 +301,7 @@ button {
 
         font-size: .8rem;
 
-        background-color: var(--btn_alt_hovered_color);
+        background-color: var(--btn_color);
     }
 
     .developers_documentation-btn {
@@ -243,4 +323,13 @@ button {
 
         font-size: .8rem;
         background-color: var(--btn_grey_hovered_color);
+    }
+
+/* footer styling */
+
+    footer {
+        margin-top: 4.5rem;
+        margin-bottom: 3rem;
+
+        text-align: center;
     }

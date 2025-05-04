@@ -49,34 +49,31 @@
             }
 
             var switchworkspace = function(obj) {
-                NavigatePage("placeholder")
-                
-                authClient.organization.setActive({
-                    organizationId: $(obj).attr("orgid")
-                })
-
-                .then(res => {
-                    authClient.organization.getFullOrganization()
-                    .then(ao => {
-                        fullorg = ao
-                        $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
-                            $(element).removeAttr("selected")
-                        });
-                        $("#topbuttons").hide()
-                        $("#useradminarea").hide()
-                        $("#sidebar-wsinfo-name").text(ao.data.name)
-                        $("#sidebar-wsinfo-sub").text("" + ao.data.slug)
-                        GetChannels()
-                        $("#sidebartogglebutton").show()
-                        $("#shellsidebar").show()
-                        $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
-                        if (finishedpageload == false ) {
-                            finishedpageload  = true
-                            fadeoutsplash()
-                        }
+                const orgId = $(obj).attr("orgid");
+                const orgName = $(obj).data("tooltip");
+                        
+                // Optimistically update the UI
+                $("#sidebar-wsinfo-name").text(orgName || "Loading...");
+                $("#workspaceswitcher").find(".workspaceswitcheritem").removeAttr("selected");
+                $(obj).attr("selected", "selected");
+                        
+                // Load workspace data in the background
+                authClient.organization.setActive({ organizationId: orgId })
+                    .then(res => {
+                        return authClient.organization.getFullOrganization();
                     })
-                })
-            }
+                    .then(ao => {
+                        // Update UI with the full workspace details
+                        $("#sidebar-wsinfo-name").text(ao.data.name);
+                        $("#sidebar-wsinfo-sub").text(ao.data.slug);
+                        GetChannels(); // Update channels for the workspace
+                    })
+                    .catch(err => {
+                        console.error("Failed to load workspace data:", err);
+                        // Provide error feedback to the user
+                        $("#sidebar-wsinfo-name").text("Error Loading Workspace");
+                    });
+            };
 
             var NavigatePage = function(pagename) {
                 $("#mainarea").load("/client/pages/" + pagename)
