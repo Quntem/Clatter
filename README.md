@@ -1,17 +1,17 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Quntem/Clatter/refs/heads/main/app/public/favicon.png" width="80" height="80">
+  <img src="https://raw.githubusercontent.com/Quntem/Clatter/refs/heads/main/app/public/favicon.png" width="80" height="80" alt="The logo of Clatter.">
 </p>
 
 <p align="center">
   <a href="https://github.com/Quntem/Clatter/releases">
-    <img src="https://img.shields.io/github/v/release/Quntem/Clatter?style=for-the-badge">
+    <img src="https://img.shields.io/github/v/release/Quntem/Clatter?style=for-the-badge" alt="Current version">
   </a>
   <a href="#">
-    <img src="https://img.shields.io/github/stars/Quntem/Clatter?style=for-the-badge">
+    <img src="https://img.shields.io/github/stars/Quntem/Clatter?style=for-the-badge" alt="Stars">
   </a>
 
   <a href="https://github.com/Quntem/Clatter/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/Quntem/Clatter?style=for-the-badge">
+    <img src="https://img.shields.io/github/license/Quntem/Clatter?style=for-the-badge" alt="License">
   </a>
 
   <a href="https://clatter.status.phare.io" target="_blank" rel="noopener">

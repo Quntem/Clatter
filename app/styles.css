@@ -12,6 +12,7 @@ body {
 :root {
     /* non-transparent colors should be hex, transparent should be rgba */
     --btn_color: #1097DA;
+    --btn_semivisible_color: rgba(16, 151, 218, 0.25);
     --btn_hovered_color: #107CB2;
     --btn_alt_color: #DA3910;
     --btn_alt_hovered_color: #B23010;
@@ -117,7 +118,7 @@ button {
         padding-top: 0.625rem;
         padding-bottom: 0.625rem;
 
-        background-color: rgb(150, 150, 150, 12%);
+        background-color: rgb(150, 150, 150, 0.12);
 
         text-align: center;
 
@@ -197,7 +198,7 @@ button {
         padding-left: 1rem;
         padding-right: 1rem;
 
-        rotate: 4deg;
+        transform: rotate(4deg);
 
         background-color: var(--btn_hovered_color);
     }
@@ -217,7 +218,7 @@ button {
     }
 
     .contribute-btn:hover {
-        rotate: -4deg;
+        transform: rotate(-4deg);
     }
 
     .ticker {
@@ -324,7 +325,7 @@ button {
         
         background-color: var(--btn_color);
 
-        box-shadow: 0px 2px 2px 0px var(--btn_color, 25%);
+        box-shadow: 0px 2px 2px 0px var(--btn_semivisible_color);
 
         font-size: .75rem;
     }
