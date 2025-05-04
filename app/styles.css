@@ -110,7 +110,7 @@ button {
 
         width: fit-content;
 
-        margin-top: 5.5rem;
+        margin-top: 6.5rem;
 
         margin-left: auto;
         margin-right: auto;
@@ -221,6 +221,43 @@ button {
     .contribute-btn:hover {
         rotate: -4deg;
     }
+
+    .ticker {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+      
+    .ticker__wrap {
+        display: flex;
+        animation: ticker 20s linear infinite;
+    }
+      
+    .ticker__content {
+        display: flex;
+    }
+
+    .ticker__content img {
+        margin-left: 1rem;
+        margin-right: 1rem;
+
+        border-radius: 9px;
+
+        transition: all 150ms ease-in-out;
+    }
+
+    .ticker__content img:hover {
+        transform: scale(1.05);
+    }
+    
+    @keyframes ticker {
+        0% {
+            transform: translateX(0%);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }  
 
 /* we're open sourced or something */
 
