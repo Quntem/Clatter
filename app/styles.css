@@ -1,12 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
-* {
+html {
     font-family: 'Figtree', sans-serif;
     color: rgba(102, 102, 102, 1);
 }
 
 body {
     margin: 0;
+}
+
+button {
+    font-family: 'Figtree', sans-serif;
+    color: rgba(102, 102, 102, 1);
+}
+
+a {
+    font-family: 'Figtree', sans-serif;
+    color: rgba(102, 102, 102, 1);
+}
+
+.skeleton {
+    animation: skeleton-loading 1.5s linear infinite alternate;
+
+    border: none;
+    border-radius: 0.5rem;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: rgba(102, 102, 102, 0.25);
+    }
+    100% {
+        background-color: rgba(102, 102, 102, 0.1);
+    }
 }
 
 :root {
@@ -229,6 +255,10 @@ button {
     .ticker__wrap {
         display: flex;
         animation: ticker 20s linear infinite;
+    }
+
+    .ticker__wrap:hover {
+        animation-play-state: paused;
     }
       
     .ticker__content {

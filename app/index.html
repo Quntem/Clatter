@@ -29,7 +29,7 @@
 
     <body>
         <header>
-            <img src="public/Logo.svg" height="26" width="26" style="height: 1.625rem; width: auto;">
+            <img src="public/Logo.svg" height="26" width="26" style="height: 1.625rem; width: auto;" class="skeleton" id="header_logo" alt="Clatter Logo">
             <p style="margin-left: 1rem; margin-top: 0; margin-bottom: 0;" id="headertitle"><span style="font-weight: 600;">Clatter</span> Workroom</p>
             <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none; margin-left: auto;"><div class="icon-github github_header-btn" style="height: 1rem; width: 1rem;"></div></a>
             <button class="try_web-btn" onclick="window.location.pathname = '/authui/'">Try Web<div class="icon-globe" style="margin-left: 0.5rem; color: white; font-size: .75rem !important; height: .75rem; width: .75rem;"></div></button>
@@ -48,7 +48,7 @@
                 <br>We care about <span style="font-weight: 500;">your</span> experience with us, and <span style="font-weight: 500; text-decoration: underline; text-decoration-thickness: 7.5%;">not your data</span>.
             </p>
             <div style="display: flex; align-items: center; margin-top: 2rem;">
-                <button class="try_clatter_now-btn" onclick="window.location.pathname = '/authui/'">Try Clatter Now <div class="icon-arrow-right" style="color: white; margin-left: .25rem; font-size: .75rem !important;"></div></button>
+                <button class="try_clatter_now-btn" onclick="window.location.pathname = '/authui/'">Try Clatter Now <div class="icon-arrow-up-right" style="color: white; margin-left: .25rem; font-size: .75rem !important;"></div></button>
                 <a href="https://www.github.com/Quntem/Clatter" target="_blank" class="contribute-btn">Contribute<div class="icon-github" style="margin-left: .5rem;"></div></a>
             </div>
 
@@ -130,7 +130,8 @@
 
     <script>
         const elements = {
-            slug_change: document.getElementById("slug_change")
+            slug_change: document.getElementById("slug_change"),
+            header_logo: document.getElementById("header_logo")
         };
     
         const slug_change_texts = [
@@ -146,6 +147,13 @@
         window.addEventListener("load", () => {
             checkBeta();
             let currentIndex = 1;
+
+            if (!header_logo.complete) {
+                header_logo.addEventListener('load', handleImageLoad);
+                header_logo.addEventListener('error', handleImageLoad);
+            } else {
+                handleImageLoad();
+            }
     
             setInterval(() => {
                 // elements.slug_change.classList.remove("morph-in");
@@ -159,12 +167,18 @@
             }, 2000);
         });
     
-        function checkBeta() {
+        const checkBeta = () => {
             if (window.location.origin === "https://clatterpreview.quntem.co.uk" || window.location.origin === "https://beta.clatter.work") {
                 document.title = "Clatter Beta | Home";
             } else if (window.location.origin === "http://localhost:3000") {
                 document.title = "Clatter Dev | Home"
             }
+        }
+
+        const handleImageLoad = () => {
+        	header_logo.classList.remove('skeleton');
+        	header_logo.removeEventListener('load', handleImageLoad)
+            print("Image loaded")
         }
     </script>    
 </html>
