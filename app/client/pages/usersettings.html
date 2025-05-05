@@ -19,10 +19,7 @@
             <div class="icon-log-out sidebar-listitem-icon" style="margin-right: 25px; margin-left: auto; color: rgb(205, 50, 50);" onclick="authClient.signOut().then(() => location.reload())"></div>
 
             <script>
-                authClient.organization.getFullOrganization()
-                .then(ao => {
-                    $("#mainarea-header-sub").html(ao.data.name)
-                })
+                $("#mainarea-header-sub").html(authsession.data.user.name)
 
                 var uploadFile = function() {
                     return new Promise((resolve, reject) => {

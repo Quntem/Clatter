@@ -12,13 +12,13 @@ const server = createServer(app)
 const prisma = new PrismaClient()
 const io = new Server(server)
 
-app.use(
-    cors({
-      origin: "*", // Replace with your frontend's origin
-      methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
-      credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-    })
-);
+// app.use(
+//     cors({
+//       origin: "*", // Replace with your frontend's origin
+//       methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
+//       credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+//     })
+// );
 
 app.all("/api/auth/*", toNodeHandler(auth));
 
