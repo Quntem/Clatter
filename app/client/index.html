@@ -80,7 +80,7 @@
             }
 
             var CreateChannel = function(name) {
-                fetch("/api/channels/create?channelname=" + name, {
+                fetch("/api/channels/create?channelname=" + encodeURIComponent(name), {
                     "method": "POST",
                 })
                 .then(function (response) {
@@ -95,7 +95,7 @@
             }
 
             var AddUser = function(userid) {
-                fetch("/api/workspace/users/add?id=" + userid, {
+                fetch("/api/workspace/users/add?id=" + encodeURIComponent(userid), {
                     "method": "POST",
                 })
                 .then(function (response) {
