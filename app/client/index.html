@@ -230,6 +230,12 @@
                             })
 
                     } else {
+                        $("#workspaceswitcher").html("")
+                        $("#workspaceswitcher").append(`
+                            <div class="workspaceswitcheradd" data-tooltip="Create A New Workspace" onclick="createworkspace()">
+                                <div class="icon-plus workspaceswitcheradd-icon"></div>
+                            </div>
+                        `)
                         if (finishedpageload == false ) {
                             finishedpageload  = true
                             fadeoutsplash()

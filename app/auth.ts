@@ -245,5 +245,6 @@ export const auth = betterAuth({
         organization(),
         multiSession(),
         expo()
-    ] 
+    ],
+    trustedOrigins: [process.env.BETTER_AUTH_URL],
 })
