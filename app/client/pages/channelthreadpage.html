@@ -95,7 +95,18 @@
                 </div>
             </div>
 
+            <div class="icon-trash-2 sidebar-listitem-icon message-delete-button" style="display: none; margin-right: 25px; margin-left: auto; color: rgb(205, 50, 50);" onclick="deleteMessage()"></div>
+
             <script>
+                var deleteMessage = function() {
+                    fetch("/api/channel/" + currentchannelid + "/message/" + currentmessageid + "/delete")
+                    .then(res => res.json())
+                    .then(res => {
+                        if(res === "done") {
+                            NavigatePage('channelpage')
+                        }
+                    })
+                }
                 fetch("/api/channel/" + currentchannelid + "/info")
                 .then(res => res.json())
                 .then(channel => {
@@ -188,6 +199,9 @@
                                 }
                             }
                         })
+                        if(element.sender == authsession.data.user.id) {
+                            $(".message-delete-button").show()
+                        }
                         $("#messageareaoriginal").append(`
                             <div class="messagebox">
                                 <img src="` + currentpfp + `" class="messageprofilepicture" />
