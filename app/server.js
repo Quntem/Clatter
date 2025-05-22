@@ -28,7 +28,7 @@ app.get("/api/test", async (req, res) => {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   });
-  console.log(session)
+  // console.log(session)
   res.json(session)
 })
 
@@ -37,7 +37,7 @@ app.post("/api/channels/create", async (req, res) => {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
     });
-    console.log(session)
+    // console.log(session)
     const orgmember = await auth.api.getActiveMember({
       headers: fromNodeHeaders(req.headers),
     });
@@ -53,7 +53,7 @@ app.post("/api/channels/create", async (req, res) => {
       res.send("not permitted")
     }
   } catch(err) {
-    console.log(err)
+    // console.log(err)
   }
 })
 
@@ -69,7 +69,7 @@ app.get("/api/channels/list", async (req, res) => {
     })
     res.json(channellist)
   } catch(err) {
-    console.log(err)
+    // console.log(err)
   }
 })
 
@@ -86,7 +86,7 @@ app.get("/api/channel/:channelid/info", async (req, res) => {
     })
     res.json(channel)
   } catch(err) {
-    console.log(err)
+    // console.log(err)
   }
 })
 
@@ -102,7 +102,7 @@ app.get("/api/documents/listown", async (req, res) => {
     })
     res.json(channellist)
   } catch(err) {
-    console.log(err)
+    // console.log(err)
   }
 })
 
@@ -143,7 +143,7 @@ app.post("/api/workspace/users/add", async (req, res) => {
       res.send("not permitted")
     }
   } catch {
-    console.log("test")
+    // console.log("test")
   }
 })
 
@@ -194,6 +194,29 @@ app.get("/api/channel/:channelid/thread/:messageid/messages/list", async (req, r
   res.json(messages)
 })
 
+app.get("/api/channel/:channelid/message/:messageid/delete", async (req, res) => {
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers),
+  });
+  var message = await prisma.message.findUnique({
+    where: {
+      id: req.params.messageid,
+      parentid: req.params.channelid
+    }
+  })
+  if(message.sender === session.session.userId) {
+    await prisma.message.delete({
+      where: {
+        id: req.params.messageid,
+        parentid: req.params.channelid
+      }
+    })
+    res.json("done")
+  } else {
+    res.json("not permitted")
+  }
+})
+
 app.get("/api/channel/:channelid/message/:messageid/info", async (req, res) => {
   try {
     const session = await auth.api.getSession({
@@ -207,7 +230,7 @@ app.get("/api/channel/:channelid/message/:messageid/info", async (req, res) => {
     })
     res.json(message)
   } catch(err) {
-    console.log(err)
+    // console.log(err)
   }
 })
 
@@ -236,4 +259,4 @@ server.listen(3000)
 
 ViteExpress.bind(app, server)
 
-// ViteExpress.listen(app, 3000, () => console.log("Server is listening..."));
+// ViteExpress.listen(app, 3000, () => // console.log("Server is listening..."));
