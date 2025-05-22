@@ -17,7 +17,7 @@
         <div class="icon-arrow-left back-btn" id="back-btn" onclick="window.location.href = window.location.origin + '/authui/' + '?callback=' + window.location.origin + '/client/'"></div>
 
         <div class="authboxholder">
-            <img src="/public/ClatterMonotoneLogo.svg" id="loginlogo" />
+            <img src="/public/ClatterMonotoneLogo.svg" id="loginlogo" width="48" height="48"/>
             
             <div class="authboxtext">
                 Sign In To Clatter
@@ -27,8 +27,10 @@
                 <input type="email" class="auth-input" id="email" placeholder="Email">
                 <input type="password" class="auth-input" id="password" placeholder="Password">
                 
-                <div class="signin-button" onclick="signin()">
-                    Sign In
+                <div class="signin-button-area">
+                    <div class="signin-button" onclick="signin()">
+                        Sign In
+                    </div>
                 </div>
             </div>
         </div>

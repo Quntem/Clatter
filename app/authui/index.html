@@ -18,29 +18,40 @@
         <div class="icon-arrow-left back-btn" id="back-btn" onclick="window.location.href = window.location.origin;"></div>
 
         <div class="authboxholder">
-            <img src="/public/ClatterMonotoneLogo.svg" id="loginlogo" />
+            <img src="/public/Logo.svg" id="loginlogo" width="48" height="48"/>
+            <h1 class="auth-header">Let's get signed in with your email!</h1>
+            <h2 class="auth-subheader" id="auth-subheader">Clatter Authentication</h2>
             <div class="authbox">
-                <div class="signin-button" onclick="window.location.pathname = '/authui/signin'">
-                    Sign In
+                <input type="text" id="email" placeholder="Email" class="auth-input"/>
+
+                <div class="signin-button-area">
+                    <div class="signin-button" onclick="window.location.href = '/authui/signin?email=' + encodeURIComponent(document.getElementById('email').value) + '&callback=' + encodeURIComponent(new URLSearchParams(window.location.search).get('callback'))">
+                        Sign In
+                    </div>
+                    <div class="signin-button-secondary" onclick="window.location.href = '/authui/signup?email=' + encodeURIComponent(document.getElementById('email').value) + '&callback=' + encodeURIComponent(new URLSearchParams(window.location.search).get('callback'))">
+                        Sign Up
+                    </div>
                 </div>
                 
-                <div class="signin-button-secondary" onclick="window.location.pathname = '/authui/signup'">
+                <!-- <div class="signin-button-secondary" onclick="window.location.pathname = '/authui/signup'">
                     Sign Up
                 </div>
 
                 <div class="signin-button-secondary" onclick="window.location.pathname = '/authui/resetpassword'">
                     Reset Password
-                </div>
+                </div> -->
             </div>
         </div>
+
+        <footer>
+            <a href="/legal/terms-of-service/index.html" class="footer-link">Terms of Service</a>
+        </footer>
     </body>
 
     <script>
-        if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
-            console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
+        if (window.location.origin == "https://clatterpreview.quntem.co.uk") {
             document.title = "Clatter Authentication Beta";
-        } else {
-            console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
+            document.getElementById("auth-subheader").innerHTML = "Clatter Authentication Beta";
         }
     </script>
 </html>

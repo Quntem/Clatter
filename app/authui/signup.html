@@ -17,7 +17,7 @@
         <div class="icon-arrow-left back-btn" id="back-btn" onclick="window.location.href = window.location.origin + '/authui/' + '?callback=' + window.location.origin + '/client/'"></div>
 
         <div class="authboxholder" name="authboxholder">
-            <img src="/public/ClatterMonotoneLogo.svg" id="loginlogo" />
+            <img src="/public/ClatterMonotoneLogo.svg" id="loginlogo" width="48" height="48"/>
             
             <div class="authboxtext">
                 Sign Up To Clatter
@@ -37,17 +37,12 @@
                 <input type="email" class="auth-input" id="email" placeholder="Email">
                 <input type="password" class="auth-input" id="password" placeholder="Password">
 
-                <div class="signin-button-secondary" style="margin-top: 0px;" onclick="signup()">
-                    Sign Up
+                <div class="signin-button-area">
+                    <div class="signin-button-secondary" style="margin-top: 0px; width: 100%;" onclick="signup()">
+                        Sign Up
+                    </div>
                 </div>
             </div>
         </div>
-
-        <script>
-            window.onbeforeunload = function() {
-                // Returns Custom Confirmation Message for Old Browsers (Modern Browsers DO NOT Support This!)
-                return "Are you sure you want to leave this page? If you leave this page, your current signing up process will be discarded!";
-            };
-        </script>
     </body>
 </html>
