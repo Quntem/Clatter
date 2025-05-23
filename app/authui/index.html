@@ -44,14 +44,21 @@
         </div>
 
         <footer>
-            <a href="/legal/terms-of-service/index.html" class="footer-link">Terms of Service</a>
+            <a href="/legal/terms-of-service/" class="footer-link">Terms of Service</a>
         </footer>
     </body>
 
     <script>
-        if (window.location.origin == "https://clatterpreview.quntem.co.uk") {
+        const elements = {
+            subheader: document.getElementById("auth-subheader")
+        };
+
+        if (window.location.origin == "https://clatterpreview.quntem.co.uk" || window.location.origin == "https://beta.clatter.work") {
             document.title = "Clatter Authentication Beta";
-            document.getElementById("auth-subheader").innerHTML = "Clatter Authentication Beta";
+            elements.subheader.innerHTML = "Clatter Authentication Beta";
+        } else if (window.location.origin === "http://localhost:3000") {
+            document.title = "Clatter Authentication Dev";
+            elements.subheader.innerHTML = "Clatter Authentication Dev";
         }
     </script>
 </html>

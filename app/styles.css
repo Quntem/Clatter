@@ -286,3 +286,12 @@ footer {
 	margin-bottom: 3rem;
 	text-align: center;
 }
+.footer-link {
+	color: #666666;
+	text-decoration: underline;
+	text-decoration-thickness: 10%;
+	text-decoration-color: rgba(102, 102, 102, 0.5);
+	text-underline-offset: 0.25rem;
+	font-size: 0.9rem;
+	font-weight: 500;
+}
