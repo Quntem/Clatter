@@ -5,6 +5,15 @@ window.authClient = authClient
 const params = new URLSearchParams(document.location.search);
 let redirurl = params.get("callback");
 redirurl = DOMPurify.sanitize(redirurl);
+let emailFromParams = params.get("email");
+emailFromParams = DOMPurify.sanitize(emailFromParams);
+
+if (emailFromParams) {
+    const emailInput = document.getElementById("email");
+    if (emailInput) {
+        emailInput.value = emailFromParams;
+    }
+}
 
 window.signin = function() {
     authClient.signIn.email({

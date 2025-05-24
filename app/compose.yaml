@@ -35,8 +35,6 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "5432:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-d", "auth", "-U", "postgres"]
       interval: 5s
