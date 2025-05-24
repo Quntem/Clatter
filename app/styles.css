@@ -52,8 +52,8 @@ button {
 header {
 	display: flex;
 	align-items: center;
-	margin-left: 12.5rem;
-	margin-right: 12.5rem;
+	margin-left: 20dvw;
+	margin-right: 20dvw;
 	margin-top: 2.875rem;
 }
 .try_web-btn {
@@ -73,7 +73,7 @@ header {
 	filter: drop-shadow(0px 2px 2px rgba(24, 155, 220, 25%));
 	transition: all 150ms ease;
 }
-.try_web-btn:hover {
+.try_web-btn:hover, .try_web-btn:focus {
 	padding-left: 1rem;
 	padding-right: 1rem;
 	background-color: var(--btn_hovered_color);
@@ -84,7 +84,7 @@ header {
 	background-color: rgba(255, 255, 255, 0);
 	cursor: pointer;
 }
-.github_header-btn:hover {
+.github_header-btn:hover, .github_header-btn:focus {
 	background-color: rgb(102, 102, 102, 100%);
 	color: white;
 	padding: 0.375rem;
@@ -105,6 +105,14 @@ header {
 	background-color: rgb(150, 150, 150, 0.12);
 	text-align: center;
 	border-radius: 6.25rem;
+}
+.header-h1 {
+	font-weight: normal;
+	font-size: clamp(2.5rem, 8vw, 3.75rem);
+	margin-top: 1.5rem;
+	margin-bottom: 1.5rem;
+	margin-left: 20dvw;
+	margin-right: 20dvw;
 }
 .highlighted_h1-span {
 	position: relative;
@@ -138,6 +146,11 @@ header {
 	opacity: 1;
 }
 */
+.description-p {
+	font-size: clamp(0.85rem, 1.5vw, 1rem);
+	margin-left: 20dvw;
+	margin-right: 20dvw;
+}
 .try_clatter_now-btn {
 	margin-left: auto;
 	display: flex;
@@ -155,7 +168,7 @@ header {
 	filter: drop-shadow(0px 2px 2px rgba(24, 155, 220, 25%));
 	transition: all 150ms ease;
 }
-.try_clatter_now-btn:hover {
+.try_clatter_now-btn:hover, .try_clatter_now-btn:focus {
 	padding-left: 1rem;
 	padding-right: 1rem;
 	transform: rotate(4deg);
@@ -171,7 +184,7 @@ header {
 	text-decoration: none;
 	transition: all 150ms ease;
 }
-.contribute-btn:hover {
+.contribute-btn:hover, .contribute-btn:focus {
 	transform: rotate(-4deg);
 }
 .ticker {
@@ -182,7 +195,7 @@ header {
 	display: flex;
 	animation: ticker 20s linear infinite;
 }
-.ticker__wrap:hover {
+.ticker__wrap:hover, .ticker__wrap:focus {
 	animation-play-state: paused;
 }
 .ticker__content {
@@ -193,8 +206,12 @@ header {
 	margin-right: 1rem;
 	border-radius: 9px;
 	transition: all 150ms ease-in-out;
+	aspect-ratio: 1.54 / 1;
+	margin-top: 6.5rem;
+	margin-bottom: 2rem;
+	height: clamp(8rem, 25vw, 15rem);
 }
-.ticker__content img:hover {
+.ticker__content img:hover, .ticker__content img:focus {
 	transform: scale(1.05);
 }
 @keyframes ticker {
@@ -206,10 +223,39 @@ header {
 	}
 }
 /* we're open sourced or something */
+.open_source-div {
+	text-align: left;
+	margin-left: 20dvw;
+	display: flex;
+	margin-top: 4rem;
+}
+.open_source_text_flex-div {
+	display: flex;
+	flex-direction: column;
+}
+.open_source-h1 {
+	font-weight: normal;
+	font-size: clamp(1.5rem, 6vw, 2.25rem);
+	margin-bottom: 0;
+}
+.open_source_description-p {
+	width: clamp(18rem, 60vw, 35.5rem);
+	margin-top: 1rem;
+	margin-bottom: 0;
+	font-size: clamp(0.85rem, 1.5vw, 1rem);
+}
+.open_source_buttons_flex-div {
+	display: flex;
+	flex-direction: column;
+	margin-top: auto;
+	margin-left: auto;
+	margin-right: 20dvw;
+	gap: 0.75rem
+}
 .wavy_text-span {
 	display: inline-block;
 	animation: wave 1s ease-in-out infinite;
-	font-size: 2.25rem;
+	font-size: clamp(1.5rem, 6vw, 2.25rem);
 	white-space: pre;
 }
 .wavy_text .wavy_text-span:nth-child(1) {
@@ -257,29 +303,49 @@ header {
 	display: flex;
 	background-color: var(--btn_color);
 	box-shadow: 0px 2px 2px 0px var(--btn_semivisible_color);
-	font-size: .75rem;
+	font-size: clamp(0.7rem, 2vw, 0.75rem);
 }
-.visit_github-btn:hover {
+.visit_github-btn:hover, .visit_github-btn:focus {
 	padding: .6rem;
 	padding-left: 1.35rem;
 	padding-right: 1.35rem;
-	font-size: .8rem;
+	font-size: clamp(0.75rem, 2vw, 0.8rem);
 	background-color: var(--btn_color);
 }
 .developers_documentation-btn {
-	margin-top: .75rem;
 	display: flex;
 	background-color: var(--btn_grey_color);
 	box-shadow: 0px 2px 2px 0px rgba(102, 102, 102, 0.25);
-	font-size: .75rem;
+	font-size: clamp(0.7rem, 2vw, 0.75rem);
 }
-.developers_documentation-btn:hover {
+.developers_documentation-btn:hover, .developers_documentation-btn:focus {
 	padding: .6rem;
 	padding-left: 1.35rem;
 	padding-right: 1.35rem;
-	font-size: .8rem;
+	font-size: clamp(0.75rem, 2vw, 0.8rem);
 	background-color: var(--btn_grey_hovered_color);
 }
+
+/* built for work styling */
+.built_for_work-div {
+	text-align: right;
+	margin-left: 20dvw;
+	margin-right: 20dvw;
+	margin-top: 6rem;
+}
+.built_for_work-h1 {
+	font-weight: normal;
+	font-size: clamp(1.5rem, 6vw, 2.25rem);
+	margin-bottom: 0;
+}
+.built_for_work_description-p {
+	width: clamp(18rem, 60vw, 35.5rem);
+	font-size: clamp(0.85rem, 1.5vw, 1rem);
+	margin-top: 1rem;
+	margin-bottom: 0;
+	margin-left: auto;
+}
+
 /* footer styling */
 footer {
 	margin-top: 4.5rem;
@@ -294,4 +360,63 @@ footer {
 	text-underline-offset: 0.25rem;
 	font-size: 0.9rem;
 	font-weight: 500;
+}
+
+/* Phones (max-width: 480px) */
+@media (max-width: 480px) {
+	header {
+		margin-left: 10dvw;
+		margin-right: 10dvw;
+	}
+	.header-h1 {
+		margin-left: 10dvw;
+		margin-right: 10dvw;
+	}
+	.description-p {
+		margin-left: 10dvw;
+		margin-right: 10dvw;
+	}
+	.open_source-div {
+		margin-left: 10dvw;
+		margin-right: 10dvw;
+		flex-direction: column;
+	}
+	.open_source_description-p {
+		width: 100%;
+		margin-right: 0;
+	}
+	.open_source_buttons_flex-div {
+		flex-direction: row;
+		margin-top: 1rem;
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.built_for_work-div {
+		margin-left: 10dvw;
+		margin-right: 10dvw;
+		margin-top: 4rem;
+	}
+	.built_for_work_description-p {
+		width: 100%;
+		margin-left: 0;
+	}
+	footer p {
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+}
+
+/* Horizontal phones (max-width: 767px) */
+@media (max-width: 767px) {
+	
+}
+
+/* Tablets (max-width: 979px) */
+@media (max-width: 979px) {
+	
+}
+
+/* Small laptops (max-width: 1200px) */
+@media (max-width: 1200px) {
+	
 }

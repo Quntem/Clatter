@@ -74,7 +74,7 @@ header {
 /* Legal Header Styling */
 .legal-header {
 	text-align: center;
-	font-size: 3.75rem;
+	font-size: clamp(2rem, 6vw, 3.75rem);
 	font-weight: 500;
 	margin-top: 3rem;
 	margin-bottom: 3rem;
