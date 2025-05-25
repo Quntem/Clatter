@@ -9,11 +9,12 @@
 
         <!-- CSS -->
         <link rel="stylesheet" href="styles.css"/>
+        <link rel="stylesheet" href="/tooltip.css"/>
         <script src="auth-ui-client.js" type="module"></script>
     </head>
 
     <body>
-        <div class="icon-arrow-left back-btn" id="back-btn" onclick="window.location.href = window.location.origin + '/authui/index.html' + '?callback=/client/';"></div>
+        <div class="icon-arrow-left back-btn" id="back-btn" onclick="window.location.href = window.location.origin + '/client/'"></div>
 
         <div class="authboxholder" name="authboxholder">
             <img src="/ClatterMonotoneLogo.svg" id="loginlogo" />
@@ -35,20 +36,33 @@
         </div>
 
         <footer>
-            <p class="footer-link" onclick="">Your User ID:<br><span id="userid" onclick="toggleUserId()" style="cursor: pointer;"></span></p>
+            <p class="footer-link" style="line-height: 1.5rem; font-size: 0.8rem; position: relative;">
+                Your User ID:
+                <br>
+                <span id="userid" onclick="toggleUserId()" style="cursor: pointer; -webkit-user-select: none; -ms-user-select: none; user-select: none; font-size: 0.9rem;"></span>
+            </p>
         </footer>
 
         <script>
+            var toggledUserId = false; // default state
+            var userIdElem = document.getElementById("userid");
+
             var pagefunction = function() {
                 authClient.getSession()
                     .then(res => {
                         authsession = res
-                        document.getElementById("userid").innerHTML = res.data.user.id
+                        userIdElem.innerText = "●".repeat(res.data.user.id.length);
                     })
             }
             
             var toggleUserId = function() {
-                console.log("Toggling User ID visibility");
+                if (toggledUserId) { // hide user id
+                    userIdElem.innerText = "●".repeat(authsession.data.user.id.length);
+                    toggledUserId = false;
+                } else { // show user id
+                    userIdElem.innerText = authsession.data.user.id;
+                    toggledUserId = true;
+                }
             }
         </script>
     </body>
