@@ -22,6 +22,9 @@ body {
 	font-family: 'Figtree', sans-serif;
 	color: #666666;
 }
+button, a {
+	cursor: pointer;
+}
 .authbox {
 	height: auto;
 	width: 25dvw;
@@ -142,6 +145,10 @@ input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus
 	-webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 footer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 1rem;
 	margin-bottom: 2rem;
 }
 .footer-link {
