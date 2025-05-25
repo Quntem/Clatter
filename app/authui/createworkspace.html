@@ -18,30 +18,38 @@
         <div class="authboxholder" name="authboxholder">
             <img src="/public/ClatterMonotoneLogo.svg" id="loginlogo" />
             <div class="authboxtext">
-                Create Your Workspace
+                Create <span style="font-weight: 600;">Your</span> Workspace
             </div>
             <div class="authbox" name="authbox">
                 <input type="url" class="auth-input" id="imgurl" placeholder="Image URL">
                 
                 <input type="text" class="auth-input" maxlength="35" id="name" placeholder="Workspace Name">
                 <input type="text" class="auth-input" id="slug" placeholder="Slug">
+            </div>
 
-                <div class="signin-button-secondary" style="margin-top: 0px;" onclick="createworkspace()">
+            <div class="signin-button-area">
+                <div class="signin-button-secondary" style="margin-top: 0px; width: 100%;" onclick="createworkspace()">
                     Create Workspace
                 </div>
             </div>
-            <div class="authboxtext" style="margin-top: 20px; text-align: center;">
-                Join an existing workspace (with your user id):<br><div id="userid"></div>
-            </div>
-            <script>
-                var pagefunction = function() {
-                    authClient.getSession()
-                        .then(res => {
-                            authsession = res
-                            document.getElementById("userid").innerHTML = res.data.user.id
-                        })
-                }
-            </script>
         </div>
+
+        <footer>
+            <p class="footer-link" onclick="">Your User ID:<br><span id="userid" onclick="toggleUserId()" style="cursor: pointer;"></span></p>
+        </footer>
+
+        <script>
+            var pagefunction = function() {
+                authClient.getSession()
+                    .then(res => {
+                        authsession = res
+                        document.getElementById("userid").innerHTML = res.data.user.id
+                    })
+            }
+            
+            var toggleUserId = function() {
+                console.log("Toggling User ID visibility");
+            }
+        </script>
     </body>
 </html>
