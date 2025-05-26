@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { openAPI, organization, oidcProvider, multiSession, } from "better-auth/plugins"
+import { bearer, openAPI, organization, oidcProvider, multiSession, } from "better-auth/plugins"
 import pg from "pg"
 import { expo } from "@better-auth/expo"
 var { Pool } = pg
@@ -466,7 +466,8 @@ export const auth = betterAuth({
         oidcProvider(),
         organization(),
         multiSession(),
-        expo()
+        expo(),
+	    bearer(),
     ],
     trustedOrigins: [process.env.BETTER_AUTH_URL],
 })
