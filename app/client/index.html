@@ -116,14 +116,16 @@
                 .then(res => {
                     console.log(res)
                     $("#channelssblist").html("")
-                    res.forEach(channel => {
-                        $("#channelssblist").append(`
-                            <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
-                                <div class="icon-hash sidebar-listitem-icon"></div>
-                                <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
-                            </div>
-                        `)
-                    })
+                    if (res.length > 0) {
+                        res.forEach(channel => {
+                            $("#channelssblist").append(`
+                                <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
+                                    <div class="icon-hash sidebar-listitem-icon"></div>
+                                    <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
+                                </div>
+                            `)
+                        })
+                    }
                 })
             }
 
@@ -143,7 +145,7 @@
 
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 26px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
-            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
+            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><span style="font-weight: 500;">Clatter </span>Client</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
             <!-- <div class="sidebar-profile"></div> -->
@@ -189,6 +191,7 @@
                         <div class="sidebar-listarea-titletext">Channels</div>
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
                     </div>
+
                     <div class="sidebar-listarea-inner" id="channelssblist">
                     </div>
                 </div>
@@ -226,7 +229,7 @@
                                         fadeoutsplash()
                                     }
                                 } catch {
-                                    console.log("no active org")
+                                    console.log("There is no active org.")
                                     if (finishedpageload == false ) {
                                         finishedpageload  = true
                                         fadeoutsplash()
@@ -249,11 +252,10 @@
                 })
             }
 
-            if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
-                console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
-                document.title = "Clatter Client Beta";
-            } else {
-                console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
+            if (window.location.origin == "https://beta.clatter.work" || window.location.origin == "https://clatterpreview.quntem.co.uk") {
+                document.title = "Clatter | Beta Client";
+            } else if (window.location.origin === "http://localhost:3000") {
+                document.title = "Clatter | Dev Client"
             }
         </script>
 
