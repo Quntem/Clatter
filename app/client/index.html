@@ -24,10 +24,10 @@
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
         <script src="/client/global/splash.js"></script>
+        <script src="/selfxss.js"></script>
         <script src="/documenteditor.js" type="module"></script>
 
         <script>
-
             finishedpageload = false
 
             function sanitizeHTML(text) {
@@ -49,41 +49,40 @@
             }
 
             var switchworkspace = function(obj) {
-                NavigatePage("placeholder")
-                
-                authClient.organization.setActive({
-                    organizationId: $(obj).attr("orgid")
-                })
-
-                .then(res => {
-                    authClient.organization.getFullOrganization()
-                    .then(ao => {
-                        fullorg = ao
-                        $("#workspaceswitcher").find(".workspaceswitcheritem").toArray().forEach(element => {
-                            $(element).removeAttr("selected")
-                        });
-                        $("#topbuttons").hide()
-                        $("#useradminarea").hide()
-                        $("#sidebar-wsinfo-name").text(ao.data.name)
-                        $("#sidebar-wsinfo-sub").text("" + ao.data.slug)
-                        GetChannels()
-                        $("#sidebartogglebutton").show()
-                        $("#shellsidebar").show()
-                        $(obj).closest(".workspaceswitcheritem").attr("selected", "selected")
-                        if (finishedpageload == false ) {
-                            finishedpageload  = true
-                            fadeoutsplash()
-                        }
+                const orgId = $(obj).attr("orgid");
+                const orgName = $(obj).data("tooltip");
+                        
+                // Optimistically update the UI
+                $("#sidebar-wsinfo-name").text(orgName || "Loading...");
+                $("#workspaceswitcher").find(".workspaceswitcheritem").removeAttr("selected");
+                $(obj).attr("selected", "selected");
+                $("#shellsidebar").show()
+                        
+                // Load workspace data in the background
+                authClient.organization.setActive({ organizationId: orgId })
+                    .then(res => {
+                        return authClient.organization.getFullOrganization();
                     })
-                })
-            }
+                    .then(ao => {
+                        // Update UI with the full workspace details
+                        $("#sidebar-wsinfo-name").text(ao.data.name);
+                        $("#sidebar-wsinfo-sub").text(ao.data.slug);
+                        GetChannels(); // Update channels for the workspace
+                        fullorg = ao
+                    })
+                    .catch(err => {
+                        console.error("Failed to load workspace data:", err);
+                        // Provide error feedback to the user
+                        $("#sidebar-wsinfo-name").text("Error Loading Workspace");
+                    });
+            };
 
             var NavigatePage = function(pagename) {
                 $("#mainarea").load("/client/pages/" + pagename)
             }
 
             var CreateChannel = function(name) {
-                fetch("/api/channels/create?channelname=" + name, {
+                fetch("/api/channels/create?channelname=" + encodeURIComponent(name), {
                     "method": "POST",
                 })
                 .then(function (response) {
@@ -98,7 +97,7 @@
             }
 
             var AddUser = function(userid) {
-                fetch("/api/workspace/users/add?id=" + userid, {
+                fetch("/api/workspace/users/add?id=" + encodeURIComponent(userid), {
                     "method": "POST",
                 })
                 .then(function (response) {
@@ -118,31 +117,36 @@
                 .then(res => {
                     console.log(res)
                     $("#channelssblist").html("")
-                    res.forEach(channel => {
-                        $("#channelssblist").append(`
-                            <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
-                                <div class="icon-hash sidebar-listitem-icon"></div>
-                                <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
-                            </div>
-                        `)
-                    })
+                    if (res.length > 0) {
+                        res.forEach(channel => {
+                            $("#channelssblist").append(`
+                                <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
+                                    <div class="icon-hash sidebar-listitem-icon"></div>
+                                    <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
+                                </div>
+                            `)
+                        })
+                    }
                 })
             }
 
             var ToggleSidebar = function() {
-                $("#workspaceswitcher").toggle()
-                $("#shellsidebar").toggle()
+                if ($("#shellsidebar").is(":visible")) {
+                    $("#shellsidebar").hide()
+                } else {
+                    $("#shellsidebar").show()
+                }
             }
         </script>
     </head>
 
     <body>
 
-        <beacon-splash imgsrc="/public/ClatterLogo.svg" awr="true"></beacon-splash>
+        <beacon-splash imgsrc="/ClatterMonotoneLogo.svg" awr="true"></beacon-splash>
 
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 26px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
-            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
+            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><span style="font-weight: 500;">Clatter </span>Client</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
             <!-- <div class="sidebar-profile"></div> -->
@@ -188,6 +192,7 @@
                         <div class="sidebar-listarea-titletext">Channels</div>
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
                     </div>
+
                     <div class="sidebar-listarea-inner" id="channelssblist">
                     </div>
                 </div>
@@ -207,7 +212,7 @@
                         res.data.forEach(item => {
                             $("#workspaceswitcher").append(`
                                 <div class="workspaceswitcheritem" onclick="switchworkspace(this)" data-tooltip="` + item.name + `" orgid="` + item.id + `">
-                                    <img class="workspaceswitcheriteminner" src="` + item.logo + `"></img>
+                                    <img class="workspaceswitcheriteminner" src="` + (item.logo || '/client/wsicon.png') + `" onerror="this.onerror=null;this.src='/client/wsicon.png';">
                                 </div>
                             `)
                         })
@@ -220,8 +225,12 @@
                             .then(ao => {
                                 try {
                                     switchworkspace($("[orgid=" + ao.data.id + "]"))
+                                    if (finishedpageload == false ) {
+                                        finishedpageload  = true
+                                        fadeoutsplash()
+                                    }
                                 } catch {
-                                    console.log("no active org")
+                                    console.log("There is no active org.")
                                     if (finishedpageload == false ) {
                                         finishedpageload  = true
                                         fadeoutsplash()
@@ -244,11 +253,10 @@
                 })
             }
 
-            if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
-                console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
-                document.title = "Clatter Client Beta";
-            } else {
-                console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
+            if (window.location.origin == "https://beta.clatter.work" || window.location.origin == "https://clatterpreview.quntem.co.uk") {
+                document.title = "Clatter | Beta Client";
+            } else if (window.location.origin === "http://localhost:3000") {
+                document.title = "Clatter | Dev Client"
             }
         </script>
 

@@ -516,9 +516,10 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 15px;
+    padding: 1rem;
     border-bottom: 1px solid #e4e4e7;
     cursor: pointer;
+    transition: all 150ms ease;
 }
 
 .channellistitem:last-child {
@@ -526,6 +527,7 @@ body {
 }
 
 .channellistitem:hover {
+    padding-left: 1.5rem; padding-right: 1.5rem;
     background-color: #6d6d6d0a;
 }
 

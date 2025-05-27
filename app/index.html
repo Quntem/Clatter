@@ -4,13 +4,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <meta name="description" content="Your Workplace, All In One App">
-        <meta name="keywords" content="Quntem, Clatter, Quntem Clatter, Workplace, Slack, Cliq">
+        <meta name="description" content="Clatter - Your Ultimate Workplace App for Teams and Enterprises. Streamline communication, collaboration, and productivity in one beautifully designed platform.">
+        <meta name="keywords" content="Clatter, Workplace App, Team Collaboration, Productivity Tool, Slack Alternative, Open Source Software, Enterprise Communication, Team Management, Quntem Clatter">
+        <meta name="author" content="Quntem OpenSource">
+        <meta property="og:title" content="Clatter - Your Workplace, All In One App">
+        <meta property="og:description" content="Discover Clatter, the beautifully designed app for workplaces big and small. Open source and built for productivity.">
+        <meta property="og:image" content="/client-preview.png">
+        <meta property="og:url" content="https://clatter.work">
+        <meta name="twitter:card" content="summary_large_image">
         
-        <title>Clatter</title>
-        <link rel="icon" type="image/png" href="public/favicon.png">
+        <title>Clatter | Home</title>
+        <link rel="icon" type="image/png" href="/favicon.png">
 
-        <link rel="stylesheet" href="styles.css"/>
+        <link rel="stylesheet" href="/styles.css"/>
+        <link rel="stylesheet" href="/client/global/lucide-font/lucide.css"/>
+        <script src="/selfxss.js"></script>
         <script>
             !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
             posthog.init('phc_6PSUoIZsnC4dikeD4BE7zPxzooOBInc5cpRwMtLl3Zs', {
@@ -22,152 +30,157 @@
 
     <body>
         <header>
-            <img src="client/global/monotone-logo.svg" id="headerlogo" />
-            
-            <div class="headertitle" id="headertitle">
-                Clatter WorkRoom
-            </div>
-
-            <button class="signUpButton" style="border-radius: 999px;">
-                <a href="/authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
-                    Sign Up
-                </a>
-            </button>
-
-            <a href="/authui/index.html?callback=/client/" style="color: #666666; text-decoration: none; margin-right: 20px;">
-                Sign In
-            </a>
+            <img src="public/Logo.svg" height="26" width="26" style="height: 1.625rem; width: auto;" class="skeleton" id="header_logo" alt="Clatter Logo">
+            <p style="margin-left: 1rem; margin-top: 0; margin-bottom: 0;" id="headertitle"><span style="font-weight: 600;">Clatter</span> Workroom</p>
+            <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none; margin-left: auto;"><div class="icon-github github_header-btn" style="height: 1rem; width: 1rem;"></div></a>
+            <button class="try_web-btn" onclick="window.location = '/authui/?callback=/client/'">Try Web<div class="icon-globe" style="margin-left: 0.5rem; color: white; font-size: .75rem !important; height: .75rem; width: .75rem;"></div></button>
         </header>
 
-        <div class="mainarea">
-            <div class="innermainarea">
-                <h1 class="textAlignLeft" style="padding-top: 6.5rem;">Your Workplace, All In One App</h1>
-                
-                <p class="textAlignLeft" style="max-width: 36rem; margin-top: 1rem;">
-                    All of your workplace's basic features into one app.
-                    Message, upload and share to an opensourced platform for completely free.
-                    From the developers of other closed and opensourced tools such as Quntem Creator, All In One Link and many more.
-                </p>
+        <!--
+            This page uses PostHog for analytics, which is an open source analytics platform.
+            If you want to see our source code for Clatter, it's at www.github.com/Quntem/Clatter.
+            🥚 <- Here's an Easter egg!
+        -->
 
-                <button class="mainareacreate" style="margin-bottom: 5rem;">
-                    <a href="/authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
-                        <span>
-                            Create A Workspace
-                        </span>
-                    </a>
-                </button>
+        <div style="text-align: center;">
+            <div class="beta_badge-div"><div class="icon-code-xml" style="margin-right: .5rem; height: 1rem; width: 1rem;"></div>Beta</div>
+            <h1 class="header-h1">Your Workspace, In <span class="highlighted_h1-span">One <span id="slug_change">App</span></span></h1>
+            <p class="description-p">A <span style="font-weight: 500;">new </span>and <span style="font-weight: 500;">beautifully</span> designed application for workplaces <span style="font-weight: 500;">big</span> and <span style="font-weight: 500;">small</span> alike.
+                <br>We care about <span style="font-weight: 500;">your</span> experience with us, and <span style="font-weight: 500; text-decoration: underline; text-decoration-thickness: 7.5%;">not your data</span>.
+            </p>
+            <div style="display: flex; align-items: center; margin-top: 2rem;">
+                <button class="try_clatter_now-btn" onclick="window.location = '/authui/?callback=/client/'">Try Clatter Now <div class="icon-arrow-up-right" style="color: white; margin-left: .25rem; font-size: .75rem !important;"></div></button>
+                <a href="https://www.github.com/Quntem/Clatter" target="_blank" class="contribute-btn">Contribute<div class="icon-github" style="margin-left: .5rem;"></div></a>
             </div>
-        </div>
 
-        <div class="infodiv">
-            <div class="informationarea">
-                <div class="innerinformationarea">
-                    <img src="public/client-preview.png" alt="A Preview of Clatter.">
+            <div class="ticker">
+                <div class="ticker__wrap">
+                  <div class="ticker__content">
+                    <img src="public/client-preview.png" height="240" alt="Clatter Client Preview">
+                    <img src="public/client-preview-bp.png" height="240" alt="Clatter Client: Blurple Theme Preview">
+                    <img src="public/client-preview-cb.png" height="240" alt="Clatter Client: Cherry Blossom Theme Preview">
+                    <img src="public/client-preview-pp.png" height="240" alt="Clatter Client: Purple Theme Preview">
+                    <img src="public/client-preview.png" height="240" alt="Clatter Client Preview">
+                    <img src="public/client-preview-bp.png" height="240" alt="Clatter Client: Blurple Theme Preview">
+                    <img src="public/client-preview-cb.png" height="240" alt="Clatter Client: Cherry Blossom Theme Preview">
+                    <img src="public/client-preview-pp.png" height="240" alt="Clatter Client: Purple Theme Preview">
+                  </div>
+                </div>
+              </div>
 
-                    <h4 class="textAlignRt" style="padding-top: 5rem; margin-top: 0; margin-bottom: 0;">But first...</h4>
-    
-                    <h1 class="textAlignRt">
-                        What Is Clatter?
+            <p style="margin: 0; font-weight: .75rem;">Planned Designs.</p>
+
+            <div class="open_source-div">
+                <div class="open_source_text_flex-div">
+                    <h1 class="wavy_text open_source-h1">
+                        We're <span style="font-weight: 500; text-decoration: underline; font-size: 0;">
+                            <span class="wavy_text-span">O</span>
+                            <span class="wavy_text-span">p</span>
+                            <span class="wavy_text-span">e</span>
+                            <span class="wavy_text-span">n </span>
+                            <span class="wavy_text-span">S</span>
+                            <span class="wavy_text-span">o</span>
+                            <span class="wavy_text-span">u</span>
+                            <span class="wavy_text-span">r</span>
+                            <span class="wavy_text-span">c</span>
+                            <span class="wavy_text-span">e</span>
+                            <span class="wavy_text-span">d</span>
+                        </span>.
                     </h1>
-    
-                    <p class="textAlignRt" style="max-width: 36rem; margin-left: auto; padding-bottom: 5rem;">
-                        Clatter is a free and open-source service for workplaces' digital communication!
-                        Clatter is made by a small team of developers and a lack of funding, so please, if you can, use our tool to show your support!
+                    <p class="open_source_description-p">
+                        Our software is open sourced and is open for any developers to contribute to the development of Clatter Workroom.
+                        For more information on contributing to Clatter,
+                        you can visit our Developer's documentation for Clatter.
                     </p>
                 </div>
-            </div>
-    
-            <div class="whyarea">
-                <div class="innerwhyarea">
-                    <div class="mainwhyarea">
-                        <h4 class="textAlignLeft" style="padding-top: 5rem;">I was wondering too... (until I realized I'm a developer for Clatter)</h4>
-
-                        <h1 class="textAlignLeft">
-                            Why Choose Clatter?
-                        </h1>
-        
-                        <p class="textAlignLeft" style="max-width: 36rem;">
-                            These are the reasons of why you should choose Clatter and not other workplace-targetted chatting platforms such as Cliq or Slack:
-                        </p>
-                    </div>
-
-                    <div class="textAlignRt secondarywhyarea" style="padding-top: 5rem; max-width: 36rem;">
-                        <div class="why-freecard">
-                            <h2 style="font-size: large; font-weight: bold;">It's Free</h2>
-                            <p>
-                                Clatter is free and have no plans currently of changing that, so join us in changing the world of pay walls and overpriced subscriptions!
-                            </p>
-                        </div>
-
-                        <br>
-
-                        <div class="why-opencard">
-                            <h2 style="font-size: large; font-weight: bold;">It's Open Sourced</h2>
-                            <p>
-                                Clatter is open-sourced and currently also has no plans to change that!
-                                Visit Clatter's Repository at <a href="https://github.com/Quntem/Clatter">www.github.com/Quntem/Clatter</a>.
-                            </p>
-                        </div>
-
-                        <br>
-
-                        <div class="why-regupdcard">
-                            <h2 style="font-size: large; font-weight: bold;">Regularly Updated</h2>
-                            <p>
-                                Clatter is regularly updated and is one of the main projects that Quntem, the team behind the development of Clatter, is prioritizing.
-                                We see a bright future for Clatter, and we need your support to keep going.
-                            </p>
-                        </div>
-                    </div>
+                <div class="open_source_buttons_flex-div">
+                    <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none;">
+                        <button class="visit_github-btn">
+                            Visit Our GitHub
+                            <div class="icon-github" style="font-size: .75rem !important; color: white; margin-left: .5rem; height: .75rem; width: .75rem;"></div>
+                        </button>
+                    </a>
+                    <a href="https://docs.quntem.co.uk/editing/clatter" target="_blank" style="text-decoration: none;">
+                        <button class="developers_documentation-btn">Developer's Documentation
+                            <div class="icon-book" style="font-size: .75rem !important; color: white; margin-left: .5rem;"></div>
+                        </button>
+                    </a>
                 </div>
+            </div>
+            <div class="built_for_work-div">
+                <h1 class="wavy_text built_for_work-h1">
+                    Built for
+                    <span style="font-weight: 500; text-decoration: underline; font-size: 0;">
+                        <span class="wavy_text-span">w</span>
+                        <span class="wavy_text-span">o</span>
+                        <span class="wavy_text-span">r</span>
+                        <span class="wavy_text-span">k</span>
+                    </span>.
+                </h1>
+                <p class="built_for_work_description-p">
+                    We built Clatter for workspaces of all sizes, from small teams to large enterprises.
+                    Clatter is designed to be a single place for all your work, with everything you need in one place.
+                </p>
             </div>
         </div>
 
-        <div html-snippet="footer.html" class="footer-area" style="margin-top: 4rem;"></div>
-
-        <script src="auth-frontend-home.js" type="module"></script>
+        <footer>
+            <p>Made by Quntem OpenSource with care. ❤️</p>
+            <a href="/legal/" class="footer-link">Legal</a>
+        </footer>
     </body>
 
     <script>
-        function includeHTML() {
-            var z, i, elmnt, file, xhttp;
-            /* Loop through a collection of all HTML elements: */
-            z = document.getElementsByTagName("*");
+        const elements = {
+            slug_change: document.getElementById("slug_change"),
+            header_logo: document.getElementById("header_logo")
+        };
+    
+        const slug_change_texts = [
+            "App",
+            "Platform",
+            "Website",
+            "Software",
+            "Service",
+            "Tool",
+            "Experience"
+        ];
+        
+        window.addEventListener("load", () => {
+            checkBeta();
+            let currentIndex = 1;
 
-            for (i = 0; i < z.length; i++) {
-                elmnt = z[i];
-                /*search for elements with a certain atrribute:*/
-                file = elmnt.getAttribute("html-snippet");
-                if (file) {
-                    /* Make an HTTP request using the attribute value as the file name: */
-                    xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                        if (this.readyState == 4) {
-                        if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-                        if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-                        /* Remove the attribute, and call this function once more: */
-                        elmnt.removeAttribute("html-snippet");
-                        includeHTML();
-                        }
-                    }
-                    xhttp.open("GET", file, true);
-                    xhttp.send();
-                    /* Exit the function: */
-                    return;
-                }
+            if (!header_logo.complete) {
+                header_logo.addEventListener('load', handleImageLoad);
+                header_logo.addEventListener('error', handleImageLoad);
+            } else {
+                handleImageLoad();
+            }
+    
+            setInterval(() => {
+                // elements.slug_change.classList.remove("morph-in");
+                // elements.slug_change.classList.add("morph-out");
+                setTimeout(() => {
+                    elements.slug_change.innerHTML = slug_change_texts[currentIndex];
+                    // elements.slug_change.classList.remove("morph-out");
+                    // elements.slug_change.classList.add("morph-in");
+                    currentIndex = (currentIndex + 1) % slug_change_texts.length;
+                }, 300);
+            }, 2000);
+        });
+    
+        const checkBeta = () => {
+            if (window.location.origin === "https://clatterpreview.quntem.co.uk" || window.location.origin === "https://beta.clatter.work") {
+                document.title = "Clatter Beta | Home";
+            } else if (window.location.origin === "http://localhost:3000") {
+                document.title = "Clatter Dev | Home"
             }
         }
 
-        includeHTML();
-
-        if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
-            console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
-            document.title = "Clatter Beta";
-
-            let headerTitle = document.getElementById("headertitle")
-            headertitle.innerHTML = "Clatter WorkRoom Beta"
-        } else {
-            console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
+        const handleImageLoad = () => {
+        	header_logo.classList.remove('skeleton');
+        	header_logo.removeEventListener('load', handleImageLoad)
+            console.log("Image loaded")
         }
-    </script>
+    </script>    
 </html>
