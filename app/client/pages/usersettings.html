@@ -59,7 +59,7 @@
 
         <div style="height: calc(100% - 71px); width: 100%; display: flex; flex-direction: row;">
             <div class="profilepicturearea">
-                <img src="/profilepicture.png" id="profilepicture" />
+                <img src="/public/profilepicture.png" id="profilepicture" />
                 <div class="profilepicturearea-button" onclick="changeProfilePicture()">Change Profile Picture</div>
             </div>
         </div>
@@ -69,7 +69,7 @@
                     if (session.data.user.image) {
                         $("#profilepicture").attr("src", session.data.user.image)
                     } else {
-                        $("#profilepicture").attr("src", "/profilepicture.png")
+                        $("#profilepicture").attr("src", "/public/profilepicture.png")
                     }
                 })
         </script>

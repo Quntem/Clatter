@@ -9,62 +9,39 @@
 
         <!-- CSS -->
         <link rel="stylesheet" href="styles.css"/>
-        <link rel="stylesheet" href="/tooltip.css"/>
         <script src="auth-ui-client.js" type="module"></script>
-        <script src="/selfxss.js"></script>
     </head>
 
     <body>
-        <div class="icon-arrow-left back-btn" id="back-btn" onclick="window.location.href = window.location.origin + '/client/'"></div>
+        <div class="icon-arrow-left back-btn" id="back-btn" onclick="window.location.href = window.location.origin + '/authui/index.html' + '?callback=/client/';"></div>
 
         <div class="authboxholder" name="authboxholder">
-            <img src="/ClatterMonotoneLogo.svg" id="loginlogo" />
+            <img src="/public/ClatterLogo.svg" id="loginlogo" />
             <div class="authboxtext">
-                Create <span style="font-weight: 600;">Your</span> Workspace
+                Create Your Workspace
             </div>
             <div class="authbox" name="authbox">
                 <input type="url" class="auth-input" id="imgurl" placeholder="Image URL">
                 
                 <input type="text" class="auth-input" maxlength="35" id="name" placeholder="Workspace Name">
                 <input type="text" class="auth-input" id="slug" placeholder="Slug">
-            </div>
 
-            <div class="signin-button-area">
-                <div class="signin-button-secondary" style="margin-top: 0px; width: 100%;" onclick="createworkspace()">
+                <div class="signin-button-secondary" style="margin-top: 0px;" onclick="createworkspace()">
                     Create Workspace
                 </div>
             </div>
-        </div>
-
-        <footer>
-            <p class="footer-link" style="line-height: 1.5rem; font-size: 0.8rem; position: relative;">
-                Your User ID:
-                <br>
-                <span id="userid" onclick="toggleUserId()" style="cursor: pointer; -webkit-user-select: none; -ms-user-select: none; user-select: none; font-size: 0.9rem;"></span>
-            </p>
-        </footer>
-
-        <script>
-            var toggledUserId = false; // default state
-            var userIdElem = document.getElementById("userid");
-
-            var pagefunction = function() {
-                authClient.getSession()
-                    .then(res => {
-                        authsession = res
-                        userIdElem.innerText = "●".repeat(res.data.user.id.length);
-                    })
-            }
-            
-            var toggleUserId = function() {
-                if (toggledUserId) { // hide user id
-                    userIdElem.innerText = "●".repeat(authsession.data.user.id.length);
-                    toggledUserId = false;
-                } else { // show user id
-                    userIdElem.innerText = authsession.data.user.id;
-                    toggledUserId = true;
+            <div class="authboxtext" style="margin-top: 20px; text-align: center;">
+                Join an existing workspace (with your user id):<br><div id="userid"></div>
+            </div>
+            <script>
+                var pagefunction = function() {
+                    authClient.getSession()
+                        .then(res => {
+                            authsession = res
+                            document.getElementById("userid").innerHTML = res.data.user.id
+                        })
                 }
-            }
-        </script>
+            </script>
+        </div>
     </body>
 </html>
