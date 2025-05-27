@@ -28,7 +28,6 @@
         <script src="/documenteditor.js" type="module"></script>
 
         <script>
-
             finishedpageload = false
 
             function sanitizeHTML(text) {
@@ -129,8 +128,11 @@
             }
 
             var ToggleSidebar = function() {
-                $("#workspaceswitcher").toggle()
-                $("#shellsidebar").toggle()
+                if ($("#shellsidebar").is(":visible")) {
+                    $("#shellsidebar").hide()
+                } else {
+                    $("#shellsidebar").show()
+                }
             }
         </script>
     </head>
