@@ -223,30 +223,15 @@
                 }
 
                 var sendmessage = function(msg) {
-                    fetch("/api/channel/" + currentchannelid + "/thread/" + currentmessageid + "/send?message=" + msg, {
-                        "method": "POST",
-                    })
-
-                    .then(function (response) {
-                        console.log(response.status);
-                        return response.text();
-                    })
-
-                    .then(function (data) {
-                        console.log(data);
-                    })
-
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-
                     socket.emit("clatter.channel.message.send", JSON.stringify({
                         "room": currentchannelid,
                         "userid": authsession.data.user.id,
                         "sendername": authsession.data.user.name,
                         "content": msg,
                         "type": "text",
-                        "parentmessageid": currentmessageid
+                        "parentmessageid": currentmessageid,
+                        "method": "modern",
+                        "token": authsession.data.session.token,
                     }))
                 }
 

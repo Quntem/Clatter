@@ -10,15 +10,19 @@ import { createServer } from "http"
 const app = express();
 const server = createServer(app)
 const prisma = new PrismaClient()
-const io = new Server(server)
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+    },
+})
 
-// app.use(
-//     cors({
-//       origin: "*", // Replace with your frontend's origin
-//       methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
-//       credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-//     })
-// );
+app.use(
+    cors({
+      origin: "*", // Replace with your frontend's origin
+      methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
+      credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    })
+);
 
 app.all("/api/auth/*", toNodeHandler(auth));
 
@@ -249,6 +253,29 @@ io.on("connection", (socket) => {
     var argjson = JSON.parse(args)
 
     argjson.DateCreated = new Date().toISOString()
+    
+    if(argjson.method === "modern") {
+      const session = await auth.api.getSession({
+        headers: new Headers({
+          authorization: "Bearer " + argjson.token
+        })
+      });
+      if(argjson.parentmessageid) {
+        var parentid = argjson.parentmessageid
+      } else {
+        var parentid = null
+      }
+      var message = await prisma.message.create({
+        data: {
+          content: argjson.content,
+          sender: session.session.userId,
+          parentid: argjson.room,
+          parentmessageid: parentid,
+          sendername: session.user.name
+        }
+      })
+      argjson.id = message.id
+    }
     
     socket.emit("clatter.channel.message.send.response", "Sent Message")
     socket.to(argjson.room).emit("clatter.channel.message.recieve", JSON.stringify(argjson))
