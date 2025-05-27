@@ -32,7 +32,7 @@
                 if (element.parentmessageid == undefined) {
                     if (lastsenderid == element.userid) {
                         $("#messagearea").append(`
-                            <div class="messagebox" style="margin-top: 10px; margin-left: 50px;" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `">
+                            <div class="messagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `">
                                 <span class="mstack">
                                     <span class="message">
                                         ` + sanitizeHTML(element.content) + `
@@ -51,14 +51,54 @@
                                 }
                             }
                         })
+
+                        function formatDate(dateStr) {
+                            const now = new Date();
+                            const msgDate = new Date(dateStr);
+                            const diffMs = now - msgDate;
+                            const diffMins = Math.floor(diffMs / 60000);
+
+                            const hours = msgDate.getHours().toString().padStart(2, '0');
+                            const minutes = msgDate.getMinutes().toString().padStart(2, '0');
+
+                            if (diffMins < 1) {
+                                return "Just now";
+                            } else if (diffMins < 60) {
+                                return diffMins === 1 ? "1 minute ago" : `${diffMins} minutes ago`;
+                            }
+
+                            const isToday = now.toDateString() === msgDate.toDateString();
+
+                            const yesterday = new Date();
+                            yesterday.setDate(now.getDate() - 1);
+                            const isYesterday = yesterday.toDateString() === msgDate.toDateString();
+
+                            if (isToday) {
+                                return `${hours}:${minutes}`;
+                            } else if (isYesterday) {
+                                return `Yesterday ${hours}:${minutes}`;
+                            } else {
+                                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                                return `${monthNames[msgDate.getMonth()]} ${msgDate.getDate()} ${hours}:${minutes}`;
+                            }
+                        }
+
+                        function updateAllTimestamps() {
+                            document.querySelectorAll(".message-timestamp").forEach(el => {
+                                const timestamp = el.getAttribute("data-timestamp");
+                                if (timestamp) {
+                                    el.textContent = formatDate(timestamp);
+                                }
+                            });
+                        }
+
                         $("#messagearea").append(`
                             <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `">
-                                <img src="` + currentpfp + `" class="messageprofilepicture" />
+                                <img src="` + currentpfp + `" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
                                 <span class="message mstack">
                                     <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                                    <span style="font-size: small;">
-                                        ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
-                                    </span>
+                                    <span style="font-size: small;">` + formatDate(element.DateCreated) + `</span>
                                     <br>
                                     <div class="messagetext">
                                         ` + sanitizeHTML(element.content) + `
@@ -66,6 +106,8 @@
                                 </span>
                             </div>
                         `)
+
+                        setInterval(updateAllTimestamps, 5000);
                     }
                     lastsenderid = element.userid
                 } else {
@@ -132,7 +174,7 @@
                             }
                             if (lastsenderid == element.sender) {
                                 $("#messagearea").append(`
-                                    <div class="messagebox" style="margin-top: 10px; margin-left: 50px;" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
+                                    <div class="messagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
                                         <span class="mstack">
                                             <span class="messagetext">
                                                 ` + sanitizeHTML(element.content) + `
@@ -152,14 +194,54 @@
                                         }
                                     }
                                 })
+
+                                function formatDate(dateStr) {
+                                    const now = new Date();
+                                    const msgDate = new Date(dateStr);
+                                    const diffMs = now - msgDate;
+                                    const diffMins = Math.floor(diffMs / 60000);
+
+                                    const hours = msgDate.getHours().toString().padStart(2, '0');
+                                    const minutes = msgDate.getMinutes().toString().padStart(2, '0');
+
+                                    if (diffMins < 1) {
+                                        return "Just now";
+                                    } else if (diffMins < 60) {
+                                        return diffMins === 1 ? "1 minute ago" : `${diffMins} minutes ago`;
+                                    }
+
+                                    const isToday = now.toDateString() === msgDate.toDateString();
+
+                                    const yesterday = new Date();
+                                    yesterday.setDate(now.getDate() - 1);
+                                    const isYesterday = yesterday.toDateString() === msgDate.toDateString();
+
+                                    if (isToday) {
+                                        return `${hours}:${minutes}`;
+                                    } else if (isYesterday) {
+                                        return `Yesterday ${hours}:${minutes}`;
+                                    } else {
+                                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                                        return `${monthNames[msgDate.getMonth()]} ${msgDate.getDate()} ${hours}:${minutes}`;
+                                    }
+                                }
+
+                                function updateAllTimestamps() {
+                                    document.querySelectorAll(".message-timestamp").forEach(el => {
+                                        const timestamp = el.getAttribute("data-timestamp");
+                                        if (timestamp) {
+                                            el.textContent = formatDate(timestamp);
+                                        }
+                                    });
+                                }
+
                                 $("#messagearea").append(`
                                     <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
-                                        <img src="` + currentpfp + `" class="messageprofilepicture" />
+                                        <img src="` + currentpfp + `" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
                                         <span class="message mstack">
                                             <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                                            <span style="font-size: small;">
-                                                ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
-                                            </span>
+                                            <span class="message-timestamp" data-timestamp="` + element.DateCreated + `" style="font-size: small;">` + formatDate(element.DateCreated) + `</span>
                                             <br>
                                             <div class="messagetext">
                                                 ` + sanitizeHTML(element.content) + `
@@ -168,6 +250,8 @@
                                         </span>
                                     </div>
                                 `)
+
+                                setInterval(updateAllTimestamps, 5000);
                             }
                             lastsenderid = element.sender
                         });

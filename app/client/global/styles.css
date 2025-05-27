@@ -212,16 +212,14 @@ body {
 }
 
 #messagearea {
-    padding: 20px;
-    padding-top: 10px;
     color: #666666;
     height: fit-content;
     overflow-y: scroll;
 }
 
 #messageareaoriginal {
-    padding: 20px;
-    padding-top: 10px;
+    padding: 0px;
+    padding-bottom: 1.5rem;
     color: #666666;
     height: fit-content;
 }
@@ -243,22 +241,27 @@ body {
 }
 
 .messagebox {
-    padding-top: .125rem;
-    padding-bottom: .125rem;
+    width: 100%; /* Fill parent container */
+    padding: 0.125rem 4.625rem;
+    margin-top: 0.25rem;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
     overflow-wrap: anywhere;
     transition: all 100ms ease;
+    box-sizing: border-box;
 }
 
 .expandedmessagebox {
-    margin-top: 2rem;
+    width: 100%; /* Fill parent container */
+    padding: 0.125rem 1.5rem;
+    margin-top: 1.5rem;
+    margin-left: 0;
+    box-sizing: border-box;
 }
 
 .messagebox:hover {
-    padding-left: 8px; padding-right: 8px;
-    background-color: hsla(0, 0%, 40%, 0.1);
+    background-color: hsla(0, 0%, 40%, 0.05);
 }
 
 .thread-btn {
