@@ -5,15 +5,6 @@ window.authClient = authClient
 const params = new URLSearchParams(document.location.search);
 let redirurl = params.get("callback");
 redirurl = DOMPurify.sanitize(redirurl);
-let emailFromParams = params.get("email");
-emailFromParams = DOMPurify.sanitize(emailFromParams);
-
-if (emailFromParams) {
-    const emailInput = document.getElementById("email");
-    if (emailInput) {
-        emailInput.value = emailFromParams;
-    }
-}
 
 window.signin = function() {
     authClient.signIn.email({
@@ -37,11 +28,10 @@ window.signup = function() {
 window.ResetPassword = async function() {
     window.fpoutput = await authClient.forgetPassword({
         email: document.getElementById("email").value,
-        redirectTo: "/authui/resetpassword",
+        redirectTo: "/authui/reset-password",
     });
 
-    console.log(window.fpoutput);
-    window.location.replace("/authui/success");
+    console.log(window.fpoutput)
 }
 
 window.ResetPasswordFinish = async function() {
