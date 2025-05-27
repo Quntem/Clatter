@@ -68,6 +68,7 @@
                         $("#sidebar-wsinfo-name").text(ao.data.name);
                         $("#sidebar-wsinfo-sub").text(ao.data.slug);
                         GetChannels(); // Update channels for the workspace
+                        fullorg = ao
                     })
                     .catch(err => {
                         console.error("Failed to load workspace data:", err);

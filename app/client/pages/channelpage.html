@@ -12,9 +12,11 @@
             }
 
             try {
-                var socket = io();
+                socket.destroy()
+                delete socket
+                socket = io()
             } catch {
-                socket = io();
+                var socket = io()
             }
             socket.off("clatter.channel.message.recieve")
             socket.off("clatter.channel.join.response")
