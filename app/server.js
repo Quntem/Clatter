@@ -254,6 +254,29 @@ io.on("connection", (socket) => {
 
     argjson.DateCreated = new Date().toISOString()
     
+    if(argjson.method === "modern") {
+      const session = await auth.api.getSession({
+        headers: new Headers({
+          authorization: "Bearer " + argjson.token
+        })
+      });
+      if(argjson.parentmessageid) {
+        var parentid = argjson.parentmessageid
+      } else {
+        var parentid = null
+      }
+      var message = await prisma.message.create({
+        data: {
+          content: argjson.content,
+          sender: session.session.userId,
+          parentid: argjson.room,
+          parentmessageid: parentid,
+          sendername: session.user.name
+        }
+      })
+      argjson.id = message.id
+    }
+    
     socket.emit("clatter.channel.message.send.response", "Sent Message")
     socket.to(argjson.room).emit("clatter.channel.message.recieve", JSON.stringify(argjson))
   }) 

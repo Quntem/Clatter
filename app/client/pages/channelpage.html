@@ -12,9 +12,11 @@
             }
 
             try {
-                var socket = io();
+                socket.destroy()
+                delete socket
+                socket = io()
             } catch {
-                socket = io();
+                var socket = io()
             }
             socket.off("clatter.channel.message.recieve")
             socket.off("clatter.channel.join.response")
@@ -30,8 +32,8 @@
                 if (element.parentmessageid == undefined) {
                     if (lastsenderid == element.userid) {
                         $("#messagearea").append(`
-                            <div class="messagebox" style="margin-top: 10px; margin-left: 50px;" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
-                                <span class="">
+                            <div class="messagebox" style="margin-top: 10px; margin-left: 50px;" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `">
+                                <span class="mstack">
                                     <span class="message">
                                         ` + sanitizeHTML(element.content) + `
                                     </span>
@@ -50,9 +52,9 @@
                             }
                         })
                         $("#messagearea").append(`
-                            <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
+                            <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `">
                                 <img src="` + currentpfp + `" class="messageprofilepicture" />
-                                <span class="message">
+                                <span class="message mstack">
                                     <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
                                     <span style="font-size: small;">
                                         ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
@@ -66,6 +68,14 @@
                         `)
                     }
                     lastsenderid = element.userid
+                } else {
+                    var refmessage = $("#messagearea").find("[data-messageid='" + element.parentmessageid + "']")
+                    if(refmessage.attr("isthread") != "true") {
+                        refmessage.attr("isthread", "true")
+                        refmessage.find(".mstack").append(`
+                            <div class="threadviewbutton" onclick="currentmessageid = '` + element.parentmessageid + `; NavigatePage('channelthreadpage')">View Thread</div>
+                        `)
+                    }
                 }
                 
                 // Broken Code
@@ -122,8 +132,8 @@
                             }
                             if (lastsenderid == element.sender) {
                                 $("#messagearea").append(`
-                                    <div class="messagebox" style="margin-top: 10px; margin-left: 50px;" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
-                                        <span class="">
+                                    <div class="messagebox" style="margin-top: 10px; margin-left: 50px;" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
+                                        <span class="mstack">
                                             <span class="messagetext">
                                                 ` + sanitizeHTML(element.content) + `
                                             </span>
@@ -143,9 +153,9 @@
                                     }
                                 })
                                 $("#messagearea").append(`
-                                    <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">
+                                    <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
                                         <img src="` + currentpfp + `" class="messageprofilepicture" />
-                                        <span class="message">
+                                        <span class="message mstack">
                                             <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
                                             <span style="font-size: small;">
                                                 ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
@@ -165,29 +175,14 @@
                 }
 
                 var sendmessage = function(msg) {
-                    fetch("/api/channel/" + currentchannelid + "/messages/send?message=" + msg, {
-                        "method": "POST",
-                    })
-
-                    .then(function (response) {
-                        console.log(response.status);
-                        return response.text();
-                    })
-
-                    .then(function (data) {
-                        console.log(data);
-                    })
-
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-
                     socket.emit("clatter.channel.message.send", JSON.stringify({
                         "room": currentchannelid,
                         "userid": authsession.data.user.id,
                         "sendername": authsession.data.user.name,
                         "content": msg,
-                        "type": "text"
+                        "type": "text",
+                        "method": "modern",
+                        "token": authsession.data.session.token,
                     }))
                 }
 
