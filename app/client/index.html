@@ -208,7 +208,7 @@
                         res.data.forEach(item => {
                             $("#workspaceswitcher").append(`
                                 <div class="workspaceswitcheritem" onclick="switchworkspace(this)" data-tooltip="` + item.name + `" orgid="` + item.id + `">
-                                    <img class="workspaceswitcheriteminner" src="` + item.logo + `"></img>
+                                    <img class="workspaceswitcheriteminner" src="` + (item.logo || '/client/wsicon.png') + `" onerror="this.onerror=null;this.src='/client/wsicon.png';">
                                 </div>
                             `)
                         })
