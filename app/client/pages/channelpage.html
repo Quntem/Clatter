@@ -94,7 +94,7 @@
                         }
 
                         fullorg.data.members.forEach(member => {
-                            if (member.userId == element.sender) {
+                            if (member.userId == element.userid) {
                                 if (member.role == "owner") {
                                     $("#messagearea").append(`
                                         <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
