@@ -1,0 +1,108 @@
+body {
+    background-color: #F5F5F5;
+    color: #666666;
+    font-family: 'Figtree', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100dvh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+clatter-base-view {
+    background-color: #ffffff;
+    margin: 8px;
+    margin-left: 0px;
+    height: calc(100% - 16px);
+    width: 0px;
+    margin-right: 0px;
+    box-shadow: none;
+    border-radius: 5px;
+    display: block;
+    overflow: hidden;
+    transition: all 100ms ease;
+}
+
+layout-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #e4e4e7;
+    background-color: #ffffff;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    color: #666666;
+    width: calc(100% - 30px);
+    height: 50px;
+}
+
+clatter-base-view[open="true"] {
+    width: calc(100% - 8px);
+    margin-right: 8px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+#sidebar {
+    width: calc(270px - 40px);
+    height: calc(100% - 40px);
+    padding: 20px;
+}
+
+#mainarea {
+    width: calc(100% - 270px);
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.layout-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.sidebar-workspace-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    background-color: #666666;
+}
+
+.sidebar-workspace-text {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.sidebar-header-button {
+    cursor: pointer;
+    transition: all 100ms ease;
+    padding: 10px;
+    width: 100%;
+    font-family: 'Figtree', sans-serif;
+    color: #666666;
+    margin-top: 15px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    /* box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px; */
+    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; */
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid #e4e4e7;
+}
+  
+.sidebar-header-button:hover {
+    cursor: pointer;
+    background-color: rgb(245, 245, 245);
+}
+
+.sidebar-header-button:active {
+    cursor: pointer;
+    background-color: rgb(240, 240, 240);
+}
+
+    
