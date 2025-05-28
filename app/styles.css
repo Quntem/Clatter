@@ -352,6 +352,15 @@ footer {
 	margin-bottom: 3rem;
 	text-align: center;
 }
+
+.footer-links {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 1rem;
+	justify-content: center;
+}
+
 .footer-link {
 	color: #666666;
 	text-decoration: underline;
