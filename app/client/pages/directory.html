@@ -45,7 +45,7 @@
                                             if (member.role == "owner") {
                                                 if (res.data.role == "owner") {
                                                     $("#channellistcontainer").append(`
-                                                        <div class="channellistitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) { authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload(); } else { return; }">
+                                                        <div class="channellistitem" onclick="if (confirm('Do you want to remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) { authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload(); } else { return; }">
                                                             <div class="icon-user channellistitem-icon"></div>
                                                             <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + ` <div class="icon-crown" style="display: inline-block; vertical-align: middle; position: relative; top: -2px;"></div></div>
                                                         </div>
@@ -61,7 +61,7 @@
                                             } else {
                                                 if (res.data.role == "owner") {
                                                     $("#channellistcontainer").append(`
-                                                        <div class="channellistitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) { authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload(); } else { return; }">
+                                                        <div class="channellistitem" onclick="if (confirm('Do you want to remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) { authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload(); } else { return; }">
                                                             <div class="icon-user channellistitem-icon"></div>
                                                             <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + `</div>
                                                         </div>
@@ -78,7 +78,7 @@
                                         } else {
                                             if (res.data.role == "owner") {
                                                 $("#channellistcontainer").append(`
-                                                    <div class="channellistitem" onclick="if (confirm('Do You Want To Remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) { authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload(); } else { return; }">
+                                                    <div class="channellistitem" onclick="if (confirm('Do you want to remove ` + sanitizeHTML(member.user.name) + `? They will be notified of this action.')) { authClient.organization.removeMember({ memberIdOrEmail: '` + sanitizeHTML(member.user.email) + `', organizationId: '` + ao.data.id + `'}); window.location.reload(); } else { return; }">
                                                         <div class="icon-user channellistitem-icon"></div>
                                                         <div class="channellistitem-text">` + sanitizeHTML(member.user.name) + ` <div class="icon-crown" style="display: inline-block; vertical-align: middle; position: relative; top: -2px;"></div> (you)</div>
                                                     </div>
