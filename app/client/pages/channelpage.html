@@ -5,6 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            function scrollMessageAreaToBottom() {
+                const messageArea = document.getElementById("messagearea");
+                messageArea.scrollTop = messageArea.scrollHeight;
+            }
+
             try {
                 var lastsenderid = ""
             } catch {
@@ -94,7 +99,7 @@
                         }
 
                         fullorg.data.members.forEach(member => {
-                            if (member.userId == element.sender) {
+                            if (member.userId == element.userid) {
                                 if (member.role == "owner") {
                                     $("#messagearea").append(`
                                         <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
@@ -130,6 +135,7 @@
                         })
 
                         setInterval(updateAllTimestamps, 5000);
+                        
                     }
                     lastsenderid = element.userid
                 } else {
@@ -152,6 +158,8 @@
                         // })
                     // }
                 // })
+                
+                scrollMessageAreaToBottom();
             })
         </script>
     </head>
@@ -172,6 +180,7 @@
                 .then(res => res.json())
                 .then(channel => {
                     $("#mainarea-header-title").html(channel.name)
+                    document.title = "Clatter | " + fullorg.data.name + " - " + channel.name
                     socket.emit("clatter.channel.join", JSON.stringify({
                         "room": currentchannelid
                     }))
@@ -298,6 +307,8 @@
                             }
                             lastsenderid = element.sender
                         });
+                        setTimeout(scrollMessageAreaToBottom, 0);
+                        document.title = "Clatter - " + fullorg.data.name + " - " + channel.name
                     })
                 }
 
@@ -328,11 +339,12 @@
                         if(message.length < lengthLimit) {
                             sendmessage(message)
                             clearMessageBox()
+                            scrollMessageAreaToBottom();
                         } else {
                             alert("Message over " + lengthLimit + " characters!")
                         }
                     }
-                    
+
                     // loadmessagelist()
                 }
 
