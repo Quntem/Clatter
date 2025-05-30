@@ -180,6 +180,7 @@
                 .then(res => res.json())
                 .then(channel => {
                     $("#mainarea-header-title").html(channel.name)
+                    document.title = "Clatter | " + fullorg.data.name + " - " + channel.name
                     socket.emit("clatter.channel.join", JSON.stringify({
                         "room": currentchannelid
                     }))
@@ -307,6 +308,7 @@
                             lastsenderid = element.sender
                         });
                         setTimeout(scrollMessageAreaToBottom, 0);
+                        document.title = "Clatter - " + fullorg.data.name + " - " + channel.name
                     })
                 }
 
