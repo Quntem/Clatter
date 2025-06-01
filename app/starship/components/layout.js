@@ -7,16 +7,19 @@ export function Row() {
 export function Header(options) {
     var header = document.createElement("layout-header")
     var closebutton = document.createElement("i")
-    closebutton.classList.add("icon-x")
-    closebutton.style.fontSize = "20px"
-    closebutton.style.cursor = "pointer"
-    closebutton.style.marginLeft = "auto"
-    if (options.onClose) {
+    if (options?.canClose == true || options?.canClose == undefined) {
+        closebutton.classList.add("icon-x")
+        closebutton.classList.add("layout-header-close")
+        closebutton.style.fontSize = "20px"
+        closebutton.style.cursor = "pointer"
+        closebutton.style.marginLeft = "auto"
+        header.appendChild(closebutton)
+    }
+    if (options?.onClose != undefined) {
         closebutton.addEventListener("click", () => {
             options.onClose()
         })
     }
-    header.appendChild(closebutton)
     return header
 }
 

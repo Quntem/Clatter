@@ -1,0 +1,90 @@
+<qcl-header headertitle="User Settings" main="true"></qcl-header>
+<div class="usersettings-wrapper">
+    <div class="usersettings-card">
+        <div>
+            <div class="usersettings-card-title">
+                Profile Picture
+            </div>
+            <div class="usersettings-card-subtitle">
+                Pick how you appear to other users on Clatter
+            </div>
+        </div>
+        <img class="usersettings-avatar">
+    </div>
+    <div class="usersettings-card flexwrap">
+        <div>
+            <div class="usersettings-card-title">
+                Name
+            </div>
+            <div class="usersettings-card-subtitle">
+                Edit the name other users see on Clatter
+            </div>
+        </div>
+        <div class="usersettings-name-row">
+            <input type="text" class="usersettings-name" placeholder="Name" autocomplete="off">
+            <div class="usersettings-name-button" show="false">
+                Change
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.title = "User Settings | Clatter"
+    authClient.getSession().then(session => {
+        document.querySelector(".usersettings-avatar").src = session.data.user.image
+        document.querySelector(".usersettings-name").value = session.data.user.name
+        document.querySelector(".usersettings-avatar").addEventListener("click", () => {
+            changeProfilePicture()
+        })
+        var orginalusername = session.data.user.name
+        document.querySelector(".usersettings-name-button").addEventListener("click", async () => {
+            await authClient.updateUser({name: document.querySelector(".usersettings-name").value})
+            orginalusername = document.querySelector(".usersettings-name").value
+            document.querySelector(".usersettings-name-button").setAttribute("show", "false")
+        })
+        document.querySelector(".usersettings-name").addEventListener("input", () => {
+            if(document.querySelector(".usersettings-name").value != orginalusername) {
+                document.querySelector(".usersettings-name-button").setAttribute("show", "true")
+            } else {
+                document.querySelector(".usersettings-name-button").setAttribute("show", "false")
+            }
+        })
+    })
+
+    var uploadFile = function() {
+        return new Promise((resolve, reject) => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.onchange = (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        resolve(e.target.result);
+                    };
+                    reader.onerror = (e) => {
+                        reject(e);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    reject('No file selected');
+                }
+            };
+            input.click();
+        });
+    }
+
+    var changeProfilePicture = function() {
+        uploadFile().then(async (dataUrl) => {
+            console.log('File data URL:', dataUrl);
+            await authClient.updateUser({
+                image: dataUrl,
+            })
+            document.querySelector(".usersettings-avatar").src = dataUrl
+        }).catch(error => {
+            console.error('Error uploading file:', error);
+        });
+    }
+</script>
+
+    
