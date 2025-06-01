@@ -241,7 +241,8 @@ body {
 }
 
 .messagebox {
-    width: 100%; /* Fill parent container */
+    position: relative;    /* ← make .message-actionbar position itself relative to .messagebox */
+    width: 100%;           /* Fill parent container */
     padding: 0.125rem 4.625rem;
     margin-top: 0.25rem;
     border-radius: 5px;
@@ -562,4 +563,30 @@ body {
     transition: all 100ms ease;
     margin-right: 10px;
     border: 1px solid #e4e4e7;
+}
+
+.message-actionbar {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    right: 10px;
+    bottom: 4px;
+    background-color: var(--sidebar_foreground);
+    z-index: 1;
+    border-radius: 999px;
+    border: 1px solid #d3d3d3;
+    padding: 0.25rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    gap: 0.25rem;
+    font-size: 1.125rem;
+}
+
+.message-actionbar div {
+    cursor: pointer;
+}
+
+.messagebox:hover > .message-actionbar {
+    display: flex;
 }
