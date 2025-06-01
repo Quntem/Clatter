@@ -10,51 +10,70 @@
                 messageArea.scrollTop = messageArea.scrollHeight;
             }
 
-            try {
-                var lastsenderid = ""
-            } catch {
-                lastsenderid = ""
+            // Helper: delete a thread message by ID, then remove its DOM node
+            function deleteThreadMessage(event, messageId) {
+                event.stopPropagation(); // Prevent any parent click
+                fetch("/api/channel/" + currentchannelid + "/message/" + messageId + "/delete")
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res === "done") {
+                            // Remove the corresponding .messagebox from the DOM
+                            const msgBox = document.querySelector(
+                                `.messagebox[data-messageid='${messageId}']`
+                            );
+                            if (msgBox) msgBox.remove();
+                        }
+                    });
             }
 
             try {
-                socket.destroy()
-                delete socket
-                socket = io()
+                var lastsenderid = "";
             } catch {
-                var socket = io()
+                lastsenderid = "";
             }
-            socket.off("clatter.channel.message.recieve")
-            socket.off("clatter.channel.join.response")
+
+            try {
+                socket.destroy();
+                delete socket;
+                socket = io();
+            } catch {
+                var socket = io();
+            }
+            socket.off("clatter.channel.message.recieve");
+            socket.off("clatter.channel.join.response");
             socket.on("clatter.channel.join.response", (res) => {
-                console.log(res)
-            })
+                console.log(res);
+            });
             socket.on("clatter.channel.message.recieve", (res) => {
-                console.log(res)
-                element = JSON.parse(res)
-                console.log(element)
-                currentpfp = ""
+                console.log(res);
+                const element = JSON.parse(res);
+                console.log(element);
+                let currentpfp = "";
                 const d = new Date(element.DateCreated);
                 if (element.parentmessageid == currentmessageid) {
                     if (lastsenderid == element.userid) {
                         $("#messagearea").append(`
-                            <div class="messagebox">
+                            <div class="messagebox" data-messageid="${element.id}">
                                 <span class="mstack">
                                     <span class="message">
                                         ${sanitizeHTML(element.content)}
                                     </span>
                                 </span>
                                 <div class="message-actionbar">
-                                    <div class="icon-trash-2"></div>
+                                    <div 
+                                        class="icon-trash-2" 
+                                        onclick="deleteThreadMessage(event, '${element.id}')"
+                                    ></div>
                                 </div>
                             </div>
-                        `)
+                        `);
                     } else {
                         fullorg.data.members.forEach(member => {
                             if (member.userId == element.userid) {
-                                console.log("found")
-                                currentpfp = member.user.image || "/assets/defaultpfp.png"
+                                console.log("found");
+                                currentpfp = member.user.image || "/assets/defaultpfp.png";
                             }
-                        })
+                        });
 
                         function formatDate(dateStr) {
                             const now = new Date();
@@ -100,64 +119,65 @@
 
                         fullorg.data.members.forEach(member => {
                             if (member.userId == element.userid) {
-                                if (member.role == "owner") {
-                                    $("#messagearea").append(`
-                                        <div class="messagebox expandedmessagebox">
-                                            <img src="${currentpfp}" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
-                                            <span class="message mstack">
-                                                <b class="message-sendername message-sendername-owner">${sanitizeHTML(element.sendername)} </b>
-                                                <span class="message-timestamp" data-timestamp="${element.DateCreated}" style="font-size: small;">${formatDate(element.DateCreated)}</span>
-                                                <br>
-                                                <div class="messagetext">
-                                                    ${sanitizeHTML(element.content)}
-                                                </div>
+                                const isOwner = member.role === "owner";
+                                const senderNameClass = isOwner
+                                    ? "message-sendername message-sendername-owner"
+                                    : "message-sendername";
+
+                                $("#messagearea").append(`
+                                    <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                        <img 
+                                            src="${currentpfp}" 
+                                            class="messageprofilepicture" 
+                                            onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                        />
+                                        <span class="message mstack">
+                                            <b class="${senderNameClass}">
+                                                ${sanitizeHTML(element.sendername)} 
+                                            </b>
+                                            <span 
+                                                class="message-timestamp" 
+                                                data-timestamp="${element.DateCreated}" 
+                                                style="font-size: small;"
+                                            >
+                                                ${formatDate(element.DateCreated)}
                                             </span>
-                                            <div class="message-actionbar">
-                                                <div class="icon-trash-2"></div>
+                                            <br>
+                                            <div class="messagetext">
+                                                ${sanitizeHTML(element.content)}
                                             </div>
+                                        </span>
+                                        <div class="message-actionbar">
+                                            <div 
+                                                class="icon-trash-2" 
+                                                onclick="deleteThreadMessage(event, '${element.id}')"
+                                            ></div>
                                         </div>
-                                    `)
-                                } else {
-                                    $("#messagearea").append(`
-                                        <div class="messagebox expandedmessagebox">
-                                            <img src="${currentpfp}" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
-                                            <span class="message mstack">
-                                                <b class="message-sendername">${sanitizeHTML(element.sendername)} </b>
-                                                <span class="message-timestamp" data-timestamp="${element.DateCreated}" style="font-size: small;">${formatDate(element.DateCreated)}</span>
-                                                <br>
-                                                <div class="messagetext">
-                                                    ${sanitizeHTML(element.content)}
-                                                </div>
-                                            </span>
-                                            <div class="message-actionbar">
-                                                <div class="icon-trash-2"></div>
-                                            </div>
-                                        </div>
-                                    `)
-                                }
+                                    </div>
+                                `);
                             }
-                        })
+                        });
                     }
-                    lastsenderid = element.userid
+                    lastsenderid = element.userid;
                 }
 
                 scrollMessageAreaToBottom();
-            })
+            });
         </script>
     </head>
 
     <body>
         <div class="mainarea-header">
             <div class="sidebar-wsinfoarea-stack">
-                <div id="mainarea-header-title">
-                    Thread
-                </div>
-                <div id="mainarea-header-sub">
-                    <!-- Blank to avoid confusion. -->
-                </div>
+                <div id="mainarea-header-title">Thread</div>
+                <div id="mainarea-header-sub"></div>
             </div>
 
-            <div class="icon-trash-2 sidebar-listitem-icon message-delete-button" style="display: none; margin-right: 25px; margin-left: auto; color: rgb(205, 50, 50);" onclick="deleteMessage()"></div>
+            <div 
+                class="icon-trash-2 sidebar-listitem-icon message-delete-button" 
+                style="display: none; margin-right: 25px; margin-left: auto; color: rgb(205, 50, 50);" 
+                onclick="deleteMessage()"
+            ></div>
 
             <script>
                 function formatDate(dateStr) {
@@ -176,7 +196,6 @@
                     }
 
                     const isToday = now.toDateString() === msgDate.toDateString();
-
                     const yesterday = new Date();
                     yesterday.setDate(now.getDate() - 1);
                     const isYesterday = yesterday.toDateString() === msgDate.toDateString();
@@ -208,37 +227,40 @@
                     .then(res => res.json())
                     .then(res => {
                         if(res === "done") {
-                            NavigatePage('channelpage')
+                            NavigatePage('channelpage');
                         }
-                    })
-                }
+                    });
+                };
                 fetch("/api/channel/" + currentchannelid + "/info")
                 .then(res => res.json())
                 .then(channel => {
-                    $("#mainarea-header-sub").html(channel.name)
-                    document.title = "Clatter | " + fullorg.data.name + " - " + channel.name + " - Thread"
-                    socket.emit("clatter.channel.join", JSON.stringify({ room: currentchannelid }))
-                })
+                    $("#mainarea-header-sub").html(channel.name);
+                    document.title = "Clatter | " + fullorg.data.name + " - " + channel.name + " - Thread";
+                    socket.emit("clatter.channel.join", JSON.stringify({ room: currentchannelid }));
+                });
 
                 var loadthreadmessagelist = function() {
                     fetch("/api/channel/" + currentchannelid + "/thread/" + currentmessageid + "/messages/list")
                     .then(res => res.json())
                     .then(res => {
-                        currentpfp = ""
-                        lastsenderid = ""
-                        console.log(res)
-                        $("#messagearea").html("")
+                        let currentpfp = "";
+                        lastsenderid = "";
+                        console.log(res);
+                        $("#messagearea").html("");
                         res.forEach(element => {
-                            currentpfp = ""
+                            currentpfp = "";
                             const d = new Date(element.DateCreated);
                             if (element.childmessages.length > 0) {
-                                extramessageui = `<div class="threadviewbutton" onclick="currentmessageid = '${element.id}'; NavigatePage('channelthreadpage')">View Thread</div>`
+                                extramessageui = `<div 
+                                    class="threadviewbutton" 
+                                    onclick="currentmessageid='${element.id}'; NavigatePage('channelthreadpage')"
+                                >View Thread</div>`;
                             } else {
-                                extramessageui = ""
+                                extramessageui = "";
                             }
                             if (lastsenderid == element.sender) {
                                 $("#messagearea").append(`
-                                    <div class="messagebox">
+                                    <div class="messagebox" data-messageid="${element.id}">
                                         <span class="mstack">
                                             <span class="message">
                                                 ${sanitizeHTML(element.content)}
@@ -246,17 +268,20 @@
                                             ${extramessageui}
                                         </span>
                                         <div class="message-actionbar">
-                                            <div class="icon-trash-2"></div>
+                                            <div 
+                                                class="icon-trash-2" 
+                                                onclick="deleteThreadMessage(event, '${element.id}')"
+                                            ></div>
                                         </div>
                                     </div>
-                                `)
+                                `);
                             } else {
                                 fullorg.data.members.forEach(member => {
                                     if (member.userId == element.sender) {
-                                        console.log("found")
-                                        currentpfp = member.user.image || "/assets/defaultpfp.png"
+                                        console.log("found");
+                                        currentpfp = member.user.image || "/assets/defaultpfp.png";
                                     }
-                                })
+                                });
 
                                 function formatDateInner(dateStr) {
                                     const nowInner = new Date();
@@ -281,11 +306,21 @@
                                     if (memberInner.userId == element.sender) {
                                         if (memberInner.role == "owner") {
                                             $("#messagearea").append(`
-                                                <div class="messagebox expandedmessagebox">
-                                                    <img src="${currentpfp}" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
+                                                <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                                    <img 
+                                                        src="${currentpfp}" 
+                                                        class="messageprofilepicture" 
+                                                        onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                                    />
                                                     <span class="message mstack">
                                                         <b class="message-sendername message-sendername-owner">${sanitizeHTML(element.sendername)} </b>
-                                                        <span class="message-timestamp" data-timestamp="${element.DateCreated}" style="font-size: small;">${formatDateInner(element.DateCreated)}</span>
+                                                        <span 
+                                                            class="message-timestamp" 
+                                                            data-timestamp="${element.DateCreated}" 
+                                                            style="font-size: small;"
+                                                        >
+                                                            ${formatDateInner(element.DateCreated)}
+                                                        </span>
                                                         <br>
                                                         <div class="messagetext">
                                                             ${sanitizeHTML(element.content)}
@@ -293,17 +328,30 @@
                                                         ${extramessageui}
                                                     </span>
                                                     <div class="message-actionbar">
-                                                        <div class="icon-trash-2"></div>
+                                                        <div 
+                                                            class="icon-trash-2" 
+                                                            onclick="deleteThreadMessage(event, '${element.id}')"
+                                                        ></div>
                                                     </div>
                                                 </div>
-                                            `)
+                                            `);
                                         } else {
                                             $("#messagearea").append(`
-                                                <div class="messagebox expandedmessagebox">
-                                                    <img src="${currentpfp}" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
+                                                <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                                    <img 
+                                                        src="${currentpfp}" 
+                                                        class="messageprofilepicture" 
+                                                        onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                                    />
                                                     <span class="message mstack">
                                                         <b class="message-sendername">${sanitizeHTML(element.sendername)} </b>
-                                                        <span class="message-timestamp" data-timestamp="${element.DateCreated}" style="font-size: small;">${formatDateInner(element.DateCreated)}</span>
+                                                        <span 
+                                                            class="message-timestamp" 
+                                                            data-timestamp="${element.DateCreated}" 
+                                                            style="font-size: small;"
+                                                        >
+                                                            ${formatDateInner(element.DateCreated)}
+                                                        </span>
                                                         <br>
                                                         <div class="messagetext">
                                                             ${sanitizeHTML(element.content)}
@@ -311,81 +359,111 @@
                                                         ${extramessageui}
                                                     </span>
                                                     <div class="message-actionbar">
-                                                        <div class="icon-trash-2"></div>
+                                                        <div 
+                                                            class="icon-trash-2" 
+                                                            onclick="deleteThreadMessage(event, '${element.id}')"
+                                                        ></div>
                                                     </div>
                                                 </div>
-                                            `)
+                                            `);
                                         }
                                     }
-                                })
+                                });
 
                                 setInterval(updateAllTimestamps, 5000);
                             }
-                            lastsenderid = element.sender
+                            lastsenderid = element.sender;
                         });
                         setTimeout(scrollMessageAreaToBottom, 0);
-                    })
-                }
+                    });
+                };
 
                 var loadoriginalmessage = function() {
                     fetch("/api/channel/" + currentchannelid + "/message/" + currentmessageid + "/info")
                     .then(res => res.json())
                     .then(res => {
-                        currentpfp = ""
-                        lastsenderid = ""
-                        console.log(res)
-                        element = res
-                        $("#messageareaoriginal").html("")
+                        let currentpfp = "";
+                        lastsenderid = "";
+                        console.log(res);
+                        const element = res;
+                        $("#messageareaoriginal").html("");
                         fullorg.data.members.forEach(member => {
                             if (member.userId == element.sender) {
-                                console.log("found")
-                                currentpfp = member.user.image || "/assets/defaultpfp.png"
+                                console.log("found");
+                                currentpfp = member.user.image || "/assets/defaultpfp.png";
                             }
-                        })
-                        if(element.sender == authsession.data.user.id) {
-                            $(".message-delete-button").show()
+                        });
+                        if (element.sender == authsession.data.user.id) {
+                            $(".message-delete-button").show();
                         }
+
                         fullorg.data.members.forEach(member => {
                             if (member.userId == element.sender) {
                                 if (member.role == "owner") {
                                     $("#messageareaoriginal").append(`
-                                        <div class="messagebox expandedmessagebox">
-                                            <img src="${currentpfp}" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
+                                        <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                            <img 
+                                                src="${currentpfp}" 
+                                                class="messageprofilepicture" 
+                                                onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                            />
                                             <span class="message mstack">
                                                 <b class="message-sendername message-sendername-owner">${sanitizeHTML(element.sendername)} </b>
-                                                <span class="message-timestamp" data-timestamp="${element.DateCreated}" style="font-size: small;">${formatDate(element.DateCreated)}</span>
+                                                <span 
+                                                    class="message-timestamp" 
+                                                    data-timestamp="${element.DateCreated}" 
+                                                    style="font-size: small;"
+                                                >
+                                                    ${formatDate(element.DateCreated)}
+                                                </span>
                                                 <br>
                                                 <div class="messagetext">
                                                     ${sanitizeHTML(element.content)}
                                                 </div>
                                             </span>
                                             <div class="message-actionbar">
-                                                <div class="icon-trash-2"></div>
+                                                <div 
+                                                    class="icon-trash-2" 
+                                                    onclick="deleteThreadMessage(event, '${element.id}')"
+                                                ></div>
                                             </div>
                                         </div>
-                                    `)
+                                    `);
                                 } else {
                                     $("#messageareaoriginal").append(`
-                                        <div class="messagebox expandedmessagebox">
-                                            <img src="${currentpfp}" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
+                                        <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                            <img 
+                                                src="${currentpfp}" 
+                                                class="messageprofilepicture" 
+                                                onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                            />
                                             <span class="message mstack">
                                                 <b class="message-sendername">${sanitizeHTML(element.sendername)} </b>
-                                                <span class="message-timestamp" data-timestamp="${element.DateCreated}" style="font-size: small;">${formatDate(element.DateCreated)}</span>
+                                                <span 
+                                                    class="message-timestamp" 
+                                                    data-timestamp="${element.DateCreated}" 
+                                                    style="font-size: small;"
+                                                >
+                                                    ${formatDate(element.DateCreated)}
+                                                </span>
                                                 <br>
                                                 <div class="messagetext">
                                                     ${sanitizeHTML(element.content)}
                                                 </div>
                                             </span>
                                             <div class="message-actionbar">
-                                                <div class="icon-trash-2"></div>
+                                                <div 
+                                                    class="icon-trash-2" 
+                                                    onclick="deleteThreadMessage(event, '${element.id}')"
+                                                ></div>
                                             </div>
                                         </div>
-                                    `)
+                                    `);
                                 }
                             }
-                        })
-                    })
-                }
+                        });
+                    });
+                };
 
                 var sendmessage = function(msg) {
                     socket.emit("clatter.channel.message.send", JSON.stringify({
@@ -397,32 +475,32 @@
                         "parentmessageid": currentmessageid,
                         "method": "modern",
                         "token": authsession.data.session.token,
-                    }))
-                }
+                    }));
+                };
 
                 var clearMessageBox = function() {
-                    document.getElementById("messagebox").value = ""
-                }
+                    document.getElementById("messagebox").value = "";
+                };
 
                 var sendbuttonaction = function() {
-                    message = document.getElementById("messagebox").value
-                    if(message.trim().length < 1) {
-                        console.log("No message present.")
+                    const message = document.getElementById("messagebox").value;
+                    if (message.trim().length < 1) {
+                        console.log("No message present.");
                     } else {
-                        var lengthLimit = 500
-                        if(message.length < lengthLimit) {
-                            sendmessage(message)
-                            clearMessageBox()
+                        const lengthLimit = 500;
+                        if (message.length < lengthLimit) {
+                            sendmessage(message);
+                            clearMessageBox();
                             scrollMessageAreaToBottom();
                         } else {
-                            alert("Message over " + lengthLimit + " characters!")
+                            alert("Message over " + lengthLimit + " characters!");
                         }
                     }
-                }
+                };
 
                 document.addEventListener('keydown', function(event) {
-                    if(event.keyCode == 13) {
-                        sendbuttonaction()
+                    if (event.keyCode == 13) {
+                        sendbuttonaction();
                     }
                 });
             </script>
@@ -430,11 +508,22 @@
 
         <div style="height: calc(100% - 71px); width: 100%; position: relative;">
             <div style="height: calc(100% - 180px);">
-                <div id="messageareaoriginal" style="min-height: fit-content; overflow-y: scroll; border-bottom: 1px solid #e4e4e7;"></div>
-                <div id="messagearea" style="height: 100%; overflow-y: scroll;"></div>
+                <div 
+                    id="messageareaoriginal" 
+                    style="min-height: fit-content; overflow-y: scroll; border-bottom: 1px solid #e4e4e7;"
+                ></div>
+                <div 
+                    id="messagearea" 
+                    style="height: 100%; overflow-y: scroll;"
+                ></div>
             </div>
             <div class="messagebar">
-                <input id="messagebox" autocomplete="off" maxlength="500" placeholder="Send Message..."/>
+                <input 
+                    id="messagebox" 
+                    autocomplete="off" 
+                    maxlength="500" 
+                    placeholder="Send Message..."
+                />
                 <div id="sendbutton" onclick="sendbuttonaction()">
                     <div class="icon-send"></div>
                 </div>
@@ -442,8 +531,8 @@
         </div>
 
         <script>
-            loadoriginalmessage()
-            loadthreadmessagelist()
+            loadoriginalmessage();
+            loadthreadmessagelist();
         </script>
     </body>
 </html>
