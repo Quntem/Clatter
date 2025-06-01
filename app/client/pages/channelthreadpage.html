@@ -292,20 +292,41 @@
                                     });
                                 }
 
-                                $("#messagearea").append(`
-                                    <div class="messagebox expandedmessagebox">
-                                        <img src="` + currentpfp + `" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
-                                        <span class="message">
-                                            <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                                            <span style="font-size: small;">` + formatDate(element.DateCreated) + `</span>
-                                            <br>
-                                            <div class="messagetext">
-                                                ` + sanitizeHTML(element.content) + `
-                                            </div>
-                                            ` + extramessageui + `
-                                        </span>
-                                    </div>
-                                `)
+                                fullorg.data.members.forEach(member => {
+                                    if (member.userId == element.sender) {
+                                        if (member.role == "owner") {
+                                            $("#messagearea").append(`
+                                                <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
+                                                    <img src="` + currentpfp + `" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
+                                                    <span class="message mstack">
+                                                        <b class="message-sendername message-sendername-owner">` + sanitizeHTML(element.sendername) + ` </b>
+                                                        <span class="message-timestamp" data-timestamp="` + element.DateCreated + `" style="font-size: small;">` + formatDate(element.DateCreated) + `</span>
+                                                        <br>
+                                                        <div class="messagetext">
+                                                            ` + sanitizeHTML(element.content) + `
+                                                        </div>
+                                                        ` + extramessageui + `
+                                                    </span>
+                                                </div>
+                                            `)
+                                        } else {
+                                            $("#messagearea").append(`
+                                                <div class="messagebox expandedmessagebox" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')" data-messageid="` + element.id + `" ` + (extramessageui ? 'isthread="true"' : "") + `>
+                                                    <img src="` + currentpfp + `" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
+                                                    <span class="message mstack">
+                                                        <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
+                                                        <span class="message-timestamp" data-timestamp="` + element.DateCreated + `" style="font-size: small;">` + formatDate(element.DateCreated) + `</span>
+                                                        <br>
+                                                        <div class="messagetext">
+                                                            ` + sanitizeHTML(element.content) + `
+                                                        </div>
+                                                        ` + extramessageui + `
+                                                    </span>
+                                                </div>
+                                            `)
+                                        }
+                                    }
+                                })
 
                                 setInterval(updateAllTimestamps, 5000);
                             }
@@ -340,19 +361,40 @@
                         if(element.sender == authsession.data.user.id) {
                             $(".message-delete-button").show()
                         }
-                        $("#messageareaoriginal").append(`
-                            <div class="messagebox expandedmessagebox">
-                                <img src="` + currentpfp + `" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
-                                <span class="message">
-                                    <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                                    <span class="message-timestamp" data-timestamp="` + element.DateCreated + `" style="font-size: small;">` + formatDate(element.DateCreated) + `</span>
-                                    <br>
-                                    <div class="messagetext">
-                                        ` + sanitizeHTML(element.content) + `
-                                    </div>
-                                </span>
-                            </div>
-                        `)
+                        
+                        fullorg.data.members.forEach(member => {
+                            if (member.userId == element.sender) {
+                                if (member.role == "owner") {
+                                    $("#messageareaoriginal").append(`
+                                        <div class="messagebox expandedmessagebox">
+                                            <img src="` + currentpfp + `" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
+                                            <span class="message">
+                                                <b class="message-sendername message-sendername-owner">` + sanitizeHTML(element.sendername) + ` </b>
+                                                <span class="message-timestamp" data-timestamp="` + element.DateCreated + `" style="font-size: small;">` + formatDate(element.DateCreated) + `</span>
+                                                <br>
+                                                <div class="messagetext">
+                                                    ` + sanitizeHTML(element.content) + `
+                                                </div>
+                                            </span>
+                                        </div>
+                                    `)
+                                } else {
+                                    $("#messageareaoriginal").append(`
+                                        <div class="messagebox expandedmessagebox">
+                                            <img src="` + currentpfp + `" class="messageprofilepicture" onerror="this.onerror=null;this.src='/profilepicture.png';" />
+                                            <span class="message">
+                                                <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
+                                                <span class="message-timestamp" data-timestamp="` + element.DateCreated + `" style="font-size: small;">` + formatDate(element.DateCreated) + `</span>
+                                                <br>
+                                                <div class="messagetext">
+                                                    ` + sanitizeHTML(element.content) + `
+                                                </div>
+                                            </span>
+                                        </div>
+                                    `)
+                                }
+                            }
+                        })
                     })
                 }
 
