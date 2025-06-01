@@ -171,7 +171,7 @@
                     const isYesterday = yesterday.toDateString() === msgDate.toDateString();
 
                     if (isToday) {
-                        return `Today ${hours}:${minutes}`;
+                        return `${hours}:${minutes}`;
                     } else if (isYesterday) {
                         return `Yesterday ${hours}:${minutes}`;
                     } else {
