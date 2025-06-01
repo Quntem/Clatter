@@ -13,5 +13,23 @@ export default defineConfig({
       "beta.clatter.work"
     ],
     port: 3000,      // Matches the exposed port in docker-compose
+    fs: {
+      allow: ['.'] // so /src/... access doesn't get denied
+    }
   },
+  plugins: [
+    {
+      name: 'externalize-html-imports',
+      enforce: 'pre',
+      transformIndexHtml(html) {
+        // Regex to match all 3 dirs: routines, components, scripts
+        return html.replace(
+          /<script\s+type="module"\s+src="\.\/(routines|components|scripts)\/(.+?)"><\/script>/g,
+          (_, dir, file) => {
+            return `<script type="module" src="/src/${dir}/${file}"></script>`
+          }
+        )
+      }
+    }
+  ]
 });
