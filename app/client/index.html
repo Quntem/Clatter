@@ -173,7 +173,7 @@
                 </div>
 
                 <div class="sidebar-listarea">
-                    <div class="sidebar-listitem" onclick="NavigatePage(`directory`)">
+                    <div class="sidebar-listitem" onclick="NavigatePage(`directory`)" id="directory-button">
                         <div class="icon-book-user sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Directory</div>
                     </div>
@@ -258,6 +258,26 @@
             } else if (window.location.origin === "http://localhost:3000") {
                 document.title = "Clatter | Dev Client"
             }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const dirButton = document.getElementById('directory-button');
+                let clickCount = 0;
+                let timer = null;
+
+                dirButton.addEventListener('click', () => {
+                    clickCount++;
+                    if (!timer) {
+                        timer = setTimeout(() => {
+                            clickCount = 0;
+                            timer = null;
+                        }, 2500);
+                    }
+                    
+                    if (clickCount > 5) {
+                        window.location.href = "/starship/";
+                    }
+                });
+            });
         </script>
 
         <script src="/auth-frontend.js" type="module"></script>
