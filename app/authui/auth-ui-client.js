@@ -15,14 +15,31 @@ if (emailFromParams) {
     }
 }
 
-window.signin = function() {
+window.signin = function(button) {
+    const errorBox = document.getElementById("errorBox");
+    errorBox.textContent = "";
+    errorBox.style.display = "none"; // Hide initially
+
+    button.innerHTML = "Signing in… <div class='icon-loader-circle loader-circle-animation' style='margin-left:0.25rem;'></div>";
+
     authClient.signIn.email({
         email: document.getElementById("email").value,
         password: document.getElementById("password").value
     }).then(res => {
-        window.location.replace(redirurl)
-    })
-}
+        if (res.error) {
+            errorBox.textContent = res.error.message;
+            errorBox.style.display = "block";
+            button.innerHTML = "Sign In";
+            return;
+        }
+        window.location.replace(redirurl);
+    }).catch(err => {
+        errorBox.textContent = err.message;
+        errorBox.style.display = "block";
+        button.innerHTML = "Sign In";
+    });
+};
+
 
 window.signup = function() {
     authClient.signUp.email({
