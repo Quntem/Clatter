@@ -25,6 +25,8 @@
             </div>
 
             <div class="authbox" name="authbox">
+                <div id="errorBox" class="error-auth-box"></div>
+
                 <input type="text" class="auth-input" id="name" placeholder="Name">
                 
                 <!-- <input type="date" class="auth-input" id="birthday" placeholder="Birthday" min="1908-06-08" max="2012-12-31">
@@ -39,7 +41,7 @@
                 <input type="password" class="auth-input" id="password" placeholder="Password">
 
                 <div class="signin-button-area">
-                    <div class="signin-button-secondary" style="margin-top: 0px; width: 100%;" onclick="signup()">
+                    <div class="signin-button-secondary" style="margin-top: 0px; width: 100%;" onclick="signup(this)">
                         Sign Up
                     </div>
                 </div>
