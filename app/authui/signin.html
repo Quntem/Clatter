@@ -25,11 +25,13 @@
             </div>
 
             <div class="authbox">
+                <div id="errorBox" class="error-auth-box"></div>
+
                 <input type="email" class="auth-input" id="email" placeholder="Email">
                 <input type="password" class="auth-input" id="password" placeholder="Password">
                 
                 <div class="signin-button-area">
-                    <div class="signin-button" onclick="signin()">
+                    <div class="signin-button" onclick="signin(this)">
                         Sign In
                     </div>
                 </div>
