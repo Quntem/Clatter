@@ -41,15 +41,31 @@ window.signin = function(button) {
 };
 
 
-window.signup = function() {
+window.signup = function(button) {
+    const errorBox = document.getElementById("errorBox");
+    errorBox.textContent = "";
+    errorBox.style.display = "none"; // Hide initially
+
+    button.innerHTML = "Signing up… <div class='icon-loader-circle loader-circle-animation' style='margin-left:0.25rem;'></div>";
+
     authClient.signUp.email({
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
         name: document.getElementById("name").value,
     }).then(res => {
-        window.location.replace(redirurl)
-    })
-}
+        if (res.error) {
+            errorBox.textContent = res.error.message;
+            errorBox.style.display = "block";
+            button.innerHTML = "Sign Up";
+            return;
+        }
+        window.location.replace(redirurl);
+    }).catch(err => {
+        errorBox.textContent = err.message;
+        errorBox.style.display = "block";
+        button.innerHTML = "Sign Up";
+    });
+};
 
 window.ResetPassword = async function() {
     window.fpoutput = await authClient.forgetPassword({
