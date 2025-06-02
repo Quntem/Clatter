@@ -21,6 +21,10 @@ model channel {
   DateCreated        DateTime @default(now())
   tabs               tab[] @relation("channeltab")
   documents          document[] @relation("channeldocument")
+  public             Boolean @default(true)
+  members            String[]
+  owner              String?
+  extradata          Json?
 }
 
 model tab {
