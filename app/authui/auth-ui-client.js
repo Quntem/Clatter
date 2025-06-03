@@ -9,17 +9,18 @@ let emailFromParams = params.get("email");
 emailFromParams = DOMPurify.sanitize(emailFromParams);
 
 document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const result = await getSession();
-    const session = result.data?.session; 
+    try {
+        const result = await getSession();
+        const session = result.data?.session;
+        const pathname = window.location.pathname || "";
 
-    if (session) {
-      window.location.replace("/client/");
-      return;
+        if (session && !pathname.endsWith("createworkspace.html")) {
+            window.location.replace("/client/");
+            return;
+        }
+    } catch (err) {
+        console.warn("Error checking session:", err);
     }
-  } catch (err) {
-    console.warn("Error checking session:", err);
-  }
 });
 
 
