@@ -23,6 +23,8 @@
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
         <script src="/client/global/splash.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tarekraafat-autocomplete.js/10.2.9/autoComplete.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.9/dist/css/autoComplete.02.min.css">
         <script src="/selfxss.js"></script>
         <script src="/documenteditor.js" type="module"></script>
 
@@ -115,13 +117,28 @@
                 .then(res => res.json())
                 .then(res => {
                     console.log(res)
+                    channels = res.filter(channel => channel.type.split(".")[1] == "channeltype")
+                    directmessages = res.filter(channel => channel.type.split(".")[1] == "directtype")
                     $("#channelssblist").html("")
-                    if (res.length > 0) {
-                        res.forEach(channel => {
+                    if (channels.length > 0) {
+                        channels.forEach(channel => {
                             $("#channelssblist").append(`
                                 <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
                                     <div class="icon-hash sidebar-listitem-icon"></div>
                                     <div class="sidebar-listitem-text">` + sanitizeHTML(channel.name) + `</div>
+                                </div>
+                            `)
+                        })
+                    }
+                    $("#directmessageslist").html("")
+                    if (directmessages.length > 0) {
+                        directmessages.forEach(channel => {
+                            channel.members = channel.members.filter(member => member.userId != authsession.data.user.id)
+                            var member = fullorg.data.members.filter(member => member.userId == channel.members[0])[0]
+                            $("#directmessageslist").append(`
+                                <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('directpage')">
+                                    <div class="icon-user sidebar-listitem-icon"></div>
+                                    <div class="sidebar-listitem-text">` + sanitizeHTML(member.user.name) + `</div>
                                 </div>
                             `)
                         })
@@ -169,6 +186,9 @@
                             .
                         </div>
                     </div>
+                    <div id="composebutton" onclick="NavigatePage(`composepage`)">
+                        <i class="icon-square-pen"></i>
+                    </div>
                 </div>
 
                 <div class="sidebar-listarea">
@@ -193,6 +213,15 @@
                     </div>
 
                     <div class="sidebar-listarea-inner" id="channelssblist">
+                    </div>
+                </div>
+                <div class="sidebar-listarea">
+                    <div class="sidebar-listarea-titlearea">
+                        <div class="sidebar-listarea-titletext">Direct Messages</div>
+                        <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
+                    </div>
+
+                    <div class="sidebar-listarea-inner" id="directmessageslist">
                     </div>
                 </div>
             </div>

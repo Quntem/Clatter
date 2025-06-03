@@ -1,0 +1,98 @@
+<qcl-header headertitle="Compose Message" main="true"></qcl-header>
+<script>
+    document.title = "Compose Message | Clatter"
+    setTimeout(async () => {
+        var inputbox = document.createElement("input")
+        inputbox.id = "compose-recipient-input"
+        inputbox.placeholder = "Message"
+        inputbox.type = "text"
+        inputbox.setAttribute("autocomplete", "off")
+        console.log(inputbox)
+        document.querySelector("qcl-header").style.borderBottom = "none"
+        var composeheader = document.createElement("qcl-header-toolbar")
+        composeheader.appendChild(inputbox)
+        document.getElementById("mainview").appendChild(composeheader)
+        var members = (await authClient.organization.getFullOrganization()).data.members
+        members = members.map(member => {
+            return member.user
+        })
+        members = members.filter(member => {
+            return member.email != authsession.data.user.email
+        })
+        var channels = (await (await fetch("/api/channels/list")).json()).filter(channel => {
+            return channel.type.split(".")[1] == "channeltype"
+        })
+        var fulllist = channels.concat(members)
+        const autoCompleteJS = new autoComplete({
+            placeHolder: "Message",
+            data: {
+                src: fulllist,
+                keys: ["name"]
+            },
+            selector: "#compose-recipient-input",
+            resultsList: {
+                tabSelect: true,
+            },
+            resultItem: {
+                element: (item, data) => {
+                    item.style.display = "flex"
+                    item.style.flexdirection = "row"
+                    item.style.alignItems = "center"
+                    if (data.value.email != undefined) {
+                        var icon = document.createElement("i")
+                        icon.style.marginRight = "10px"
+                        icon.classList.add("icon-user")
+                        item.prepend(icon)
+                    } else {
+                        var icon = document.createElement("i")
+                        icon.style.marginRight = "10px"
+                        icon.classList.add("icon-hash")
+                        item.prepend(icon)
+                    }
+                }
+            }
+        })
+        autoCompleteJS.start()
+        inputbox.addEventListener("selection", async (event) => {
+            console.log(event.detail.selection.value)
+            if(event.detail.selection.value.type?.split(".")[1] == "channeltype") {
+                window.history.pushState(null, null, "/starship/channel/" + event.detail.selection.value.id)
+                updateViewLocation()
+                setTimeout(() => {
+                    window.currentChat.view.querySelector(".messageinput").focus()
+                }, 500)
+            } else if (event.detail.selection.value.email != undefined) {
+                var chats = (await (await fetch("/api/channels/list")).json()).filter(channel => {
+                    return channel.type.split(".")[1] == "directtype"
+                })
+                var foundchat = false
+                chats.forEach(element => {
+                    if (element.members.includes(event.detail.selection.value.id) && element.members.includes(authsession.data.user.id) && element.members.length == 2) {
+                        foundchat = true
+                        window.history.pushState(null, null, "/starship/direct/" + element.id)
+                        updateViewLocation()
+                        setTimeout(() => {
+                            window.currentChat.view.querySelector(".messageinput").focus()
+                        }, 500)
+                    }
+                });
+                if (foundchat == false) {
+                    var req = await fetch("/api/direct/create1x1?recipientid=" + event.detail.selection.value.id, {
+                        method: "POST",
+                    })
+                    var res = await req.json()
+                    console.log(res)
+                    foundchat = true
+                    window.history.pushState(null, null, "/starship/direct/" + res.id)
+                    updateViewLocation()
+                    updateDirectList()
+                    setTimeout(() => {
+                        window.currentChat.view.querySelector(".messageinput").focus()
+                    }, 500)
+                }
+            }
+        })
+        inputbox.focus()
+    }, 50)
+</script>
+    

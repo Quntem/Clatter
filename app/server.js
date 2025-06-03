@@ -61,6 +61,31 @@ app.post("/api/channels/create", async (req, res) => {
   }
 })
 
+app.post("/api/direct/create1x1", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var direct = await prisma.channel.create({
+      data: {
+        parentworkspace: session.session.activeOrganizationId,
+        type: "clatter.directtype.1x1",
+        name: "Direct Message",
+        public: false,
+        members: {
+          set: [
+            session.session.userId,
+            req.query.recipientid
+          ]
+        }
+      }
+    })
+    res.send(direct)
+  } catch(err) {
+    // console.log(err)
+  }
+})
+
 app.get("/api/channels/list", async (req, res) => {
   try {
     const session = await auth.api.getSession({
@@ -68,7 +93,24 @@ app.get("/api/channels/list", async (req, res) => {
     });
     var channellist = await prisma.channel.findMany({
       where: {
-        parentworkspace: session.session.activeOrganizationId
+        parentworkspace: {
+          equals: session.session.activeOrganizationId
+        },
+        OR: [
+          {
+            members: {
+              has: session.session.userId
+            },
+            public: {
+              equals: false
+            }
+          },
+          {
+            public: {
+              equals: true
+            }
+          }
+        ]
       }
     })
     res.json(channellist)
@@ -114,11 +156,17 @@ app.get("/api/channel/:channelid/messages/list", async (req, res) => {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   });
+  var where = {
+    parentid: req.params.channelid,
+    parentmessageid: null
+  }
+  if(req.query.all == "true") {
+    where = {
+      parentid: req.params.channelid
+    }
+  }
   var messages = await prisma.message.findMany({
-    where: {
-      parentid: req.params.channelid,
-      parentmessageid: null
-    },
+    where,
     include: {
       childmessages: true
     }
