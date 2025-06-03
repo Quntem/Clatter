@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            function scrollMessageAreaToBottom() {
+                const messageArea = document.getElementById("messagearea");
+                messageArea.scrollTop = messageArea.scrollHeight;
+            }
+
+            // Helper: delete a message by ID, then remove its DOM node
+            function deleteChannelMessage(event, messageId) {
+                event.stopPropagation(); // Prevent any parent click
+                fetch("/api/channel/" + currentchannelid + "/message/" + messageId + "/delete")
+                    .then((res) => res.json())
+                    .then((res) => {
+                        if (res === "done") {
+                            // Remove the corresponding .messagebox from the DOM
+                            const msgBox = document.querySelector(
+                                `.messagebox[data-messageid='${messageId}']`
+                            );
+                            if (msgBox) msgBox.remove();
+                        }
+                    });
+            }
+
+            // Helper: open thread view for a message ID
+            function openReplyThread(event, messageId) {
+                event.stopPropagation(); // Prevent any parent click
+                currentmessageid = messageId;
+                NavigatePage("channelthreadpage");
+            }
+
+            try {
+                var lastsenderid = "";
+            } catch {
+                lastsenderid = "";
+            }
+
+            try {
+                socket.destroy();
+                delete socket;
+                socket = io();
+            } catch {
+                var socket = io();
+            }
+
+            socket.off("clatter.channel.message.recieve");
+            socket.off("clatter.channel.join.response");
+            socket.on("clatter.channel.join.response", (res) => {
+                console.log(res);
+            });
+
+            socket.on("clatter.channel.message.recieve", async (res) => {
+                console.log(res);
+                const element = JSON.parse(res);
+                let currentpfp = "";
+                const d = new Date(element.DateCreated);
+
+                if (true) {
+                    // ********** CASE: New top‐level message **********
+                    if (lastsenderid == element.userid && element.parentmessageid == undefined) {
+                        $("#messagearea").append(`
+                            <div class="messagebox" data-messageid="${element.id}">
+                                <span class="mstack">
+                                    <span class="message">
+                                        ${sanitizeHTML(element.content)}
+                                    </span>
+                                </span>
+                                <div class="message-actionbar">
+                                    <div 
+                                        class="icon-message-circle-reply" 
+                                        onclick="startReplyMode('${element.id}')">
+                                    </div>
+                                    <div 
+                                        class="icon-trash-2" 
+                                        onclick="deleteChannelMessage(event, '${element.id}')">
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                    } else {
+                        fullorg.data.members.forEach((member) => {
+                            if (member.userId == element.userid) {
+                                console.log("found");
+                                currentpfp = member.user.image || "/assets/defaultpfp.png";
+                            }
+                        });
+
+                        function formatDate(dateStr) {
+                            const now = new Date();
+                            const msgDate = new Date(dateStr);
+                            const diffMs = now - msgDate;
+                            const diffMins = Math.floor(diffMs / 60000);
+
+                            const hours = msgDate
+                                .getHours()
+                                .toString()
+                                .padStart(2, "0");
+                            const minutes = msgDate
+                                .getMinutes()
+                                .toString()
+                                .padStart(2, "0");
+
+                            if (diffMins < 1) {
+                                return "Just now";
+                            } else if (diffMins < 60) {
+                                return diffMins === 1
+                                    ? "1 minute ago"
+                                    : `${diffMins} minutes ago`;
+                            }
+
+                            const isToday =
+                                now.toDateString() === msgDate.toDateString();
+                            const yesterday = new Date();
+                            yesterday.setDate(now.getDate() - 1);
+                            const isYesterday =
+                                yesterday.toDateString() ===
+                                msgDate.toDateString();
+
+                            if (isToday) {
+                                return `${hours}:${minutes}`;
+                            } else if (isYesterday) {
+                                return `Yesterday ${hours}:${minutes}`;
+                            } else {
+                                const monthNames = [
+                                    "Jan",
+                                    "Feb",
+                                    "Mar",
+                                    "Apr",
+                                    "May",
+                                    "Jun",
+                                    "Jul",
+                                    "Aug",
+                                    "Sep",
+                                    "Oct",
+                                    "Nov",
+                                    "Dec",
+                                ];
+                                return `${monthNames[msgDate.getMonth()]} ${msgDate.getDate()} ${hours}:${minutes}`;
+                            }
+                        }
+
+                        function updateAllTimestamps() {
+                            document
+                                .querySelectorAll(".message-timestamp")
+                                .forEach((el) => {
+                                    const timestamp = el.getAttribute(
+                                        "data-timestamp"
+                                    );
+                                    if (timestamp) {
+                                        el.textContent = formatDate(timestamp);
+                                    }
+                                });
+                        }
+
+                        setInterval(updateAllTimestamps, 5000);
+
+                        fullorg.data.members.forEach(async (member) => {
+                            if (member.userId == element.userid) {
+                                const isOwner = member.role === "owner";
+                                const senderNameClass = isOwner
+                                    ? "message-sendername message-sendername-owner"
+                                    : "message-sendername";
+
+                                var replymessage = ``
+                                var messagemodeifiers = ""
+
+                                if (element.parentmessageid != undefined) {
+                                    var replymessageid = element.parentmessageid;
+                                    var req = await fetch("/api/channel/" + currentchannelid + "/message/" + replymessageid + "/info")
+                                    var res = await req.json()
+                                    user = fullorg.data.members.filter(member => member.userId == res.sender)[0]
+                                    replymessage = `
+                                        <div class="messagereply">
+                                            <i class="icon-reply"></i>
+                                            <img class="messagereplyimg" src="${user.user.image || "/assets/defaultpfp.png"}">
+                                            <div class="replycontent">
+                                                ${sanitizeHTML(res.content)}
+                                            </div>
+                                        </div>
+                                    `
+                                    messagemodeifiers = `style="margin-top: 6px;"`
+                                }
+
+                                $("#messagearea").append(`
+                                    ${replymessage}
+                                    <div class="messagebox expandedmessagebox" data-messageid="${element.id}" ${
+                                    extramessageui ? "isthread='true'" : ""
+                                } ${messagemodeifiers}>
+                                        <img 
+                                            src="${currentpfp}" 
+                                            class="messageprofilepicture" 
+                                            onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                        />
+                                        <span class="message mstack">
+                                            <b class="${senderNameClass}">
+                                                ${sanitizeHTML(element.sendername)} 
+                                            </b>
+                                            <span 
+                                                class="message-timestamp" 
+                                                data-timestamp="${element.DateCreated}" 
+                                                style="font-size: small;"
+                                            >
+                                                ${formatDate(element.DateCreated)}
+                                            </span>
+                                            <br />
+                                            <div class="messagetext">
+                                                ${sanitizeHTML(element.content)}
+                                            </div>
+                                            ${extramessageui}
+                                        </span>
+                                        <div class="message-actionbar">
+                                            <div 
+                                                class="icon-message-circle-reply" 
+                                                onclick="startReplyMode('${element.id}')"
+                                            ></div>
+                                            <div 
+                                                class="icon-trash-2" 
+                                                onclick="deleteChannelMessage(event, '${element.id}')"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                `);
+                            }
+                        });
+                    }
+                    lastsenderid = element.userid;
+                } else {
+                    // ********** CASE: This is a reply to an existing message **********
+                    const refmessage = $(
+                        `#messagearea [data-messageid='${element.parentmessageid}']`
+                    );
+                    if (refmessage.attr("isthread") != "true") {
+                        refmessage.attr("isthread", "true");
+                        refmessage.find(".mstack").append(`
+                            <div 
+                                class="threadviewbutton" 
+                                onclick="currentmessageid='${element.parentmessageid}'; NavigatePage('channelthreadpage')"
+                            >
+                                View Thread
+                            </div>
+                        `);
+                    }
+                }
+
+                scrollMessageAreaToBottom();
+            });
+        </script>
+    </head>
+
+    <body>
+        <div class="mainarea-header">
+            <div class="sidebar-wsinfoarea-stack">
+                <div id="mainarea-header-title">
+                    <!-- Blank to avoid confusion. -->
+                </div>
+                <div id="mainarea-header-sub">Direct Message</div>
+            </div>
+
+            <script>
+                var replymode = false;
+
+                fetch("/api/channel/" + currentchannelid + "/info")
+                    .then((res) => res.json())
+                    .then((channel) => {
+                        channel.members = channel.members.filter(member => member != authsession.data.user.id)
+                        var member = fullorg.data.members.filter(member => member.userId == channel.members[0])[0]
+                        $("#mainarea-header-title").html(member.user.name);
+                        document.title =
+                            "Clatter | " +
+                            fullorg.data.name +
+                            " - " +
+                            member.user.name;
+                        socket.emit(
+                            "clatter.channel.join",
+                            JSON.stringify({
+                                room: currentchannelid,
+                            })
+                        );
+                    });
+
+                    function formatDate(dateStr) {
+                        const now = new Date();
+                        const msgDate = new Date(dateStr);
+                        const diffMs = now - msgDate;
+                        const diffMins = Math.floor(diffMs / 60000);
+
+                        const hours = msgDate
+                            .getHours()
+                            .toString()
+                            .padStart(2, "0");
+                        const minutes = msgDate
+                            .getMinutes()
+                            .toString()
+                            .padStart(2, "0");
+
+                        if (diffMins < 1) {
+                            return "Just now";
+                        } else if (diffMins < 60) {
+                            return diffMins === 1
+                                ? "1 minute ago"
+                                : `${diffMins} minutes ago`;
+                        }
+
+                        const isToday =
+                            now.toDateString() ===
+                            msgDate.toDateString();
+                        const yesterday = new Date();
+                        yesterday.setDate(now.getDate() - 1);
+                        const isYesterday =
+                            yesterday.toDateString() ===
+                            msgDate.toDateString();
+
+                        if (isToday) {
+                            return `${hours}:${minutes}`;
+                        } else if (isYesterday) {
+                            return `Yesterday ${hours}:${minutes}`;
+                        } else {
+                            const monthNames = [
+                                "Jan",
+                                "Feb",
+                                "Mar",
+                                "Apr",
+                                "May",
+                                "Jun",
+                                "Jul",
+                                "Aug",
+                                "Sep",
+                                "Oct",
+                                "Nov",
+                                "Dec",
+                            ];
+                            return `${monthNames[msgDate.getMonth()]} ${msgDate.getDate()} ${hours}:${minutes}`;
+                        }
+                    }
+
+                    function updateAllTimestamps() {
+                        document
+                            .querySelectorAll(
+                                ".message-timestamp"
+                            )
+                            .forEach((el) => {
+                                const timestamp = el.getAttribute(
+                                    "data-timestamp"
+                                );
+                                if (timestamp) {
+                                    el.textContent =
+                                        formatDate(timestamp);
+                                }
+                            });
+                    }
+
+                var loadmessagelist = function () {
+                    fetch(
+                        "/api/channel/" + currentchannelid + "/messages/list?all=true"
+                    )
+                        .then((res) => res.json())
+                        .then((res) => {
+                            var currentpfp = "";
+                            var lastsenderid = "";
+                            console.log(res);
+                            $("#messagearea").html("");
+                            res.forEach(async (element) => {
+                                await new Promise((resolve) => {
+                                    console.log(lastsenderid);
+                                    currentpfp = "";
+                                    const d = new Date(element.DateCreated);
+                                    extramessageui = "";
+                                    if (lastsenderid == element.sender && element.parentmessageid == undefined) {
+                                        $("#messagearea").append(`
+                                            <div 
+                                                class="messagebox" 
+                                                data-messageid="${element.id}" 
+                                                ${extramessageui ? "isthread='true'" : ""}
+                                            >
+                                                <span class="mstack">
+                                                    <span class="messagetext">
+                                                        ${sanitizeHTML(element.content)}
+                                                    </span>
+                                                </span>
+                                                <div class="message-actionbar">
+                                                    <div 
+                                                        class="icon-message-circle-reply" 
+                                                        onclick="startReplyMode('${element.id}')"
+                                                    ></div>
+                                                    <div 
+                                                        class="icon-trash-2" 
+                                                        onclick="deleteChannelMessage(event, '${element.id}')"
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        `);
+                                    } else {
+                                        fullorg.data.members.forEach((member) => {
+                                            if (member.userId == element.sender) {
+                                                console.log("found");
+                                                currentpfp =
+                                                    member.user.image ||
+                                                    "/assets/defaultpfp.png";
+                                            }
+                                        });
+                                        fullorg.data.members.forEach(async (member) => {
+                                            if (member.userId == element.sender) {
+                                                const isOwner =
+                                                    member.role === "owner";
+                                                const senderNameClass = isOwner
+                                                    ? "message-sendername message-sendername-owner"
+                                                    : "message-sendername";
+
+                                                var replymessage = ``
+                                                var messagemodeifiers = ""
+
+                                                if (element.parentmessageid != undefined) {
+                                                    var replymessageid = element.parentmessageid;
+                                                    var req = await fetch("/api/channel/" + currentchannelid + "/message/" + replymessageid + "/info")
+                                                    var res = await req.json()
+                                                    user = fullorg.data.members.filter(member => member.userId == res.sender)[0]
+                                                    replymessage = `
+                                                        <div class="messagereply">
+                                                            <i class="icon-reply"></i>
+                                                            <img class="messagereplyimg" src="${user.user.image || "/assets/defaultpfp.png"}">
+                                                            <div class="replycontent">
+                                                                ${sanitizeHTML(res.content)}
+                                                            </div>
+                                                        </div>
+                                                    `
+                                                    messagemodeifiers = `style="margin-top: 6px;"`
+                                                }
+
+                                                $("#messagearea").append(`
+                                                    <div class="messagereplystack">
+                                                        ${replymessage}
+                                                        <div 
+                                                            class="messagebox expandedmessagebox" 
+                                                            data-messageid="${element.id}" 
+                                                            ${extramessageui ? "isthread='true'" : ""}
+                                                            ${messagemodeifiers}
+                                                        >
+                                                            <img 
+                                                                src="${currentpfp}" 
+                                                                class="messageprofilepicture" 
+                                                                onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                                            />
+                                                            <span class="message mstack">
+                                                                <b class="${senderNameClass}">
+                                                                    ${sanitizeHTML(element.sendername)} 
+                                                                </b>
+                                                                <span 
+                                                                    class="message-timestamp" 
+                                                                    data-timestamp="${element.DateCreated}" 
+                                                                    style="font-size: small;"
+                                                                >
+                                                                    ${formatDate(element.DateCreated)}
+                                                                </span>
+                                                                <br />
+                                                                <div class="messagetext">
+                                                                    ${sanitizeHTML(element.content)}
+                                                                </div>
+                                                                ${extramessageui}
+                                                            </span>
+                                                            <div class="message-actionbar">
+                                                                <div 
+                                                                    class="icon-message-circle-reply" 
+                                                                    onclick="startReplyMode(event, '${element.id}')"
+                                                                ></div>
+                                                                <div 
+                                                                    class="icon-trash-2" 
+                                                                    onclick="deleteChannelMessage(event, '${element.id}')"
+                                                                ></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `);
+                                            }
+                                        });
+                                    }
+                                    console.log(element.sender);
+                                    lastsenderid = element.sender;
+                                    resolve();
+                                })
+                            });
+                            setInterval(updateAllTimestamps, 5000);
+                            setTimeout(scrollMessageAreaToBottom, 0);
+                        });
+                };
+
+                var startReplyMode = function (messageId) {
+                    currentreplyid = messageId;
+                    replymode = true;
+                    document.getElementById("messagebox").value = "";
+                    document.getElementById("messagebox").placeholder = "Replying to Message";
+                    document.getElementById("messagebox").focus();
+                    document.getElementById("sendbutton-icon").classList.remove("icon-send");
+                    document.getElementById("sendbutton-icon").classList.add("icon-reply");
+                };
+
+                var sendmessage = function (msg) {
+                    console.log(replymode);
+                    if (replymode == true) {
+                        socket.emit(
+                            "clatter.channel.message.send",
+                            JSON.stringify({
+                                room: currentchannelid,
+                                userid: authsession.data.user.id,
+                                sendername: authsession.data.user.name,
+                                content: msg,
+                                type: "text",
+                                method: "modern",
+                                token: authsession.data.session.token,
+                                parentmessageid: currentreplyid,
+                            })
+                        );
+                        document.getElementById("sendbutton-icon").classList.add("icon-send");
+                        document.getElementById("sendbutton-icon").classList.remove("icon-reply");
+                        document.getElementById("messagebox").value = "";
+                        document.getElementById("messagebox").placeholder = "Send Message...";
+                        replymode = false;
+                    } else {
+                        socket.emit(
+                            "clatter.channel.message.send",
+                            JSON.stringify({
+                                room: currentchannelid,
+                                userid: authsession.data.user.id,
+                                sendername: authsession.data.user.name,
+                                content: msg,
+                                type: "text",
+                                method: "modern",
+                                token: authsession.data.session.token,
+                            })
+                        );
+                    }
+                };
+
+                var clearMessageBox = function () {
+                    document.getElementById("messagebox").value = "";
+                };
+
+                var sendbuttonaction = function () {
+                    const message = document.getElementById("messagebox").value;
+                    if (message.trim().length < 1) {
+                        console.log("No message present.");
+                    } else {
+                        // Length Limit (including whitespaces)
+                        const lengthLimit = 500;
+
+                        if (message.length < lengthLimit) {
+                            sendmessage(message);
+                            clearMessageBox();
+                            scrollMessageAreaToBottom();
+                        } else {
+                            alert("Message over " + lengthLimit + " characters!");
+                        }
+                    }
+                };
+
+                document.addEventListener("keydown", function (event) {
+                    if (event.keyCode == 13) {
+                        sendbuttonaction();
+                    }
+                });
+            </script>
+        </div>
+
+        <div style="height: calc(100% - 71px); width: 100%; position: relative;">
+            <div id="messagearea" style="max-height: calc(100% - 100px); overflow-y: scroll;"></div>
+            <div class="messagebar">
+                <input
+                    id="messagebox"
+                    autocomplete="off"
+                    maxlength="500"
+                    placeholder="Send Message..."
+                />
+                <div id="sendbutton" onclick="sendbuttonaction()">
+                    <div class="icon-send" id="sendbutton-icon"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>loadmessagelist()</script>
+    </body>
+</html>

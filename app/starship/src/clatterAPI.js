@@ -2,6 +2,33 @@ export function getChannels() {
     return new Promise(async (resolve, reject) => {
         var req = await fetch("/api/channels/list")
         var data = await req.json()
+        data.forEach((channel, index) => {
+            if(channel.type.split(".")[1] != "channeltype") {
+                data.splice(index, 1)
+            }
+        })
+        resolve(data)
+    })
+}
+
+export function getMember(userid) {
+    return new Promise(async (resolve, reject) => {
+        var req = (await authClient.organization.getFullOrganization()).data.members.find(member => member.user.id == userid)
+        resolve(req)
+    })
+}
+
+export function getDirectMessages() {
+    return new Promise(async (resolve, reject) => {
+        var req = await fetch("/api/channels/list")
+        var data = await req.json()
+        data = data.filter((channel) => {
+            if(channel.type.split(".")[1] != "directtype") {
+                return false
+            }
+            return true
+        })
+        console.log(data)
         resolve(data)
     })
 }
@@ -42,6 +69,14 @@ export function getChannelInfo(channelid) {
 export function getChannelMessages(channelid) {
     return new Promise(async (resolve, reject) => {
         var req = await fetch("/api/channel/" + channelid + "/messages/list")
+        var data = await req.json()
+        resolve(data)
+    })
+}
+
+export function getAllChannelMessages(channelid) {
+    return new Promise(async (resolve, reject) => {
+        var req = await fetch("/api/channel/" + channelid + "/messages/list?all=true")
         var data = await req.json()
         resolve(data)
     })
@@ -95,3 +130,5 @@ export function scriptLoad(url) {
         })
     })
 }
+
+window.getChannelMessages = getChannelMessages

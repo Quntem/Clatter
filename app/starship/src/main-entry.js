@@ -1,4 +1,4 @@
-import { getChannels } from "./clatterAPI.js"
+import { getChannels, getDirectMessages, getMember } from "./clatterAPI.js"
 import ClientConfig from "../scripts/ClientConfig.js"
 
 var updatechannelList = async function() {
@@ -13,6 +13,26 @@ var updatechannelList = async function() {
             updateViewLocation()
         })
         document.getElementById("channels").querySelector(".sidebar-section-content").appendChild(item)
+    })
+}
+
+var updateDirectList = async function() {
+    var channels = await getDirectMessages()
+    document.getElementById("direct").querySelector(".sidebar-section-content").innerHTML = ``
+    channels.forEach(async channel => {
+        channel.members = channel.members.filter(member => member != authsession.data.user.id)
+        console.log(channel.members)
+        var member = await getMember(channel.members[0])
+        console.log(member)
+        var item = document.createElement("clatter-sidebar-item")
+        item.setAttribute("type", "imageicon")
+        item.setAttribute("channeltitle", member.user.name)
+        item.setAttribute("icon", member.user.image)
+        item.addEventListener("click", () => {
+            window.history.pushState(null, null, "/starship/direct/" + channel.id)
+            updateViewLocation()
+        })
+        document.getElementById("direct").querySelector(".sidebar-section-content").appendChild(item)
     })
 }
 
@@ -32,6 +52,7 @@ var drawMainNav = function() {
 
 window.loadfunction = async function() {
     var org = await authClient.organization.getFullOrganization()
+    var authsession = await authClient.getSession()
     if(org.data == undefined) {
         var orglist = await authClient.organization.list()
         if(orglist.data.length == 0) {
@@ -43,6 +64,7 @@ window.loadfunction = async function() {
     $(".sidebar-workspace-text").text(org.data.name)
     $(".sidebar-workspace-icon").attr("src", org.data.logo)
     updatechannelList()
+    updateDirectList()
     updateViewLocation()
     document.getElementById("mainarea").addEventListener("click", () => {
         if(innerWidth < 768) {
@@ -50,6 +72,7 @@ window.loadfunction = async function() {
             document.getElementById("mainarea").style.opacity = 1
         }
     })
+    window.fullorg = org
     var workspacelist = await authClient.organization.list()
     var workspaceswitcherlist = ""
     workspacelist.data.forEach(workspace => {
@@ -111,8 +134,10 @@ window.switchWorkspace = async function(id) {
     $(".sidebar-workspace-text").text(org.data.name)
     $(".sidebar-workspace-icon").attr("src", org.data.logo)
     window.history.pushState(null, null, "/starship/")
+    window.fullorg = org
     updateViewLocation()
     updatechannelList()
+    updateDirectList()
     window.wsswitchertippy[0].destroy()
     var workspacelist = await authClient.organization.list()
     var workspaceswitcherlist = ""

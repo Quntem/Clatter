@@ -25,6 +25,7 @@ model channel {
   members            String[]
   owner              String?
   extradata          Json?
+  discoverable       Boolean @default(true)
 }
 
 model tab {
