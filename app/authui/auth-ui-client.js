@@ -8,6 +8,21 @@ redirurl = DOMPurify.sanitize(redirurl);
 let emailFromParams = params.get("email");
 emailFromParams = DOMPurify.sanitize(emailFromParams);
 
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const result = await getSession();
+    const session = result.data?.session; 
+
+    if (session) {
+      window.location.replace("/client/");
+      return;
+    }
+  } catch (err) {
+    console.warn("Error checking session:", err);
+  }
+});
+
+
 if (emailFromParams) {
     const emailInput = document.getElementById("email");
     if (emailInput) {
@@ -18,7 +33,7 @@ if (emailFromParams) {
 window.signin = function(button) {
     const errorBox = document.getElementById("errorBox");
     errorBox.textContent = "";
-    errorBox.style.display = "none"; // Hide initially
+    errorBox.style.display = "none";
 
     button.innerHTML = "Signing in… <div class='icon-loader-circle loader-circle-animation' style='margin-left:0.25rem;'></div>";
 
@@ -44,7 +59,7 @@ window.signin = function(button) {
 window.signup = function(button) {
     const errorBox = document.getElementById("errorBox");
     errorBox.textContent = "";
-    errorBox.style.display = "none"; // Hide initially
+    errorBox.style.display = "none";
 
     button.innerHTML = "Signing up… <div class='icon-loader-circle loader-circle-animation' style='margin-left:0.25rem;'></div>";
 
