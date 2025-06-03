@@ -78,31 +78,46 @@
 
             var switchworkspace = function(obj) {
                 const orgId = $(obj).attr("orgid");
+
+                if ($(obj).attr("selected") === "selected") {
+                    $(obj).removeAttr("selected");
+
+                    $("#shellsidebar").hide();
+
+                    $("#sidebar-wsinfo-name").text("Workspace Name");
+                    $("#sidebar-wsinfo-sub").text(".");
+
+                    localStorage.setItem("deselectedOrg", orgId);
+
+                    return;
+                }
+
+                localStorage.removeItem("deselectedOrg");
+
                 const orgName = $(obj).data("tooltip");
-                        
-                // Optimistically update the UI
+
                 $("#sidebar-wsinfo-name").text(orgName || "Loading...");
-                $("#workspaceswitcher").find(".workspaceswitcheritem").removeAttr("selected");
+                $("#workspaceswitcher")
+                .find(".workspaceswitcheritem")
+                .removeAttr("selected");
                 $(obj).attr("selected", "selected");
-                $("#shellsidebar").show()
-                        
-                // Load workspace data in the background
-                authClient.organization.setActive({ organizationId: orgId })
-                    .then(res => {
-                        return authClient.organization.getFullOrganization();
-                    })
-                    .then(ao => {
-                        // Update UI with the full workspace details
-                        $("#sidebar-wsinfo-name").text(ao.data.name);
-                        $("#sidebar-wsinfo-sub").text(ao.data.slug);
-                        GetChannels(); // Update channels for the workspace
-                        fullorg = ao
-                    })
-                    .catch(err => {
-                        console.error("Failed to load workspace data:", err);
-                        // Provide error feedback to the user
-                        $("#sidebar-wsinfo-name").text("Error Loading Workspace");
-                    });
+                $("#shellsidebar").show();
+
+                authClient.organization
+                .setActive({ organizationId: orgId })
+                .then((res) => {
+                    return authClient.organization.getFullOrganization();
+                })
+                .then((ao) => {
+                    $("#sidebar-wsinfo-name").text(ao.data.name);
+                    $("#sidebar-wsinfo-sub").text(ao.data.slug);
+                    GetChannels();
+                    fullorg = ao;
+                })
+                .catch((err) => {
+                    console.error("Failed to load workspace data:", err);
+                    $("#sidebar-wsinfo-name").text("Error Loading Workspace");
+                });
             };
 
             var NavigatePage = function(pagename) {
@@ -193,7 +208,7 @@
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
             <!-- <div class="sidebar-profile"></div> -->
-            <div class="icon-settings sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px; margin-left: auto;" onclick="NavigatePage(`usersettings`)"></div>
+            <div class="icon-user-round-cog sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px; margin-left: auto;" onclick="NavigatePage(`usersettings`)"></div>
             <div class="icon-log-out sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px;" onclick="authClient.signOut().then(() => location.reload())"></div>
         </header>
 
@@ -260,53 +275,67 @@
         </div>
         <script>
             loadfunction = function() {
-                authClient.organization.list()
-                .then(res => {
-                    if(res.data.length > 0) {
-                        $("#workspaceswitcher").html("")
-                        res.data.forEach(item => {
+                authClient.organization.list().then((res) => {
+                    if (res.data.length > 0) {
+                        $("#workspaceswitcher").html("");
+                        res.data.forEach((item) => {
                             $("#workspaceswitcher").append(`
-                                <div class="workspaceswitcheritem" onclick="switchworkspace(this)" data-tooltip="` + item.name + `" orgid="` + item.id + `">
-                                    <img class="workspaceswitcheriteminner" src="` + (item.logo || '/client/wsicon.png') + `" onerror="this.onerror=null;this.src='/client/wsicon.png';">
+                                <div class="workspaceswitcheritem"
+                                    onclick="switchworkspace(this)"
+                                    data-tooltip="${item.name}"
+                                    orgid="${item.id}">
+                                    <img class="workspaceswitcheriteminner"
+                                        src="${item.logo || '/client/wsicon.png'}"
+                                        onerror="this.onerror=null;this.src='/client/wsicon.png';">
                                 </div>
-                            `)
-                        })
+                            `);
+                        });
                         $("#workspaceswitcher").append(`
-                            <div class="workspaceswitcheradd" data-tooltip="Create A New Workspace" onclick="createworkspace()">
+                            <div class="workspaceswitcheradd"
+                                data-tooltip="Create A New Workspace"
+                                onclick="createworkspace()">
                                 <div class="icon-plus workspaceswitcheradd-icon"></div>
                             </div>
-                        `)
-                        authClient.organization.getFullOrganization()
-                            .then(ao => {
-                                try {
-                                    switchworkspace($("[orgid=" + ao.data.id + "]"))
-                                    if (finishedpageload == false ) {
-                                        finishedpageload  = true
-                                        fadeoutsplash()
-                                    }
-                                } catch {
-                                    console.log("There is no active org.")
-                                    if (finishedpageload == false ) {
-                                        finishedpageload  = true
-                                        fadeoutsplash()
-                                    }
-                                }
-                            })
+                        `);
 
+                        authClient.organization.getFullOrganization()
+                        .then((ao) => {
+                            const activeId = ao.data.id.toString();
+                            const justDeselected = localStorage.getItem("deselectedOrg");
+
+                            if (justDeselected && justDeselected === activeId) {
+                                localStorage.removeItem("deselectedOrg");
+                                if (!finishedpageload) {
+                                    finishedpageload = true;
+                                    fadeoutsplash();
+                                }
+                            } else {
+                                try {
+                                    switchworkspace($("[orgid=" + activeId + "]"));
+                                } catch (e) {
+                                    console.log("No active org to switch to.");
+                                }
+                                if (!finishedpageload) {
+                                    finishedpageload = true;
+                                    fadeoutsplash();
+                                }
+                            }
+                        });
                     } else {
-                        $("#workspaceswitcher").html("")
-                        $("#workspaceswitcher").append(`
-                            <div class="workspaceswitcheradd" data-tooltip="Create A New Workspace" onclick="createworkspace()">
+                        $("#workspaceswitcher").html(`
+                            <div class="workspaceswitcheradd"
+                                data-tooltip="Create A New Workspace"
+                                onclick="createworkspace()">
                                 <div class="icon-plus workspaceswitcheradd-icon"></div>
                             </div>
-                        `)
-                        if (finishedpageload == false ) {
-                            finishedpageload  = true
-                            fadeoutsplash()
+                        `);
+                        if (!finishedpageload) {
+                            finishedpageload = true;
+                            fadeoutsplash();
                         }
                     }
-                })
-            }
+                });
+            };
 
             if (window.location.origin == "https://beta.clatter.work" || window.location.origin == "https://clatterpreview.quntem.co.uk") {
                 document.title = "Clatter | Beta Client";
