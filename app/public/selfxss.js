@@ -4,5 +4,7 @@ function showConsoleWarning() {
     console.log("%cIf you do not understand what this is, CLOSE THIS WINDOW NOW.", "color: #fff; background: #b30000; font-size: 1.2rem; font-family: 'Figtree', sans-serif; font-weight: bold; padding: .5rem; border-radius: .5rem; line-height: 1.4;");
 }
 
-showConsoleWarning();
-setInterval(showConsoleWarning, 10000);
+if (window.location.host != "localhost:3000") {
+    showConsoleWarning();
+    setInterval(showConsoleWarning, 10000);
+}

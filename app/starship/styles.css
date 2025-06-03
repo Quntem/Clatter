@@ -42,6 +42,32 @@ qcl-header {
     height: 40px;
 }
 
+#compose-recipient-input {
+    height: 25px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    width: calc(100% - 15px);
+}
+
+.autoComplete_wrapper {
+    width: 100%;
+}
+
+qcl-header-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--background-color);
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    color: var(--foreground-color);
+    width: calc(100% - 20px);
+    height: 40px;
+}
+
 clatter-base-view[open="true"] {
     width: calc(100% - 8px);
     margin-right: 8px;
@@ -159,6 +185,7 @@ clatter-directory-item {
     height: 22px;
     border-radius: 5px;
     background-color: var(--foreground-color);
+    border: 1px solid var(--border-color);
 }
 
 .sidebar-workspace-text {
@@ -521,7 +548,7 @@ clatter-sidebar-item:active {
     background-color: var(--background-color);
     border-radius: 5px;
     border: 1px solid var(--border-color);
-    margin-bottom: 10px !important;
+    margin-bottom: 4px !important;
 }
 
 clatter-message-actionbar {
@@ -538,6 +565,32 @@ clatter-message-actionbar {
     padding: 5px;
 }
 
+.original-message-icon {
+    height: 20px;
+    width: 20px;
+    border-radius: 5px;
+}
+
+.original-message-row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.replyindicator {
+    display: flex;
+    flex-direction: row;
+    margin-left: 25px;
+    align-items: center;
+    gap: 5px;
+    color: var(--secondary-foreground-color);
+}
+
+.replyindicator-text {
+    font-size: 14px;
+}
+
 clatter-message {
     display: flex;
     flex-direction: row;
@@ -547,6 +600,11 @@ clatter-message {
     border-radius: 5px;
     transition: all 100ms ease;
     position: relative;
+}
+
+.reply-message-row {
+    display: flex;
+    flex-direction: row;
 }
 
 clatter-message[avatar] {
@@ -765,6 +823,7 @@ clatter-sidebar-seperator {
     width: 16px;
     height: 16px;
     border-radius: 4px;
+    border: 1px solid var(--border-color);
 }
 
 .channellistitem {

@@ -1,0 +1,58 @@
+<qcl-header main="true"></qcl-header>
+<script src="/starship/routines/directPage.js" type="module"></script>
+<script>
+    if(window.location.pathname.split("/")[4] != "thread") {
+        setTimeout(() => {
+            window.currentChat = new window.directConnector({channelid: window.location.pathname.split("/")[3], view: document.getElementById("mainview")})
+            window.currentChat.initalise().then(() => {
+                window.currentChat.setPageTitle()
+                window.currentChat.loadMessages().then(async (messages) => {
+                    window.lastuserid = ""
+                    var users = (await authClient.organization.getFullOrganization()).data.members
+                    messages.forEach((message) => {
+                        var avatar = ""
+                        users.forEach(item => {
+                            if (item.user.id == message.sender) {
+                                avatar = item.user.image
+                            }
+                        })
+                        var messageElement = document.createElement("clatter-message")
+                        messageElement.setAttribute("replymode", "direct")
+                        if (message.sender != window.lastuserid) {
+                            messageElement.setAttribute("avatar", avatar)
+                            messageElement.setAttribute("username", message.sendername)
+                            window.lastuserid = message.sender
+                        }
+                        console.log(message)
+                        if(message.parentmessageid != undefined) {
+                            messageElement.setAttribute("isthread", "true")
+                            messageElement.setAttribute("parentmessageid", message.parentmessageid)
+                            messageElement.setAttribute("avatar", avatar)
+                            messageElement.setAttribute("username", message.sendername)
+                        }
+                        messageElement.setAttribute("id", message.id)
+                        messageElement.setAttribute("senderid", message.sender)
+                        messageElement.innerText = message.content
+                        document.querySelector(".chatarea").appendChild(messageElement)
+                    })
+                    window.currentChat.bindMessageBox(document.querySelector(".inputbar"))
+                })
+            })
+        }, 60)
+    } else {
+        $("#mainview").load("/starship/pages/thread.html")
+    }
+</script>
+<div class="chatarea"></div>
+<div class="inputarea">
+    <div class="inputbar">
+        <input type="text" autocomplete="off" class="messageinput">
+        <div class="sendbutton">
+            <i class="icon-send sendbutton-icon"></i>
+        </div>
+    </div>
+    <div class="replyindicator" style="display: none;">
+        <i class="icon-reply"></i>
+        <div class="replyindicator-text">Replying To</div>
+    </div>
+</div>

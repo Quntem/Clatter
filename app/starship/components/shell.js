@@ -16,12 +16,12 @@ class qclheader extends HTMLElement {
         if (this.getAttribute("main") == "true") {
             this.innerHTML = `
                 <i class="icon-panel-left layout-header-left sidebar-toggle-button"></i>
-                <div class="headertitletext">${title}</div>
+                <div class="headertitletext" id="headertitletext">${title}</div>
                 <!-- <i class="icon-panel-right layout-header-right"></i> -->
             `
         } else {
             this.innerHTML = `
-                <div class="headertitletext">${title}</div>
+                <div class="headertitletext" id="headertitletext">${title}</div>
                 <!--<i class="icon-x layout-header-right"></i>-->
             `
         }
@@ -119,7 +119,7 @@ class QCMessage extends HTMLElement {
     constructor() {
         super()
     }
-    connectedCallback() {
+    async connectedCallback() {
         if (this.getAttribute("avatar") == undefined) {
             var oldcontent = this.innerHTML
             this.innerHTML = `
@@ -140,14 +140,35 @@ class QCMessage extends HTMLElement {
         }
 
         if(this.getAttribute("isthread") == "true") {
-            var showthreadbutton = document.createElement("div")
-            showthreadbutton.innerText = "Show Thread"
-            showthreadbutton.classList.add("message-show-thread-button")
-            this.querySelector(".message-layoutstack").appendChild(showthreadbutton)
-            showthreadbutton.addEventListener("click", () => {
-                window.history.pushState(null, null, "/starship/channel/" + window.location.pathname.split("/")[3] + "/thread/" + this.getAttribute("id"))
-                updateViewLocation()
-            })
+            if(this.getAttribute("replymode") == "direct") {
+                console.log(this.getAttribute("parentmessageid"))
+                var replymessage = await window.currentChat.getMessage(this.getAttribute("parentmessageid"))
+                console.log(replymessage)
+                var oldcontent = this.innerHTML
+                this.innerHTML = `
+                    <div>
+                        <div class="original-message-row">
+                            <i class="icon-reply"></i>
+                            <img class="original-message-icon">
+                            <div class="original-message-text"></div>
+                        </div>
+                        <div class="reply-message-row">
+                            ` + oldcontent + `
+                        </div>
+                    </div>
+                `
+                this.querySelector(".original-message-icon").setAttribute("src", window.fullorg.data.members.find(item => item.user.id == replymessage.sender).user.image)
+                this.querySelector(".original-message-text").innerText = replymessage.content
+            } else {
+                var showthreadbutton = document.createElement("div")
+                showthreadbutton.innerText = "Show Thread"
+                showthreadbutton.classList.add("message-show-thread-button")
+                this.querySelector(".message-layoutstack").appendChild(showthreadbutton)
+                showthreadbutton.addEventListener("click", () => {
+                    window.history.pushState(null, null, "/starship/channel/" + window.location.pathname.split("/")[3] + "/thread/" + this.getAttribute("id"))
+                    updateViewLocation()
+                })
+            }
         }
 
         this.appendChild(document.createElement("clatter-message-actionbar"))
@@ -157,10 +178,17 @@ class QCMessage extends HTMLElement {
             replybutton.classList.add("icon-message-circle-reply")
             replybutton.classList.add("reply-button")
             this.querySelector("clatter-message-actionbar").appendChild(replybutton)
-            this.querySelector(".reply-button").addEventListener("click", () => {
-                window.history.pushState(null, null, "/starship/channel/" + window.location.pathname.split("/")[3] + "/thread/" + this.getAttribute("id"))
-                updateViewLocation()
-            })
+            if (this.getAttribute("replymode") == "direct") {
+                this.querySelector(".reply-button").addEventListener("click", () => {
+                    window.currentChat.isreplying = true
+                    window.currentChat.replymessage = this.getAttribute("id")
+                })
+            } else {
+                this.querySelector(".reply-button").addEventListener("click", () => {
+                    window.history.pushState(null, null, "/starship/channel/" + window.location.pathname.split("/")[3] + "/thread/" + this.getAttribute("id"))
+                    updateViewLocation()
+                })
+            }
         }
         if(this.getAttribute("senderid") == authsession.data.user.id) {
             var deletebutton = document.createElement("i")
@@ -186,59 +214,64 @@ class QCMessage extends HTMLElement {
 
 window.customElements.define("clatter-message", QCMessage)
 
+// document.querySelector(".sidebar-header-button").addEventListener("click", () => {
+//     showDialog({
+//         title: "Compose Message",
+//         content: "",
+//         type: "confirm"
+//     }).then(async () => {
+//         var channels = await getChannels()
+//         channels.filter((channel) => {
+//             return channel.name.toLowerCase().includes(window.composerChannel.toLowerCase())
+//         })
+//         if(channels.length == 0) {
+//             showDialog({
+//                 title: "Channel Not Found",
+//                 content: "Channel not found",
+//                 type: "confirm"
+//             })
+//             return
+//         }
+//         window.history.pushState(null, null, "/starship/channel/" + channels[0].id)
+//         updateViewLocation()
+//         setTimeout(() => {
+//             // document.querySelector("#mainview").querySelector(".messageinput").value = window.composerInput
+//             window.currentChat.sendMessage(window.composerInput)
+//         }, 500)
+//     })
+//     setTimeout(async () => {
+//         $(document.querySelector(".dialog-body")).prepend (`
+//             <div class="compose-message-container">
+//                 <input type="text" autocomplete="off" placeholder="Channel Name" id="compose-message-channelname">
+//                 <textarea autocomplete="off" placeholder="Message" id="compose-message-input"></textarea>
+//             </div>
+//         `)
+//         var channels = await getChannels()
+//         channels = channels.map((channel) => {
+//             return channel.name
+//         })
+//         const autoCompleteJS = new autoComplete({
+//             placeHolder: "Channel Name",
+//             data: {
+//                 src: channels
+//             },
+//             resultItem: {
+//                 highlight: true,
+//             },
+//             selector: "#compose-message-channelname"
+//         })
+//         autoCompleteJS.start()
+//         document.querySelector("#compose-message-channelname").addEventListener("selection", (event) => {
+//             document.querySelector("#compose-message-channelname").value = event.detail.selection.value
+//             window.composerChannel = event.detail.selection.value
+//         })
+//         document.querySelector("#compose-message-input").addEventListener("input", (event) => {
+//             window.composerInput = event.target.value
+//         })
+//     }, 100)
+// })
+
 document.querySelector(".sidebar-header-button").addEventListener("click", () => {
-    showDialog({
-        title: "Compose Message",
-        content: "",
-        type: "confirm"
-    }).then(async () => {
-        var channels = await getChannels()
-        channels.filter((channel) => {
-            return channel.name.toLowerCase().includes(window.composerChannel.toLowerCase())
-        })
-        if(channels.length == 0) {
-            showDialog({
-                title: "Channel Not Found",
-                content: "Channel not found",
-                type: "confirm"
-            })
-            return
-        }
-        window.history.pushState(null, null, "/starship/channel/" + channels[0].id)
-        updateViewLocation()
-        setTimeout(() => {
-            // document.querySelector("#mainview").querySelector(".messageinput").value = window.composerInput
-            window.currentChat.sendMessage(window.composerInput)
-        }, 500)
-    })
-    setTimeout(async () => {
-        $(document.querySelector(".dialog-body")).prepend (`
-            <div class="compose-message-container">
-                <input type="text" autocomplete="off" placeholder="Channel Name" id="compose-message-channelname">
-                <textarea autocomplete="off" placeholder="Message" id="compose-message-input"></textarea>
-            </div>
-        `)
-        var channels = await getChannels()
-        channels = channels.map((channel) => {
-            return channel.name
-        })
-        const autoCompleteJS = new autoComplete({
-            placeHolder: "Channel Name",
-            data: {
-                src: channels
-            },
-            resultItem: {
-                highlight: true,
-            },
-            selector: "#compose-message-channelname"
-        })
-        autoCompleteJS.start()
-        document.querySelector("#compose-message-channelname").addEventListener("selection", (event) => {
-            document.querySelector("#compose-message-channelname").value = event.detail.selection.value
-            window.composerChannel = event.detail.selection.value
-        })
-        document.querySelector("#compose-message-input").addEventListener("input", (event) => {
-            window.composerInput = event.target.value
-        })
-    }, 100)
+    window.history.pushState(null, null, "/starship/compose")
+    updateViewLocation()
 })
