@@ -1,0 +1,12 @@
+<qcl-header headertitle="All Channels" main="true" hasAddButton="true"></qcl-header>
+<script src="/starship/routines/allDocuments.js" type="module"></script>
+<script>
+    document.title = "All Channels | Clatter"
+    setTimeout(() => {
+        documentPageListUpdate()
+        documentPageAddButtonEvent()
+    }, 50)
+</script>
+<div class="channellistcontainer" style="margin-top: 20px;" id="channellistcontainer">
+
+</div>
