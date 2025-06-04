@@ -304,8 +304,13 @@
 
                         authClient.organization.getFullOrganization()
                         .then((ao) => {
-                            const activeId = ao.data.id.toString();
-                            const justDeselected = localStorage.getItem("deselectedOrg");
+                            try {
+                                var activeId = ao.data.id.toString();
+                                var justDeselected = localStorage.getItem("deselectedOrg");
+                            } catch {
+                                var activeId = ""
+                                var justDeselected = ""
+                            }
 
                             if (justDeselected && justDeselected === activeId) {
                                 localStorage.removeItem("deselectedOrg");

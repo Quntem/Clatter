@@ -8,6 +8,11 @@ window.LaunchDocEditor = function() {
     } catch {
     
     }
+
+    if(window.location.href.includes("starship")) {
+        console.log(window.location.pathname.split("/"))
+        var currentdocumentid = window.location.pathname.split("/")[3]
+    }
     
     window.editor = new EditorJS({
         holder: "editorjs",
@@ -48,7 +53,8 @@ window.LaunchDocEditor = function() {
             if(window.location.href.includes("client")) {
                 $("#mainarea-header-title").text(content.name)
             } else {
-
+                $("#headertitletext").text(content.name)
+                document.title = content.name + " | Clatter"
             }
         },
     });

@@ -1,45 +1,46 @@
-import { getChannels, createChannel } from "../src/clatterAPI.js"
+import { listDocuments, createDocument } from "../src/clatterAPI.js"
 import { showDialog } from "../components/dialog.js"
 
-window.channelPageListUpdate = async function() {
-    var channels = await getChannels()
-    document.getElementById("channellistcontainer").innerHTML = ``
-    channels.forEach(channel => {
+window.documentPageListUpdate = async function() {
+    var documents = await listDocuments()
+    document.getElementById("documentlistcontainer").innerHTML = ``
+    documents.forEach(doc => {
         var item = document.createElement("div")
         item.className = "channellistitem"
         var icon = document.createElement("i")
-        icon.className = "icon-hash channellistitem-icon"
+        icon.className = "icon-file-text channellistitem-icon"
         var text = document.createElement("div")
         text.className = "channellistitem-text"
-        text.textContent = channel.name
+        text.textContent = doc.name
         item.appendChild(icon)
         item.appendChild(text)
         item.addEventListener("click", () => {
-            window.history.pushState(null, null, "/starship/channel/" + channel.id)
+            window.history.pushState(null, null, "/starship/document/" + doc.id)
             updateViewLocation()
         })
-        document.getElementById("channellistcontainer").appendChild(item)
+        document.getElementById("documentlistcontainer").appendChild(item)
     })
 }
 
-window.channelPageAddButtonEvent = function() {
+window.documentPageAddButtonEvent = function() {
     document.querySelector(".add-button").addEventListener("click", () => {
         showDialog({
-            title: "Create Channel",
+            title: "Create Document",
             content: "",
             type: "confirm"
         }).then(async () => {
-            await createChannel(window.addchannelname)
-            window.channelPageListUpdate()
-            window.updateChannelList()
+            await createDocument(window.adddocumentname)
+            setTimeout(() => {
+                window.documentPageListUpdate()
+            }, 50)
         })
         setTimeout(() => {
             var input = document.createElement("input")
             input.setAttribute("type", "text")
-            input.setAttribute("placeholder", "Channel Name")
+            input.setAttribute("placeholder", "Document Name")
             document.querySelector(".dialog-body").prepend(input)
             input.addEventListener("input", () => {
-                window.addchannelname = input.value
+                window.adddocumentname = input.value
             })
         }, 50)
     })

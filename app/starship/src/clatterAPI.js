@@ -11,6 +11,44 @@ export function getChannels() {
     })
 }
 
+export function listDocuments() {
+    return new Promise(async (resolve, reject) => {
+        var req = await fetch("/api/documents/listown")
+        var data = await req.json()
+        resolve(data)
+    })
+}
+
+export function getDocument(documentid) {
+    return new Promise(async (resolve, reject) => {
+        var req = await fetch("/api/documents/" + documentid + "/content")
+        var data = await req.json()
+        resolve(data)
+    })
+}
+
+export function createDocument(documentname) {
+    return new Promise(async (resolve, reject) => {
+        var req = await fetch("/api/document/create?name=" + encodeURIComponent(documentname))
+        var data = await req.json()
+        console.log(data)
+        resolve()
+    })
+}
+
+export function updateDocument(documentid, documentcontent) {
+    return new Promise(async (resolve, reject) => {
+        await fetch("/api/documents/" + documentid + "/content", {
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": JSON.stringify({content: documentcontent})
+        })
+        resolve()
+    })
+}
+
 export function getMember(userid) {
     return new Promise(async (resolve, reject) => {
         var req = (await authClient.organization.getFullOrganization()).data.members.find(member => member.user.id == userid)

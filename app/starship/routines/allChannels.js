@@ -1,7 +1,7 @@
 import { getChannels, createChannel } from "../src/clatterAPI.js"
 import { showDialog } from "../components/dialog.js"
 
-window.documentPageListUpdate = async function() {
+window.channelPageListUpdate = async function() {
     var channels = await getChannels()
     document.getElementById("channellistcontainer").innerHTML = ``
     channels.forEach(channel => {
@@ -22,7 +22,7 @@ window.documentPageListUpdate = async function() {
     })
 }
 
-window.documentPageAddButtonEvent = function() {
+window.channelPageAddButtonEvent = function() {
     document.querySelector(".add-button").addEventListener("click", () => {
         showDialog({
             title: "Create Channel",
@@ -30,7 +30,8 @@ window.documentPageAddButtonEvent = function() {
             type: "confirm"
         }).then(async () => {
             await createChannel(window.addchannelname)
-            window.documentPageLi()
+            window.channelPageListUpdate()
+            window.updateChannelList()
         })
         setTimeout(() => {
             var input = document.createElement("input")
