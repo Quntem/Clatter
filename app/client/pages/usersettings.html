@@ -50,6 +50,7 @@
                         await authClient.updateUser({
                             image: dataUrl,
                         })
+                        document.getElementById("profilepicture").src = dataUrl
                     }).catch(error => {
                         console.error('Error uploading file:', error);
                     });
@@ -64,6 +65,9 @@
                     <div class="profile-picture-wrapper" onclick="changeProfilePicture()">
                         <img id="profilepicture" width="96" height="96"/>
                         <div class="icon-pencil edit-icon"></div>
+                    </div>
+                    <div class="profile-name-wrapper">
+                        <input type="text" class="profile-name-input" placeholder="Name" value="">
                     </div>
                 </div>
             </div>
@@ -84,7 +88,29 @@
                         };
                         img.src = "/profilepicture.png";
                     }
+
+                    if (session.data.user.name) {
+                        $(".profile-name-input").val(session.data.user.name);
+                    } else {
+                        $(".profile-name-input").val("legend says that you have no name and are hacking so can you please don't?");
+                    }
                 })
+
+            document.querySelector(".profile-name-input").addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    const newName = this.value.trim();
+                    if (newName.length > 0) {
+                        authClient.updateUser({
+                            name: newName,
+                        }).then(() => {
+                            console.log("Name updated successfully");
+                            $("#mainarea-header-sub").html(newName);
+                        }).catch((err) => {
+                            console.error("Failed to update name:", err);
+                        });
+                    }
+                }
+            });
         </script>
         <style>
             h2 {
@@ -95,15 +121,17 @@
                 margin-bottom: 1.5rem;
             }
 
-            .profilepicturearea {
-
+            .profilepagearea {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
             }
 
             #profilepicture {
-                width: 96px;
-                height: 96px;
+                width: 6rem;
+                height: 6rem;
                 border-radius: 24px;
-                margin-bottom: 20px;
+                margin-bottom: 1.25rem;
                 cursor: pointer;
                 transition: all 150ms ease;
                 background-color: #666666;
@@ -119,8 +147,8 @@
 
             .profile-picture-wrapper {
                 position: relative;
-                width: 96px;
-                height: 96px;
+                width: 6rem;
+                height: 6rem;
             }
             
             .edit-icon {
@@ -140,6 +168,22 @@
                 transition: all 150ms ease;
                 opacity: 1;
                 backdrop-filter: blur(2px);
+            }
+
+            .profile-name-wrapper {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .profile-name-input {
+                font-family: 'Figtree', sans-serif;
+                width: calc(100% - 7rem);
+                height: 25%;
+                padding: 0.5rem;
+                font-size: 1rem;
+                border-radius: 4px;
+                border: 1px solid #ccc;
             }
         </style>
     </body>
