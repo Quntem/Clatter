@@ -19,7 +19,7 @@
             })
         </script>
         <link rel="stylesheet" href="/client/global/styles.css" />
-        <link rel="stylesheet" href="/client/global/themes/default.css" />
+        <!-- <link rel="stylesheet" href="/client/global/themes/sea.css" /> -->
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
         <script src="/client/global/splash.js"></script>
@@ -29,6 +29,33 @@
         <script src="/documenteditor.js" type="module"></script>
 
         <script>
+            if(localStorage.getItem("customThemeEnabled") == "true") {
+                var themecss = document.createElement("link");
+                themecss.rel = "stylesheet";
+                if(localStorage.getItem("customTheme").startsWith("http")) {
+                    themecss.href = localStorage.getItem("customTheme");
+                } else {
+                    themecss.href = "/client/global/themes/" + localStorage.getItem("customTheme") + ".css";
+                }
+                document.head.appendChild(themecss);
+            } else {
+                var themecss = document.createElement("link");
+                themecss.rel = "stylesheet";
+                themecss.href = "/client/global/themes/sea.css";
+                document.head.appendChild(themecss);
+            }
+
+            var setCustomTheme = function(themename) {
+                if(themename == "") {
+                    window.localStorage.removeItem("customThemeEnabled");
+                    window.localStorage.removeItem("customTheme");
+                } else {
+                    window.localStorage.setItem("customTheme", themename);
+                    window.localStorage.setItem("customThemeEnabled", "true");
+                }
+                location.reload();
+            }
+
             finishedpageload = false
 
             function sanitizeHTML(text) {
@@ -148,8 +175,8 @@
                     $("#directmessageslist").html("")
                     if (directmessages.length > 0) {
                         directmessages.forEach(channel => {
-                            channel.members = channel.members.filter(member => member.userId != authsession.data.user.id)
-                            var member = fullorg.data.members.filter(member => member.userId == channel.members[0])[0]
+                            channel.members = channel.members.filter(member => member != authsession.data.user.id)
+                            var member = fullorg.data.members.filter(member => member.user.id == channel.members[0])[0]
                             $("#directmessageslist").append(`
                                 <div class="sidebar-listitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('directpage')">
                                     <div class="icon-user sidebar-listitem-icon"></div>
@@ -206,7 +233,7 @@
                     </div>
                 </div>
 
-                <div class="sidebar-listarea">
+                <div class="sidebar-listarea sidebar-listarea-notitle">
                     <div class="sidebar-listitem" onclick="NavigatePage(`directory`)" id="directory-button">
                         <div class="icon-book-user sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Directory</div>
@@ -214,6 +241,10 @@
                     <div class="sidebar-listitem" onclick="NavigatePage(`allchannels`)">
                         <div class="icon-hash sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">All Channels</div>
+                    </div>
+                    <div class="sidebar-listitem" onclick="NavigatePage(`documentlist`)">
+                        <div class="icon-file-text sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Documents</div>
                     </div>
                     <!-- <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
                         <div class="icon-settings-2 sidebar-listitem-icon"></div>
@@ -273,8 +304,13 @@
 
                         authClient.organization.getFullOrganization()
                         .then((ao) => {
-                            const activeId = ao.data.id.toString();
-                            const justDeselected = localStorage.getItem("deselectedOrg");
+                            try {
+                                var activeId = ao.data.id.toString();
+                                var justDeselected = localStorage.getItem("deselectedOrg");
+                            } catch {
+                                var activeId = ""
+                                var justDeselected = ""
+                            }
 
                             if (justDeselected && justDeselected === activeId) {
                                 localStorage.removeItem("deselectedOrg");

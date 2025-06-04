@@ -263,6 +263,14 @@ app.get("/api/document/create", async (req, res) => {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
     });
+    var doccount = await prisma.document.count({
+      where: {
+        parentworkspace: session.session.activeOrganizationId
+      }
+    })
+    if (doccount >= 50) {
+      res.json({done: false})
+    }
     var document = await prisma.document.create({
       data: {
         name: req.query.name,
