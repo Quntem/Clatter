@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+        <style>
+            body {
+                --ag-background-color: rgba(255, 255, 255, 0)
+            }
+        </style>
+        <title>All Channels</title>
+    </head>
+
+    <body>
+        <div class="mainarea-header">
+            <div class="sidebar-wsinfoarea-stack-nohover">
+                <div id="mainarea-header-title">
+                    All Documents
+                </div>
+
+                <div id="mainarea-header-sub">
+                    .
+                </div>
+            </div>
+        </div>
+        <div style="height: calc(100%); width: 100%;" id="doclist">
+        
+        </div>
+        <script>
+            authClient.organization.getFullOrganization()
+            .then(ao => {
+                $("#mainarea-header-sub").html(ao.data.name)
+                var gridOptions = {
+                    rowData: [
+                        {name: "testdoc1", DateModified: "date"}
+                    ],
+                    columnDefs: [
+                        { field: "name" },
+                        { field: "DateModified" },
+                    ],
+                    autoSizeStrategy: {
+                        type: 'fitGridWidth',
+                        defaultMinWidth: 100,
+                    },
+                }
+                fetch("/api/documents/listown")
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log(res)
+                        gridOptions.rowData = res
+                        doclist = document.querySelector('#doclist');
+                        agGrid.createGrid(doclist, gridOptions);
+                    })
+            })
+        </script>
+    </body>
+</html>

@@ -11,6 +11,10 @@ header {
     border-bottom: 2px solid var(--sidebar_border);
 }
 
+#editorjs {
+    color: #666666;
+}
+
 #composebutton {
     cursor: pointer;
     height: 40px;
@@ -395,7 +399,15 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 0px;
+}
+
+.sidebar-listitem:is(:first-child) {
+    margin-top: 10px
+}
+
+.sidebar-listarea-notitle {
+    padding-top: 6px !important;
 }
 
 .workspaceswitcheradd {

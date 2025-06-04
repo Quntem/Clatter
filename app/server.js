@@ -143,7 +143,8 @@ app.get("/api/documents/listown", async (req, res) => {
     });
     var channellist = await prisma.document.findMany({
       where: {
-        owner: session.user.id
+        owner: session.user.id,
+        parentworkspace: session.session.activeOrganizationId
       }
     })
     res.json(channellist)
@@ -185,9 +186,9 @@ app.post("/api/workspace/users/add", async (req, res) => {
     if( orgmember.role = "owner") {
       const x = await auth.api.addMember({
         body: {
-            userId: req.query.id,
-            organizationId: session.session.activeOrganizationId,
-            role: "member"
+          userId: req.query.id,
+          organizationId: session.session.activeOrganizationId,
+          role: "member"
         }
       })
       res.json(x)
@@ -196,6 +197,25 @@ app.post("/api/workspace/users/add", async (req, res) => {
     }
   } catch {
     // console.log("test")
+  }
+})
+
+app.get("/api/document/create", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var document = await prisma.document.create({
+      data: {
+        name: req.query.name,
+        owner: session.user.id,
+        content: {},
+        parentworkspace: session.session.activeOrganizationId,
+      }
+    })
+    res.json({done: true, document: document})
+  } catch(err) {
+    res.json({done: false})
   }
 })
 
@@ -329,6 +349,75 @@ io.on("connection", (socket) => {
     socket.to(argjson.room).emit("clatter.channel.message.recieve", JSON.stringify(argjson))
   }) 
 });
+
+app.get("/api/document/:documentid/content", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var document = await prisma.document.findUnique({
+      where: {
+        id: req.params.documentid,
+        parentworkspace: session.session.activeOrganizationId,
+        OR: [
+          {
+            owner: session.session.userId
+          },
+          {
+            allowedusers: {
+              has: session.session.userId
+            }
+          },
+          {
+            public: true
+          }
+        ]
+      }
+    })
+    res.json(document)
+  } catch(err) {
+    // console.log(err)
+  }
+})
+
+app.post("/api/document/:documentid/content", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var document = await prisma.document.findUnique({
+      where: {
+        id: req.params.documentid,
+        parentworkspace: session.session.activeOrganizationId,
+        OR: [
+          {
+            owner: session.session.userId
+          },
+          {
+            allowedusers: {
+              has: session.session.userId
+            }
+          },
+          {
+            public: true
+          }
+        ]
+      }
+    })
+    document.content = req.body.content
+    await prisma.document.update({
+      where: {
+        id: req.params.documentid
+      },
+      data: {
+        content: req.body.content
+      }
+    })
+    res.json(document)
+  } catch(err) {
+    // console.log(err)
+  }
+})
 
 server.listen(3000)
 
