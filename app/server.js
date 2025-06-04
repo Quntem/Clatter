@@ -5,9 +5,34 @@ import { auth } from "./auth.js";
 import cors from "cors"
 import { PrismaClient } from "@prisma/client";
 import { Server } from "socket.io";
-import { createServer } from "http"
+import { createServer } from "http";
+import rateLimit from "express-rate-limit";
 
 const app = express();
+
+const channelCreationLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5,
+  message: "Too many channels created from this user. Try again in an hour.",
+  keyGenerator: (req) => req.headers.authorization || req.ip,
+});
+
+// Will be used for workspace creation API endpoint in the future
+
+// const workspaceCreationLimiter = rateLimit({
+//   windowMs: 24 * 60 * 60 * 1000,
+//   max: 1,
+//   message: "Too many workspaces created from this user. Try again tomorrow.",
+//   keyGenerator: (req) => req.headers.authorization || req.ip,
+// });
+
+const messageRateLimiter = rateLimit({
+  windowMs: 1000, // 1 second
+  max: 5, // limit each key to 5 requests per windowMs
+  message: "Too many messages sent. Please wait a moment.",
+  keyGenerator: (req) => req.headers.authorization || req.ip,
+});
+
 const server = createServer(app)
 const prisma = new PrismaClient()
 const io = new Server(server, {
@@ -15,6 +40,30 @@ const io = new Server(server, {
         origin: "*",
     },
 })
+const socketMsgTimestamps = new Map();
+
+function canSendSocketMessage(userId) {
+  const now = Date.now();
+  const windowStart = now - 1000; // 1 second
+
+  if (!socketMsgTimestamps.has(userId)) {
+    socketMsgTimestamps.set(userId, []);
+  }
+
+  const timestamps = socketMsgTimestamps.get(userId);
+
+  while (timestamps.length && timestamps[0] < windowStart) {
+    timestamps.shift();
+  }
+
+  if (timestamps.length >= 5) {
+    return false;
+  }
+
+  // Record this send
+  timestamps.push(now);
+  return true;
+}
 
 app.use(
     cors({
@@ -36,7 +85,7 @@ app.get("/api/test", async (req, res) => {
   res.json(session)
 })
 
-app.post("/api/channels/create", async (req, res) => {
+app.post("/api/channels/create", channelCreationLimiter, async (req, res) => {
   try {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
@@ -61,30 +110,39 @@ app.post("/api/channels/create", async (req, res) => {
   }
 })
 
-app.post("/api/direct/create1x1", async (req, res) => {
-  try {
-    const session = await auth.api.getSession({
-      headers: fromNodeHeaders(req.headers),
-    });
-    var direct = await prisma.channel.create({
-      data: {
-        parentworkspace: session.session.activeOrganizationId,
-        type: "clatter.directtype.1x1",
-        name: "Direct Message",
-        public: false,
-        members: {
-          set: [
-            session.session.userId,
-            req.query.recipientid
-          ]
-        }
-      }
-    })
-    res.send(direct)
-  } catch(err) {
-    // console.log(err)
+const directCreationLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: "Too many direct channels created. Try again later.",
+  keyGenerator: (req) => req.headers.authorization || req.ip,
+});
+
+
+app.post(
+  "/api/direct/create1x1",
+  directCreationLimiter,
+  async (req, res) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+      });
+      const direct = await prisma.channel.create({
+        data: {
+          parentworkspace: session.session.activeOrganizationId,
+          type: "clatter.directtype.1x1",
+          name: "Direct Message",
+          public: false,
+          members: {
+            set: [session.session.userId, req.query.recipientid],
+          },
+        },
+      });
+      return res.send(direct);
+    } catch (err) {
+      return res.status(500).send("Server Error");
+    }
   }
-})
+);
 
 app.get("/api/channels/list", async (req, res) => {
   try {
@@ -227,36 +285,52 @@ app.get("/api/document/create", async (req, res) => {
   }
 })
 
-app.post("/api/channel/:channelid/messages/send", async (req, res) => {
-  const session = await auth.api.getSession({
-    headers: fromNodeHeaders(req.headers),
-  });
-  var message = await prisma.message.create({
-    data: {
-      content: req.query.message,
-      sender: session.session.userId,
-      parentid: req.params.channelid,
-      sendername: session.user.name
+app.post(
+  "/api/channel/:channelid/messages/send",
+  messageRateLimiter,
+  async (req, res) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+      });
+      const message = await prisma.message.create({
+        data: {
+          content: req.query.message,
+          sender: session.session.userId,
+          parentid: req.params.channelid,
+          sendername: session.user.name,
+        },
+      });
+      return res.json(message);
+    } catch (err) {
+      return res.status(500).send("server error");
     }
-  })
-  res.json(message)
-})
+  }
+);
 
-app.post("/api/channel/:channelid/thread/:messageid/send", async (req, res) => {
-  const session = await auth.api.getSession({
-    headers: fromNodeHeaders(req.headers),
-  });
-  var message = await prisma.message.create({
-    data: {
-      content: req.query.message,
-      sender: session.session.userId,
-      parentid: req.params.channelid,
-      sendername: session.user.name,
-      parentmessageid: req.params.messageid,
+app.post(
+  "/api/channel/:channelid/thread/:messageid/send",
+  messageRateLimiter,
+  async (req, res) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+      });
+      const message = await prisma.message.create({
+        data: {
+          content: req.query.message,
+          sender: session.session.userId,
+          parentid: req.params.channelid,
+          sendername: session.user.name,
+          parentmessageid: req.params.messageid,
+        },
+      });
+      return res.json(message);
+    } catch (err) {
+      return res.status(500).send("server error");
     }
-  })
-  res.json(message)
-})
+  }
+);
 
 app.get("/api/channel/:channelid/thread/:messageid/messages/list", async (req, res) => {
   const session = await auth.api.getSession({
@@ -326,36 +400,70 @@ io.on("connection", (socket) => {
     socket.emit("clatter.channel.join.response", "Joined " + argjson.room)
   }) 
   socket.on("clatter.channel.message.send", async (args) => {
-    var argjson = JSON.parse(args)
+    const argjson = JSON.parse(args);
 
-    argjson.DateCreated = new Date().toISOString()
-    
-    if(argjson.method === "modern") {
-      const session = await auth.api.getSession({
-        headers: new Headers({
-          authorization: "Bearer " + argjson.token
-        })
-      });
-      if(argjson.parentmessageid) {
-        var parentid = argjson.parentmessageid
-      } else {
-        var parentid = null
+    argjson.DateCreated = new Date().toISOString();
+
+    // Only throttle if using "modern" (i.e. authenticated) path:
+    if (argjson.method === "modern") {
+      let session;
+      try {
+        session = await auth.api.getSession({
+          headers: new Headers({
+            authorization: "Bearer " + argjson.token
+          })
+        });
+      } catch {
+        return socket.emit(
+          "clatter.channel.message.send.response",
+          "Authentication failed."
+        );
       }
-      var message = await prisma.message.create({
-        data: {
-          content: argjson.content,
-          sender: session.session.userId,
-          parentid: argjson.room,
-          parentmessageid: parentid,
-          sendername: session.user.name
-        }
-      })
-      argjson.id = message.id
+
+      const userId = session.session.userId;
+
+      // Throttle check: allow up to 5 messages per second
+      if (!canSendSocketMessage(userId)) {
+        return socket.emit(
+          "clatter.channel.message.send.response",
+          "Too many messages—please slow down."
+        );
+      }
+
+      // Determine parentmessageid (if any)
+      const parentid = argjson.parentmessageid || null;
+
+      // Create message in DB
+      let message;
+      try {
+        message = await prisma.message.create({
+          data: {
+            content: argjson.content,
+            sender: userId,
+            parentid: argjson.room,
+            parentmessageid: parentid,
+            sendername: session.user.name
+          }
+        });
+        argjson.id = message.id;
+      } catch (err) {
+        return socket.emit(
+          "clatter.channel.message.send.response",
+          "Error saving message."
+        );
+      }
     }
-    
-    socket.emit("clatter.channel.message.send.response", "Sent Message")
-    socket.to(argjson.room).emit("clatter.channel.message.recieve", JSON.stringify(argjson))
-  }) 
+
+    // Emit responses (same as before)
+    socket.emit(
+      "clatter.channel.message.send.response",
+      "Sent Message"
+    );
+    socket.to(argjson.room).emit(
+      "clatter.channel.message.recieve",
+      JSON.stringify(argjson)
+    );
+  });
 });
 
 app.get("/api/document/:documentid/content", async (req, res) => {
