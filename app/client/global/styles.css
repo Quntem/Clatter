@@ -710,3 +710,61 @@ body {
 		height: 36px;
 	}
 }
+
+.themeswitcherrow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    width: calc(100% - 30px);
+    border-radius: 10px;
+    border: 1px solid #e4e4e7;
+    background-color: white;
+}
+
+.themeswitcherrow-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: auto;
+}
+
+.promobox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: calc(80% - 20px);
+    height: auto;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.promobox-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.promobox-text {
+
+}
+
+.promobox-text-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--foreground-color);
+}
+
+.promobox-text-description {
+    font-size: 14px;
+    color: var(--secondary-foreground-color);
+}
