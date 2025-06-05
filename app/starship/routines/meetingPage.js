@@ -23,7 +23,7 @@ window.loadMeeting = async function() {
     var joinMeeting = function() {
         var domain = "int_jitsi.qplus.cloud"
         var options = {
-            roomName: window.location.pathname.split("/")[3],
+            roomName: "CLAT-CHANNEL-" + window.location.pathname.split("/")[3],
             width: "100%",
             height: "100%",
             parentNode: document.querySelector("#meetingcontainer"),
