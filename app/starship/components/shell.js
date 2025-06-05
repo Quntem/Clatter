@@ -34,13 +34,13 @@ class qclheader extends HTMLElement {
             this.innerHTML += `
                 <i class="icon-video meeting-button layout-header-right"></i>
             `
+            this.querySelector(".meeting-button").addEventListener("click", () => {
+                window.history.pushState(null, null, "/starship/meeting/" + window.location.pathname.split("/")[3])
+                updateViewLocation()
+            })
         }
         this.addEventListener("click", (event) => {
             event.stopPropagation()
-        })
-        this.querySelector(".meeting-button").addEventListener("click", () => {
-            window.history.pushState(null, null, "/starship/meeting/" + window.location.pathname.split("/")[3])
-            updateViewLocation()
         })
         this.querySelector(".sidebar-toggle-button").addEventListener("click", () => {
             if (document.getElementById("sidebar").getAttribute("closed") == "true") {
