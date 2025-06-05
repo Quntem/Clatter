@@ -1,5 +1,5 @@
 import { showDialog } from "../components/dialog.js"
-import { getDirectory, addMember } from "../src/clatterAPI.js"
+import { getDirectory, addMember, removeMember } from "../src/clatterAPI.js"
 
 window.loaddir = () => {
     getDirectory().then((res) => {
@@ -10,6 +10,16 @@ window.loaddir = () => {
             newitem.setAttribute("name", item.user.name)
             newitem.setAttribute("email", item.user.email)
             document.querySelector(".grid-container").appendChild(newitem)
+            newitem.addEventListener("click", () => {
+                showDialog({
+                    title: "Remove Member",
+                    content: "Are you sure you want to remove this member?",
+                    type: "confirm"
+                }).then(() => {
+                    removeMember(item.user.id)
+                    window.loaddir()
+                })
+            })
         })
     })
 }
