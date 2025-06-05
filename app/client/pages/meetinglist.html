@@ -3,25 +3,35 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>All Channels</title>
+        <title>Meetings</title>
     </head>
 
     <body>
         <div class="mainarea-header">
             <div class="sidebar-wsinfoarea-stack-nohover">
                 <div id="mainarea-header-title">
-                    All Channels
+                    Meetings
                 </div>
 
                 <div id="mainarea-header-sub">
                     .
                 </div>
             </div>
-
-            <div id="addchannelbutton" class="icon-plus sidebar-listitem-icon" style="display: none; margin-right: 25px; margin-left: auto; color: #666666;" onclick="CreateChannelPrompt()"></div>
-
         </div>
         <div style="height: calc(100% - 71px); padding-top: 20px; overflow-y: scroll; width: 100%;">
+            <div class="promobox" style="margin-top: 20px;">
+                <div class="promobox-icon">
+                    <i class="icon-video"></i>
+                </div>
+                <div class="promobox-text">
+                    <div class="promobox-text-title">
+                        New: Meetings are here!
+                    </div>
+                    <div class="promobox-text-description">
+                        Start a meeting in a channel to connect with your team in real-time.
+                    </div>
+                </div>
+            </div>
             <div class="channellistcontainer" id="channellistcontainer">
 
             </div>
@@ -54,11 +64,11 @@
                             .then(res => res.json())
                             .then(res => {
                                 console.log(res)
-                                res = res.filter(channel => channel.type.split(".")[1] == "channeltype")
                                 $("#channellistcontainer").html("")
+                                res = res.filter(channel => channel.type.split(".")[1] == "channeltype")
                                 res.forEach(channel => {
                                     $("#channellistcontainer").append(`
-                                        <div class="channellistitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('channelpage')">
+                                        <div class="channellistitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('meetingpage')">
                                             <div class="icon-hash channellistitem-icon"></div>
                                             <div class="channellistitem-text">` + sanitizeHTML(channel.name) + `</div>
                                         </div>

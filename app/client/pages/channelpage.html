@@ -236,6 +236,7 @@
             <div id="mainarea-header-title"></div>
             <div id="mainarea-header-sub">Channel</div>
         </div>
+        <i id="MeetingButton" class="icon-video sidebar-listitem-icon" style="margin-right: 25px; margin-left: auto; color: #666666;" onclick="NavigatePage('meetingpage')"></i>
         <script>
             fetch("/api/channel/" + currentchannelid + "/info")
                 .then((res) => res.json())
