@@ -16,6 +16,11 @@ export default {
             path: "/starship/documents"
         },
         {
+            title: "Meetings",
+            icon: "video",
+            path: "/starship/meetings"
+        },
+        {
             title: "Directory",
             icon: "book-user",
             path: "/starship/directory"

@@ -36,6 +36,16 @@ export function createDocument(documentname) {
     })
 }
 
+export function removeMember(userid) {
+    return new Promise(async (resolve, reject) => {
+        await authClient.organization.removeMember({
+            memberIdOrEmail: userid,
+            organizationId: authsession.data.organization.id
+        })
+        resolve()
+    })
+}
+
 export function updateDocument(documentid, documentcontent) {
     return new Promise(async (resolve, reject) => {
         await fetch("/api/documents/" + documentid + "/content", {
