@@ -1,179 +1,323 @@
+/* ===== Global & Reset ===== */
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
-html {
-	font-family: 'Figtree', sans-serif;
-	color: rgba(102, 102, 102, 1);
+
+/* Box-sizing reset for predictable spacing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-body {
-	margin: 0;
-}
-button {
-	font-family: 'Figtree', sans-serif;
-	color: rgba(102, 102, 102, 1);
-}
-a {
-	font-family: 'Figtree', sans-serif;
-	color: rgba(102, 102, 102, 1);
-}
+
+/* Font & color variables */
 :root {
-	/* non-transparent colors should be hex, transparent should be rgba */
-	--btn_color: #1097DA;
-	--btn_semivisible_color: rgba(16, 151, 218, 0.25);
-	--btn_hovered_color: #107CB2;
-	--btn_alt_color: #DA3910;
-	--btn_alt_hovered_color: #B23010;
-	--btn_grey_color: #505050;
-	--btn_grey_hovered_color: #474747;
+  --font-sans: 'Figtree', sans-serif;
+  --gray-text: rgba(102, 102, 102, 1);
+  --btn-color: #1097DA;
+  --btn-color-semi: rgba(16, 151, 218, 0.25);
+  --btn-hovered: #107CB2;
+  --btn-alt: #DA3910;
+  --btn-alt-hovered: #B23010;
+  --btn-grey: #505050;
+  --btn-grey-hovered: #474747;
 }
 
-/* Header Styling */
-header {
-	display: flex;
-	align-items: center;
-	margin-left: 12.5rem;
-	margin-right: 12.5rem;
-	margin-top: 2.875rem;
-}
-.try_web-btn {
-	margin-left: 1rem;
-	display: flex;
-	align-items: center;
-	background-color: var(--btn_color);
-	color: white;
-	padding: .5rem;
-	padding-left: .875rem;
-	padding-right: .875rem;
-	border-radius: 8px;
-	border: none;
-	cursor: pointer;
-	font-weight: 600;
-	font-size: 12px;
-	filter: drop-shadow(0px 2px 2px rgba(24, 155, 220, 25%));
-	transition: all 150ms ease;
-}
-.try_web-btn:hover {
-	padding-left: 1rem;
-	padding-right: 1rem;
-	background-color: var(--btn_hovered_color);
-}
-.github_header-btn {
-	transition: all 200ms ease;
-	font-size: 16px !important;
-	background-color: rgba(255, 255, 255, 0);
-	color: #666666;
-	cursor: pointer;
-}
-.github_header-btn:hover {
-	background-color: rgb(102, 102, 102, 100%);
-	color: white;
-	padding: 0.375rem;
-	padding-left: 0.375rem;
-	padding-right: 0.375rem;
-	border-radius: 100%;
+/* Base HTML */
+html {
+  font-family: var(--font-sans);
+  font-size: 100%; /* 16px by default */
+  color: var(--gray-text);
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
-/* Legal Header Styling */
-.legal-header {
-	text-align: center;
-	font-size: clamp(2rem, 6vw, 3.75rem);
-	font-weight: 500;
-	margin-top: 3rem;
-	margin-bottom: 3rem;
+/* Ensure proper mobile scaling; insert into your <head> if not already there:
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"> */
+body {
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
 }
 
-/* Legal Bentoboxes Styling */
-.box {
-	background-color: var(--btn_grey_color);
-	border-radius: 9px;
-	transition: all 150ms ease;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-}
-.box::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: 0;
-	background: inherit;
-	filter: brightness(0.35);
-	pointer-events: none;
-	border-radius: 9px;
-	transition: all 150ms ease;
-}
-.box > * {
-	position: relative;
-	z-index: 1;
-}
-.box:hover {
-	filter: brightness(1.3);
-}
-.bentobox-container {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: 15dvh 15dvh;
-	gap: 1rem;
-	grid-template-areas: 
-		"box-1 box-1 box-2 box-3"
-		"box-1 box-1 box-4 box-4";
-	margin-left: 20dvw;
-	margin-right: 20dvw;
-	box-sizing: border-box;
-	width: calc(100% - 40dvw);
-}
-@media (max-width: 767px) {
-	.bentobox-container {
-		grid-template-columns: repeat(3, 1fr);
-		grid-template-rows: repeat(3, 12.5rem);
-		gap: 1rem;
-		grid-template-areas: 
-			"box-1 box-1 box-2"
-			"box-1 box-1 box-3"
-			"box-4 box-4 box-3";
-		margin-left: 20dvw;
-		margin-right: 20dvw;
-		width: calc(100% - 40dvw);
-	}
-}
-@media (max-width: 480px) {
-	.bentobox-container {
-		grid-template-columns: repeat(2, 1fr);
-		grid-template-rows: 12.5rem 12.5rem 12.5rem 12.5rem;
-		gap: 1rem;
-		grid-template-areas: 
-			"box-1 box-1"
-			"box-1 box-1"
-			"box-2 box-4"
-			"box-3 box-4";
-		margin-left: 10dvw;
-		margin-right: 10dvw;
-		width: calc(100% - 20dvw);
-	}
-}
-.box-text {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	padding: 1.5rem;
-	width: 100%;
-	box-sizing: border-box;
-	text-align: left;
-	font-size: 1.5rem;
-	font-weight: 600;
-	color: white;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-.box-text * {
-	margin: 0;
-	font-weight: normal;
-}
-.box-text h2 {
-	font-weight: 500;
-}
-
-/* Legal Styling */
+/* Anchor tags (links) */
 a {
-    color: #007bff;
-    text-decoration: none;
+  color: #007bff;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  color: var(--gray-text);
+}
+
+/* Buttons: base styling */
+button {
+  font-family: var(--font-sans);
+  color: var(--gray-text);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Utility: make images/vectors scale */
+img, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== Header Styling ===== */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem auto; /* vertical spacing */
+  max-width: 1440px;
+  padding: 0 1rem; /* small horizontal padding */
+}
+
+header .logo {
+  /* Example: if you have a logo on the left */
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  font-weight: 700;
+  color: var(--gray-text);
+}
+
+header nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Primary “Try Web” button */
+.try_web-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--btn-color);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem; /* 14px */
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem; /* 8px */
+  box-shadow: 0 2px 2px rgba(24, 155, 220, 0.25);
+  transition: background-color 150ms ease, padding 150ms ease;
+  min-height: 2.5rem; /* ensure touch‐friendly */
+}
+
+.try_web-btn:hover,
+.try_web-btn:focus {
+  background-color: var(--btn-hovered);
+  padding: 0.5rem 1.125rem; /* slightly wider on hover */
+}
+
+/* GitHub icon/button */
+.github_header-btn {
+  background-color: transparent;
+  color: var(--gray-text);
+  font-size: 1rem; /* 16px */
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.github_header-btn:hover,
+.github_header-btn:focus {
+  background-color: var(--gray-text);
+  color: #fff;
+}
+
+/* ===== Legal Header (Big Title) ===== */
+.legal-header {
+  text-align: center;
+  font-size: clamp(2rem, 6vw, 3.75rem);
+  font-weight: 500;
+  margin: 3rem 1rem;
+}
+
+/* ===== Bentobox Grid Container ===== */
+.bentobox-container {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  max-width: 1440px;
+  /* Desktop default: 4 columns/2 rows */
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 15dvh 15dvh;
+  grid-template-areas:
+    "box-1 box-1 box-2 box-3"
+    "box-1 box-1 box-4 box-4";
+}
+
+/* Individual box styling */
+.box {
+  background-color: var(--btn-grey);
+  border-radius: 0.5625rem; /* 9px */
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: filter 150ms ease;
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: brightness(0.35);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: filter 150ms ease;
+}
+
+.box:hover::before,
+.box:focus-within::before {
+  filter: brightness(0.1);
+}
+
+.box:hover,
+.box:focus-within {
+  filter: brightness(1.3);
+}
+
+.box-text {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 1.5rem;
+  width: 100%;
+  text-align: left;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  color: #fff;
+  /* Allow wrapping (no more forced single‐line ellipsis) */
+  white-space: normal;
+  overflow: visible;
+}
+
+/* If you need a small subheading inside .box-text */
+.box-text h2 {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+/* ===== Responsive Breakpoints ===== */
+/* Large desktops (above 1440px): center the grid */
+@media (min-width: 1441px) {
+  .bentobox-container {
+    margin-left: calc((100vw - 1440px) / 2);
+    margin-right: calc((100vw - 1440px) / 2);
+  }
+}
+
+/* Tablets (1024px ≤ width < 1440px) */
+@media (max-width: 1440px) and (min-width: 1025px) {
+  .bentobox-container {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 15dvh);
+    grid-template-areas:
+      "box-1 box-1 box-2"
+      "box-1 box-1 box-3"
+      "box-4 box-4 box-3";
+  }
+}
+
+/* Small tablets / large phones (768px ≤ width ≤ 1024px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+  header {
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+  }
+  .bentobox-container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 12.5rem);
+    grid-template-areas:
+      "box-1 box-1"
+      "box-2 box-3"
+      "box-4 box-1"
+      "box-4 box-3";
+    gap: 0.75rem;
+  }
+  .box {
+    border-radius: 0.75rem; /* slightly rounder on tablet */
+  }
+}
+
+/* Phones (up to 767px) */
+@media (max-width: 767px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem auto;
+  }
+  header nav {
+    gap: 0.5rem;
+  }
+  .bentobox-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+    grid-template-areas:
+      "box-1"
+      "box-2"
+      "box-3"
+      "box-4";
+    gap: 0.5rem;
+    margin: 1rem auto;
+  }
+  .legal-header {
+    font-size: clamp(1.75rem, 7vw, 3rem);
+    margin: 2rem 1rem;
+  }
+  .box-text {
+    font-size: clamp(0.875rem, 4vw, 1.25rem);
+    padding: 1rem;
+  }
+}
+
+/* Very small phones (up to 480px) */
+@media (max-width: 480px) {
+  header {
+    margin: 0.75rem auto;
+    padding: 0 0.5rem;
+  }
+  .try_web-btn {
+    font-size: 0.875rem; /* keep 14px, but padding smaller */
+    padding: 0.5rem 0.75rem;
+    min-height: 2.25rem;
+  }
+  .github_header-btn {
+    padding: 0.25rem;
+    font-size: 0.875rem;
+  }
+  .legal-header {
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+    margin: 1.5rem 0.5rem;
+  }
+  .bentobox-container {
+    margin: 0.5rem auto;
+    gap: 0.5rem;
+  }
+  .box-text {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+    padding: 0.75rem;
+  }
+}
+
+/* ===== Utility Classes (Optional) ===== */
+/* A simple helper to center any element */
+.u-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* A hidden-accessible class (useful for screen readers) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
