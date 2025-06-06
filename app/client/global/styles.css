@@ -1,664 +1,770 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
-
 header {
-    height: 40px;
-    width: 100%;
-    background-color: var(--header_background);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    -webkit-app-region: drag;
-    border-bottom: 2px solid var(--sidebar_border);
+	height: 40px;
+	width: 100%;
+	background-color: var(--header_background);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	-webkit-app-region: drag;
+	border-bottom: 2px solid var(--sidebar_border);
 }
-
+#editorjs {
+	color: #666666;
+}
 #composebutton {
-    cursor: pointer;
-    height: 40px;
-    width: 40px;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #666666;
-    transition: all 150ms ease;
-    margin-left: auto;
-    margin-right: 15px;
+	cursor: pointer;
+	height: 40px;
+	width: 40px;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(255, 255, 255, 0.9);
+	color: #666666;
+	transition: all 150ms ease;
+	margin-left: auto;
+	margin-right: 15px;
 }
-
 #composebutton:hover {
-    background-color: rgba(248, 248, 248, 0.946);
-    border-radius: 8px;
-    transition: all 150ms ease;
+	background-color: rgba(248, 248, 248, 0.946);
+	border-radius: 8px;
+	transition: all 150ms ease;
 }
-
 #composebutton:active {
-    background-color: rgb(248, 248, 248);
-    border-radius: 8px;
-    transition: all 150ms ease;
-    transform: scale(0.9);
+	background-color: rgb(248, 248, 248);
+	border-radius: 8px;
+	transition: all 150ms ease;
+	transform: scale(0.9);
 }
-
 .searchbox {
-    height: 25px;
-    width: 33%;
-    background-color: var(--searchbox_background);
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 8px;
-    border: none;
-    margin: none;
-    color: var(--searchbox_foreground);
+	height: 25px;
+	width: 33%;
+	background-color: var(--searchbox_background);
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 8px;
+	border: none;
+	margin: none;
+	color: var(--searchbox_foreground);
 }
-
 #compose-recipient-input {
-    height: 20px;
-    margin-top: 5px;
-    border: none;
-    padding-left: 0px;
-    width: 100%;
-    font-size: 16px;
-    font-family: 'Figtree', sans-serif;
+	height: 20px;
+	margin-top: 5px;
+	border: none;
+	padding-left: 0px;
+	width: 100%;
+	font-size: 16px;
+	font-family: 'Figtree', sans-serif;
 }
-
 .autoComplete_wrapper {
-    width: 100% !important;
+	width: 100% !important;
 }
-
 .sidebar-wsinfoarea-stack-nohover {
-    width: 100% !important;
+	width: 100% !important;
 }
-
 body {
-    margin: 0px;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100vw;
-    height: 100dvh;
-    background-color: #f4f4f4;
-    font-family: 'Figtree', sans-serif;
-    user-select: none;
+	margin: 0px;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100dvh;
+	background-color: #f4f4f4;
+	font-family: 'Figtree', sans-serif;
+	user-select: none;
 }
-
 #sidebartogglebutton {
-    height: 18px;
-    width: 18px;
-    -webkit-app-region: no-drag;
-    cursor: pointer;
-    position: relative;
-    overflow: visible;
-    visibility: visible;
+	height: 18px;
+	width: 18px;
+	-webkit-app-region: no-drag;
+	cursor: pointer;
+	position: relative;
+	overflow: visible;
+	visibility: visible;
 }
-
-/* Broken Code - - needs fixing !!
-    (breaks #sidebartogglebutton icon as it doesn't display,
-    otherwise functions properly. )
-
-#sidebartogglebutton::before, #sidebartogglebutton::after {
-    --scale: 0;
-    position: absolute;
-    font-family: 'Figtree', sans-serif;
-    font-size: small;
-    transform: scale(var(--scale));
-    transition: 30ms transform;
+/* Broken Code - - needs fixing !!(breaks #sidebartogglebutton icon as it doesn't display,otherwise functions properly. )#sidebartogglebutton::before, #sidebartogglebutton::after {
+	--scale: 0;
+	position: absolute;
+	font-family: 'Figtree', sans-serif;
+	font-size: small;
+	transform: scale(var(--scale));
+	transition: 30ms transform;
 }
-
 #sidebartogglebutton::before {
-    content: attr(data-tooltip);
-    color: white;
-    padding: .3rem;
-    padding-left: .5rem;
-    padding-right: .5rem;
-    border-radius: .3rem;
-    text-align: left;
-    width: max-content;
-    background: #333;
+	content: attr(data-tooltip);
+	color: white;
+	padding: .3rem;
+	padding-left: .5rem;
+	padding-right: .5rem;
+	border-radius: .3rem;
+	text-align: left;
+	width: max-content;
+	background: #333;
 }
-
 #sidebartogglebutton:hover::before {
-    --scale: 1;
-} */
-
+	--scale: 1;
+}
+*/
 #apparea {
-    height: calc(100% - 40px);
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+	height: calc(100% - 40px);
+	width: 100%;
+	display: flex;
+	flex-direction: row;
 }
-
 #workspaceswitcher {
-    height: 100%;
-    min-width: 70px;
-    background-color: var(--sidebar_background);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-right: 2px solid var(--sidebar_border);
+	height: 100%;
+	min-width: 70px;
+	background-color: var(--sidebar_background);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-right: 2px solid var(--sidebar_border);
 }
-
 .workspaceswitcheritem {
-    width: 36px;
-    height: 36px;
-    margin-top: 15px;
-    border-radius: 10px;
-    transition: width 0.2s, height 0.2s, border 0.2s, padding 0.2s;
-    border: 2px solid rgba(255, 255, 255, 0);
-    cursor: pointer;
-    position: relative;
+	width: 40px;
+	height: 40px;
+	margin-top: 15px;
+	border-radius: 10px;
+	transition: width 0.2s, height 0.2s, border 0.2s, padding 0.2s;
+	border: 2px solid rgba(255, 255, 255, 0);
+	cursor: pointer;
+	position: relative;
+	box-sizing: border-box;
 }
-
 .workspaceswitcheritem::before, .workspaceswitcheritem::after {
-    --scale: 0;
-    position: absolute;
-    font-size: small;
-    top: -.25rem;
-    left: 125%;
-    transform: translateY(35%) scale(var(--scale));
-    transition: 30ms transform;
+	--scale: 0;
+	position: absolute;
+	font-size: small;
+	top: -.25rem;
+	left: 125%;
+	transform: translateY(35%) scale(var(--scale));
+	transition: 30ms transform;
 }
-
 .workspaceswitcheritem::before {
-    content: attr(data-tooltip);
-    color: white;
-    padding: .3rem;
-    padding-left: .5rem;
-    padding-right: .5rem;
-    border-radius: .3rem;
-    text-align: left;
-    width: max-content;
-    background: #333;
+	content: attr(data-tooltip);
+	color: white;
+	padding: .3rem;
+	padding-left: .5rem;
+	padding-right: .5rem;
+	border-radius: .3rem;
+	text-align: left;
+	width: max-content;
+	background: #333;
 }
-
 .workspaceswitcheritem:hover::before {
-    --scale: 1;
+	--scale: 1;
 }
-
 .workspaceswitcheritem[selected="selected"] {
-    width: 26px;
-    height: 26px;
-    margin-top: 15px;
-    border-radius: 10px;
-    padding: 5px;
-    border: 2px solid var(--sidebar_foreground);
+	width: 40px !important;
+	height: 40px !important;
+	padding: 0 !important;
+	border-radius: 10px;
+	border: 2px solid var(--sidebar_foreground) !important;
+	transition: width 0.2s, height 0.2s, border 0.2s, padding 0.2s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-
-.workspaceswitcheritem[selected="selected"]>.workspaceswitcheriteminner {
-    border-radius: 5px;
+.workspaceswitcheritem[selected="selected"] > .workspaceswitcheriteminner {
+	transform: scale(0.72);
+	border-radius: 5px;
 }
-
 .workspaceswitcheritem[selected="false"] {
-    width: 36px;
-    height: 36px;
-    margin-top: 15px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0);
+	width: 40px !important;
+	height: 40px !important;
+	border-radius: 10px;
+	overflow: hidden;
+	border: 2px solid rgba(255, 255, 255, 0) !important;
 }
-
 .workspaceswitcheradd {
-    cursor: pointer;
-    position: relative;
-    overflow: visible;
+	cursor: pointer;
+	position: relative;
+	overflow: visible;
 }
-
 .workspaceswitcheradd::before, .workspaceswitcheradd::after {
-    --scale: 0;
-    position: absolute;
-    font-size: small;
-    top: -.25rem;
-    left: 125%;
-    transform: translateY(50%) scale(var(--scale));
-    transition: 30ms transform;
+	--scale: 0;
+	position: absolute;
+	font-size: small;
+	top: -.25rem;
+	left: 125%;
+	transform: translateY(50%) scale(var(--scale));
+	transition: 30ms transform;
 }
-
 .workspaceswitcheradd::before {
-    content: attr(data-tooltip);
-    color: white;
-    padding: .3rem;
-    border-radius: .3rem;
-    padding-left: .5rem;
-    padding-right: .5rem;
-    text-align: left;
-    width: max-content;
-    background: #333;
+	content: attr(data-tooltip);
+	color: white;
+	padding: .3rem;
+	border-radius: .3rem;
+	padding-left: .5rem;
+	padding-right: .5rem;
+	text-align: left;
+	width: max-content;
+	background: #333;
 }
-
 .workspaceswitcheradd:hover::before {
-    --scale: 1;
+	--scale: 1;
 }
-
 .workspaceswitcheradd-icon {
-    color: var(--sidebar_foreground);
-    font-size: 22px !important;
+	color: var(--sidebar_foreground);
+	font-size: 22px !important;
 }
-
 .workspaceswitcheritem[selected="false"]>.workspaceswitcheriteminner {
-    border-radius: 10px;
+	border-radius: 10px;
 }
-
-/* 
-.workspaceswitcheritem:hover>.workspaceswitcheriteminner {
-    border-radius: 5px;
-} */
-
+/*.workspaceswitcheritem:hover>.workspaceswitcheriteminner {
+	border-radius: 5px;
+}
+*/
 .workspaceswitcheriteminner {
-    width: 100%;
-    height: 100%;
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    transition: border-radius 0.2s;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(255, 255, 255);
+	border-radius: 10px;
+	transition: border-radius 0.2s;
 }
-
 .sidebar-listarea {
-    padding: 16px;
-    border-top: 2px solid var(--sidebar_border);
-    font-weight: 400;
-    transition: all 0.2s;
+	padding: 16px;
+	border-top: 2px solid var(--sidebar_border);
+	font-weight: 400;
+	transition: all 0.2s;
 }
-
 #messagearea {
-    color: #666666;
-    height: fit-content;
-    overflow-y: scroll;
+	color: #666666;
+	height: fit-content;
+	overflow-y: scroll;
 }
-
 #messageareaoriginal {
-    padding: 0px;
-    padding-bottom: 1.5rem;
-    color: #666666;
-    height: fit-content;
+	padding: 0px;
+	padding-bottom: 1.5rem;
+	color: #666666;
+	height: fit-content;
 }
-
 .threadviewbutton {
-    background-color: white;
-    border: 1px solid #e4e4e7;
-    border-radius: 999px;
-    padding: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: 14px;
-    width: fit-content;
+	background-color: white;
+	border: 1px solid #e4e4e7;
+	border-radius: 999px;
+	padding: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	cursor: pointer;
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-size: 14px;
+	width: fit-content;
 }
-
 .messagebox {
-    position: relative;    /* ← make .message-actionbar position itself relative to .messagebox */
-    width: 100%;           /* Fill parent container */
-    padding: 0.125rem 4.625rem;
-    margin-top: 0.25rem;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    overflow-wrap: anywhere;
-    transition: all 100ms ease;
-    box-sizing: border-box;
+	position: relative;
+	/* ← make .message-actionbar position itself relative to .messagebox */
+	width: 100%;
+	/* Fill parent container */
+	padding: 0.125rem 4.625rem;
+	margin-top: 0.25rem;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: row;
+	overflow-wrap: anywhere;
+	transition: all 100ms ease;
+	box-sizing: border-box;
 }
-
 .expandedmessagebox {
-    width: 100%; /* Fill parent container */
-    padding: 0.125rem 1.5rem;
-    margin-top: 1.5rem;
-    margin-left: 0;
-    box-sizing: border-box;
+	width: 100%;
+	/* Fill parent container */
+	padding: 0.125rem 1.5rem;
+	margin-top: 1.5rem;
+	margin-left: 0;
+	box-sizing: border-box;
 }
-
 .messagebox:hover {
-    background-color: hsla(0, 0%, 40%, 0.05);
+	background-color: hsla(0, 0%, 40%, 0.05);
 }
-
 .thread-btn {
-    font-size: 1.2rem !important;
-    color: #66666688;
-    margin-left: auto;
-    margin-top: auto; margin-bottom: auto;
-    cursor: pointer;
+	font-size: 1.2rem !important;
+	color: #66666688;
+	margin-left: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	cursor: pointer;
 }
-
 .message-sendername {
-    color: var(--sidebar_background);
+	color: var(--sidebar_background);
 }
-
 .message-sendername-owner {
-    color: var(--owner_textcolor);
+	color: var(--owner_textcolor);
 }
-
 /* legacy messagebox */
-
 /* .messagebox {
-    padding-bottom: 10px;
-    background-color: rgb(255, 255, 255);
-    padding-top: 10px;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    border: 1px solid #e4e4e7;
-} */
-
+	padding-bottom: 10px;
+	background-color: rgb(255, 255, 255);
+	padding-top: 10px;
+	margin-bottom: 1rem;
+	border-radius: 5px;
+	border: 1px solid #e4e4e7;
+}
+*/
 .message {
-    user-select: text;
-    font-size: 16px;
-    color: #666666;
+	user-select: text;
+	font-size: 16px;
+	color: #666666;
 }
-
 .messagetext {
-    padding-top: 3px;
-    user-select: text;
+	padding-top: 3px;
+	user-select: text;
 }
-
 .sidebar-listitem-icon {
-    font-size: 18px !important;
-    cursor: pointer;
+	font-size: 18px !important;
+	cursor: pointer;
 }
-
 .sidebar-listarea-titlecollapse {
-    font-size: 18px !important;
-    cursor: pointer;
+	font-size: 18px !important;
+	cursor: pointer;
 }
-
 .sidebar-listarea-titletext {
-    font-size: 16px !important;
-    margin-right: auto;
-    font-weight: 500;
+	font-size: 16px !important;
+	margin-right: auto;
+	font-weight: 500;
 }
-
 .sidebar-listitem-text {
-    font-size: 16px !important;
-    margin-left: 10px;
-    font-weight: 400;
+	font-size: 16px !important;
+	margin-left: 10px;
+	font-weight: 400;
 }
-
 .sidebar-listitem {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 4px;
-    cursor: pointer;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 4px;
-    padding-right: 4px;
-    transition: all 100ms ease;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 4px;
+	cursor: pointer;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	padding-left: 4px;
+	padding-right: 4px;
+	transition: all 100ms ease;
 }
-
 .sidebar-listitem:hover {
-    background-color: #00000028;
-    border-radius: 8px;
-    padding-left: 12px;
+	background-color: #00000028;
+	border-radius: 8px;
+	padding-left: 12px;
 }
-
 .sidebar-listarea-titlearea {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 18px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 0px;
 }
-
+.sidebar-listitem:is(:first-child) {
+	margin-top: 10px
+}
+.sidebar-listarea-notitle {
+	padding-top: 6px !important;
+}
 .workspaceswitcheradd {
-    width: 40px;
-    height: 40px;
-    margin-top: 15px;
-    background-color: var(--ws_add_button);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
+	width: 40px;
+	height: 40px;
+	margin-top: 15px;
+	background-color: var(--ws_add_button);
+	border-radius: 8px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
-
 #shellsidebar {
-    min-height: 100%;
-    max-height: 100%;
-    min-width: 300px;
-    background-color: var(--sidebar_background);
-    border-right: 2px solid var(--sidebar_border);
-    color: var(--sidebar_foreground);
-    overflow: scroll;
+	min-height: 100%;
+	max-height: 100%;
+	min-width: 300px;
+	background-color: var(--sidebar_background);
+	border-right: 2px solid var(--sidebar_border);
+	color: var(--sidebar_foreground);
+	overflow: scroll;
 }
-
 *::-webkit-scrollbar {
-    display: none;
-  }
-
+	display: none;
+}
 .sidebar-wsinfoarea {
-    height: 70px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    /* border-bottom: 2px solid rgb(46, 90, 141); */
+	height: 70px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	/* border-bottom: 2px solid rgb(46, 90, 141);
+	*/
 }
-
 .mainarea-header {
-    height: 70px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: white;
-    border-bottom: 1px solid #e4e4e7;
+	height: 70px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	background-color: white;
+	border-bottom: 1px solid #e4e4e7;
 }
-
 #sidebar-wsinfo-name {
-    font-size: 20px;
-    font-weight: 500;
+	font-size: 20px;
+	font-weight: 500;
 }
-
 #sidebar-wsinfo-sub {
-    font-size: 14px;
-    color: var(--wsinfo_sub_textcolor);
+	font-size: 14px;
+	color: var(--wsinfo_sub_textcolor);
 }
-
 #mainarea-header-title {
-    font-size: 20px;
-    font-weight: 500;
-    color: #666666;
+	font-size: 20px;
+	font-weight: 500;
+	color: #666666;
 }
-
 #mainarea-header-sub {
-    font-size: 14px;
-    color: rgb(120, 120, 120);
+	font-size: 14px;
+	color: rgb(120, 120, 120);
 }
-
 .sidebar-wsinfoarea-stack {
-    margin-left: 10px;
-    padding: 10px;
-    padding-top: 5px;
-    padding-bottom:5px;
-    border-radius: 5px;
+	margin-left: 10px;
+	padding: 10px;
+	padding-top: 5px;
+	padding-bottom:5px;
+	border-radius: 5px;
 }
-
 .sidebar-wsinfoarea-stack-nohover {
-    margin-left: 10px;
-    padding: 10px;
-    padding-top: 5px;
-    padding-bottom:5px;
-    border-radius: 5px;
+	margin-left: 10px;
+	padding: 10px;
+	padding-top: 5px;
+	padding-bottom:5px;
+	border-radius: 5px;
 }
-
 .sidebar-wsinfoarea-stack:hover {
-    margin-left: 10px;
-    padding: 10px;
-    padding-top: 5px;
-    padding-bottom:5px;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.097);
+	margin-left: 10px;
+	padding: 10px;
+	padding-top: 5px;
+	padding-bottom:5px;
+	border-radius: 5px;
+	background-color: rgba(0, 0, 0, 0.097);
 }
-
 #mainarea {
-    width: 100%;
-    height: 100%
+	width: 100%;
+	height: 100%
 }
-
 .messagebar {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: calc(100% - 42px);
-    height: 40px;
-    overflow: hidden;
-    border: 1px solid #e4e4e7;
-    border-radius: 5px;
-    background-color: white;
-    display: flex;
-    flex-direction: row;
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translate(-50%, 0);
+	width: calc(100% - 42px);
+	height: 40px;
+	overflow: hidden;
+	border: 1px solid #e4e4e7;
+	border-radius: 5px;
+	background-color: white;
+	display: flex;
+	flex-direction: row;
 }
-
 #messagebox {
-    position: sticky;
-    top: 0;
-    border: none;
-    outline: none;
-    width: calc(100% - 40px);
-    height: 40px;
-    padding-left: 15px;
-    padding-right: 15px;
-    font-family: 'Figtree', sans-serif;
+	position: sticky;
+	top: 0;
+	border: none;
+	outline: none;
+	width: calc(100% - 40px);
+	height: 40px;
+	padding-left: 15px;
+	padding-right: 15px;
+	font-family: 'Figtree', sans-serif;
+}
+#sendbutton {
+	position: sticky;
+	top: 0;
+	height: 40px;
+	width: 40px;
+	background-color: #29a083;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	cursor: pointer;
+}
+.sidebar-profile {
+	aspect-ratio: 1;
+	width: 20px;
+	margin-left: auto;
+	margin-right: 12px;
+	background-color: #ffffff70;
+	background-image: url(default-pfp/Bubbleblue.png);
+	background-size: contain;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 100ms ease;
+}
+.sidebar-profile:hover {
+	filter: brightness(50%);
+}
+.sidebar-profile input {
+	visibility: hidden;
+}
+.channellistcontainer {
+	background-color: white;
+	border-radius: 10px;
+	border: 1px solid #e4e4e7;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+}
+.channellistitem {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 1rem;
+	border-bottom: 1px solid #e4e4e7;
+	cursor: pointer;
+	transition: all 150ms ease;
+}
+.channellistitem:last-child {
+	border-bottom: 0px solid #e4e4e7;
+}
+.channellistitem:hover {
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+	background-color: #6d6d6d0a;
+}
+.channellistitem-icon {
+	font-size: 20px;
+	color: #666666;
+}
+.channellistitem-text {
+	font-size: 16px;
+	color: #666666;
+	padding-left: 10px;
+}
+.channellistitem-text-owner {
+	color: var(--owner_textcolor);
+}
+.messageprofilepicture {
+	aspect-ratio: 1;
+	width: 38px;
+	height: 38px;
+	background-color: #ffffff70;
+	border-radius: 8px;
+	transition: all 100ms ease;
+	margin-right: 10px;
+	border: 1px solid #e4e4e7;
+}
+.message-actionbar {
+	display: none;
+	flex-direction: row;
+	align-items: center;
+	position: absolute;
+	right: 10px;
+	bottom: 4px;
+	background-color: var(--sidebar_foreground);
+	z-index: 1;
+	border-radius: 999px;
+	border: 1px solid #d3d3d3;
+	padding: 0.25rem;
+	padding-left: 0.75rem;
+	padding-right: 0.75rem;
+	gap: 0.25rem;
+	font-size: 1.125rem;
+}
+.message-actionbar div {
+	cursor: pointer;
+}
+.messagebox:hover > .message-actionbar {
+	display: flex;
+}
+.messagereply {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 24px;
+	margin-top: 24px;
+}
+.messagereplyimg {
+	margin-left: 10px;
+	aspect-ratio: 1;
+	width: 20px;
+	height: 20px;
+	background-color: #ffffff70;
+	border-radius: 4px;
+	transition: all 100ms ease;
+	margin-right: 10px;
+	border: 1px solid #e4e4e7;
+}
+.replycontent {
+	font-size: 16px;
+	color: #666666;
+}
+/* === Mobile Responsiveness === */
+@media (max-width: 767px) {
+	html {
+		font-size: 15px;
+	}
+	body {
+		height: auto;
+		overflow-x: hidden;
+	}
+	#apparea {
+		flex-direction: column;
+	}
+	#shellsidebar {
+		width: 100%;
+		min-width: 100%;
+		max-height: 280px;
+		overflow-y: auto;
+		border-right: none;
+		border-bottom: 2px solid var(--sidebar_border);
+	}
+	.mainarea-header {
+		flex-direction: column;
+		align-items: flex-start;
+		height: auto;
+	}
+	#workspaceswitcher {
+		flex-direction: row;
+		overflow-x: auto;
+		width: 100%;
+		height: 64px;
+		border-right: none;
+		border-bottom: 2px solid var(--sidebar_border);
+	}
+	.workspaceswitcheritem,.workspaceswitcheradd {
+		margin: 0 8px;
+	}
+	.channellistitem,.sidebar-listitem {
+		padding: 10px;
+	}
+	.channellistitem-text,.sidebar-listitem-text {
+		font-size: 14px !important;
+	}
+	.messagebar {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		transform: none;
+		width: 100%;
+		border-radius: 0;
+		z-index: 100;
+	}
+	#messagebox {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	#sendbutton {
+		width: 36px;
+		height: 36px;
+	}
+	.message {
+		font-size: 14px;
+	}
+	.messageprofilepicture {
+		width: 36px;
+		height: 36px;
+	}
+	.replycontent {
+		font-size: 14px;
+	}
+	.threadviewbutton {
+		font-size: 13px;
+		padding: 8px;
+	}
+	.message-actionbar {
+		font-size: 1rem;
+		padding: 0.2rem 0.5rem;
+	}
+	.sidebar-profile {
+		margin-right: 8px;
+	}
+	.searchbox {
+		width: 90%;
+		margin: 0 auto;
+		margin-top: 10px;
+	}
+	#composebutton {
+		margin-right: 8px;
+	}
+	.messagebox,.expandedmessagebox {
+		padding: 0.125rem 1rem;
+	}
+	.messagereply {
+		margin-left: 12px;
+	}
+	#addchannelbutton {
+		margin-left: 20px !important;
+		margin-right: auto !important;
+	}
+}
+/* === Touch Devices Only === */
+@media (hover: none) and (pointer: coarse) {
+	button,.threadviewbutton,.sidebar-listitem,.channellistitem,.workspaceswitcheritem {
+		padding: 12px !important;
+	}
+	.message-actionbar {
+		padding: 0.5rem;
+	}
+	#composebutton,#sendbutton {
+		width: 44px;
+		height: 44px;
+	}
+	.messageprofilepicture {
+		width: 36px;
+		height: 36px;
+	}
 }
 
-#sendbutton {
-    position: sticky;
-    top: 0;
-    height: 40px;
-    width: 40px;
-    background-color: #29a083;
+.themeswitcherrow {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    color: white;
-    cursor: pointer;
-}
-
-.sidebar-profile {
-    aspect-ratio: 1;
-    width: 20px;
-    margin-left: auto;
-    margin-right: 12px;
-    background-color: #ffffff70;
-    background-image: url(default-pfp/Bubbleblue.png);
-    background-size: contain;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 100ms ease;
-}
-
-.sidebar-profile:hover {
-    filter: brightness(50%);
-}
-
-.sidebar-profile input {
-    visibility: hidden;
-}
-
-.channellistcontainer {
-    background-color: white;
+    gap: 10px;
+    padding: 15px;
+    width: calc(100% - 30px);
     border-radius: 10px;
     border: 1px solid #e4e4e7;
-    width: 80%;
+    background-color: white;
+}
+
+.themeswitcherrow-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: auto;
+}
+
+.promobox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: calc(80% - 20px);
+    height: auto;
+    margin-top: 0px;
+    margin-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
-    overflow: hidden;
-}
-
-.channellistitem {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid #e4e4e7;
-    cursor: pointer;
-    transition: all 150ms ease;
-}
-
-.channellistitem:last-child {
-    border-bottom: 0px solid #e4e4e7;
-}
-
-.channellistitem:hover {
-    padding-left: 1.5rem; padding-right: 1.5rem;
-    background-color: #6d6d6d0a;
-}
-
-.channellistitem-icon {
-    font-size: 20px;
-    color: #666666;
-}
-
-.channellistitem-text {
-    font-size: 16px;
-    color: #666666;
-    padding-left: 10px;
-}
-
-.channellistitem-text-owner {
-    color: var(--owner_textcolor);
-}
-
-.messageprofilepicture {
-    aspect-ratio: 1;
-    width: 38px;
-    height: 38px;
-    background-color: #ffffff70;
-    border-radius: 8px;
-    transition: all 100ms ease;
-    margin-right: 10px;
+    background-color: white;
     border: 1px solid #e4e4e7;
+    border-radius: 5px;
+    padding: 10px;
 }
 
-.message-actionbar {
-    display: none;
-    flex-direction: row;
-    align-items: center;
-    position: absolute;
-    right: 10px;
-    bottom: 4px;
-    background-color: var(--sidebar_foreground);
-    z-index: 1;
-    border-radius: 999px;
-    border: 1px solid #d3d3d3;
-    padding: 0.25rem;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    gap: 0.25rem;
-    font-size: 1.125rem;
-}
-
-.message-actionbar div {
-    cursor: pointer;
-}
-
-.messagebox:hover > .message-actionbar {
+.promobox-icon {
+    width: 40px;
+    height: 40px;
     display: flex;
-}
-
-.messagereply {
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    margin-left: 24px;
-    margin-top: 24px;
+    justify-content: center;
 }
 
-.messagereplyimg {
-    margin-left: 10px;
-    aspect-ratio: 1;
-    width: 20px;
-    height: 20px;
-    background-color: #ffffff70;
-    border-radius: 4px;
-    transition: all 100ms ease;
-    margin-right: 10px;
-    border: 1px solid #e4e4e7;
+.promobox-text {
+
 }
 
-.replycontent {
+.promobox-text-title {
     font-size: 16px;
-    color: #666666;
+    font-weight: 500;
+    color: var(--foreground-color);
+}
+
+.promobox-text-description {
+    font-size: 14px;
+    color: var(--secondary-foreground-color);
 }

@@ -1,0 +1,25 @@
+<qcl-header headertitle="Meetings" main="true"></qcl-header>
+<script src="/starship/routines/allChannelsMeetings.js" type="module"></script>
+<div class="promobox" style="margin-top: 20px;">
+    <div class="promobox-icon">
+        <i class="icon-video"></i>
+    </div>
+    <div class="promobox-text">
+        <div class="promobox-text-title">
+            New: Meetings are here!
+        </div>
+        <div class="promobox-text-description">
+            Start a meeting in a channel to connect with your team in real-time.
+        </div>
+    </div>
+</div>
+<div class="channellistcontainer" style="margin-top: 20px;" id="channellistcontainer">
+
+</div>
+<script>
+    document.title = "Meetings | Clatter"
+    setTimeout(() => {
+        channelPageListUpdate()
+        channelPageAddButtonEvent()
+    }, 50)
+</script>

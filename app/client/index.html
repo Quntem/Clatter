@@ -19,7 +19,9 @@
             })
         </script>
         <link rel="stylesheet" href="/client/global/styles.css" />
+        <script src="/client/global/shell.js"></script>
         <!-- <link rel="stylesheet" href="/client/global/themes/sea.css" /> -->
+        <script src="https://int_jitsi.qplus.cloud/external_api.js"></script>
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
         <script src="/client/global/jquery.js"></script>
         <script src="/client/global/splash.js"></script>
@@ -159,6 +161,7 @@
                 .then(res => res.json())
                 .then(res => {
                     console.log(res)
+                    window.channels = res
                     channels = res.filter(channel => channel.type.split(".")[1] == "channeltype")
                     directmessages = res.filter(channel => channel.type.split(".")[1] == "directtype")
                     $("#channelssblist").html("")
@@ -233,7 +236,7 @@
                     </div>
                 </div>
 
-                <div class="sidebar-listarea">
+                <div class="sidebar-listarea sidebar-listarea-notitle">
                     <div class="sidebar-listitem" onclick="NavigatePage(`directory`)" id="directory-button">
                         <div class="icon-book-user sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">Directory</div>
@@ -241,6 +244,14 @@
                     <div class="sidebar-listitem" onclick="NavigatePage(`allchannels`)">
                         <div class="icon-hash sidebar-listitem-icon"></div>
                         <div class="sidebar-listitem-text">All Channels</div>
+                    </div>
+                    <div class="sidebar-listitem" onclick="NavigatePage(`documentlist`)">
+                        <div class="icon-file-text sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Documents</div>
+                    </div>
+                    <div class="sidebar-listitem" onclick="NavigatePage(`meetinglist`)">
+                        <div class="icon-video sidebar-listitem-icon"></div>
+                        <div class="sidebar-listitem-text">Meetings</div>
                     </div>
                     <!-- <div class="sidebar-listitem" onclick="NavigatePage(`workspacesettings`)">
                         <div class="icon-settings-2 sidebar-listitem-icon"></div>
@@ -300,8 +311,13 @@
 
                         authClient.organization.getFullOrganization()
                         .then((ao) => {
-                            const activeId = ao.data.id.toString();
-                            const justDeselected = localStorage.getItem("deselectedOrg");
+                            try {
+                                var activeId = ao.data.id.toString();
+                                var justDeselected = localStorage.getItem("deselectedOrg");
+                            } catch {
+                                var activeId = ""
+                                var justDeselected = ""
+                            }
 
                             if (justDeselected && justDeselected === activeId) {
                                 localStorage.removeItem("deselectedOrg");

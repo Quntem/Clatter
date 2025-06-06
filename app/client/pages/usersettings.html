@@ -50,6 +50,7 @@
                         await authClient.updateUser({
                             image: dataUrl,
                         })
+                        document.getElementById("profilepicture").src = dataUrl
                     }).catch(error => {
                         console.error('Error uploading file:', error);
                     });
@@ -57,18 +58,37 @@
             </script>
         </div>
 
-        <div style="height: calc(100% - 71px); width: 100%; padding: 2rem;">
+        <div style="height: calc(100% - 71px - 4rem); width: calc(100% - 4rem); padding: 2rem;">
             <div class="profilepicturearea">
-                <h2>Profile</h2>
+                <h2>Settings</h2>
                 <div class="profilepagearea">
                     <div class="profile-picture-wrapper" onclick="changeProfilePicture()">
-                        <img id="profilepicture" width="96" height="96"/>
+                        <img id="profilepicture" width="42" height="42"/>
                         <div class="icon-pencil edit-icon"></div>
+                    </div>
+                    <div class="profile-name-wrapper">
+                        <input type="text" class="profile-name-input" placeholder="Name" value="">
                     </div>
                 </div>
             </div>
+            <div class="themeswitcherrow">
+                <div class="themeswitcherrow-title">Theme</div>
+                <select id="themeswitcher" onchange="setCustomTheme(this.value)">
+                    <option value="blurple">Blurple</option>
+                    <option value="sea">Sea</option>
+                    <option value="deep-seas">Deep Seas</option>
+                    <option value="cherry-blossom">Cherry Blossom</option>
+                    <option value="default">Default</option>
+                    <option value="ripoff-slack">Ripoff Slack</option>
+                </select>
+            </div>
         </div>
         <script>
+            if(localStorage.getItem("customTheme") != null) {
+                $("#themeswitcher").val(localStorage.getItem("customTheme"))
+            } else {
+                $("#themeswitcher").val("sea")
+            }
             authClient.getSession()
                 .then(session => {
                     if (session.data.user.image) {
@@ -84,7 +104,29 @@
                         };
                         img.src = "/profilepicture.png";
                     }
+
+                    if (session.data.user.name) {
+                        $(".profile-name-input").val(session.data.user.name);
+                    } else {
+                        $(".profile-name-input").val("legend says that you have no name and are hacking so can you please don't?");
+                    }
                 })
+
+            document.querySelector(".profile-name-input").addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    const newName = this.value.trim();
+                    if (newName.length > 0) {
+                        authClient.updateUser({
+                            name: newName,
+                        }).then(() => {
+                            console.log("Name updated successfully");
+                            $("#mainarea-header-sub").html(newName);
+                        }).catch((err) => {
+                            console.error("Failed to update name:", err);
+                        });
+                    }
+                }
+            });
         </script>
         <style>
             h2 {
@@ -95,18 +137,22 @@
                 margin-bottom: 1.5rem;
             }
 
-            .profilepicturearea {
-
+            .profilepagearea {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+                margin-bottom: 1rem;
             }
 
             #profilepicture {
-                width: 96px;
-                height: 96px;
-                border-radius: 24px;
-                margin-bottom: 20px;
+                width: 42px;
+                height: 42px;
+                border-radius: 5px;
+                margin-bottom: 1.25rem;
                 cursor: pointer;
                 transition: all 150ms ease;
                 background-color: #666666;
+                border: 1px solid #e4e4e7;
             }
 
             #profilepicture:hover,
@@ -119,8 +165,8 @@
 
             .profile-picture-wrapper {
                 position: relative;
-                width: 96px;
-                height: 96px;
+                width: 42px;
+                height: 42px;
             }
             
             .edit-icon {
@@ -130,7 +176,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 color: white;
-                font-size: 2rem;
+                font-size: 1rem;
                 transition: all 150ms ease;
                 cursor: pointer;
                 padding: 0.5rem;
@@ -140,6 +186,22 @@
                 transition: all 150ms ease;
                 opacity: 1;
                 backdrop-filter: blur(2px);
+            }
+
+            .profile-name-wrapper {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .profile-name-input {
+                font-family: 'Figtree', sans-serif;
+                width: calc(100% - 1rem - 2px);
+                height: calc(100% - 1rem - 2px);
+                padding: 0.5rem;
+                font-size: 1rem;
+                border-radius: 4px;
+                border: 1px solid #e4e4e7;
             }
         </style>
     </body>

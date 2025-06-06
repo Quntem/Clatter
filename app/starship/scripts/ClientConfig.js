@@ -11,6 +11,16 @@ export default {
             path: "/starship/channels"
         },
         {
+            title: "All Documents",
+            icon: "file-text",
+            path: "/starship/documents"
+        },
+        {
+            title: "Meetings",
+            icon: "video",
+            path: "/starship/meetings"
+        },
+        {
             title: "Directory",
             icon: "book-user",
             path: "/starship/directory"
