@@ -17,6 +17,8 @@
   <a href="https://clatter.status.phare.io" target="_blank" rel="noopener">
     <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fclatter.status.phare.io%2Fshield-badges%2Favailability.json&style=for-the-badge" loading="lazy" alt="Phare badge">
   </a>
+
+  <a href="https://deepwiki.com/Quntem/Clatter"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 </p>
 
 <h1 align="center">
