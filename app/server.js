@@ -469,6 +469,54 @@ io.on("connection", (socket) => {
       "clatter.channel.message.recieve",
       JSON.stringify(argjson)
     );
+
+    socket.on("clatter.channel.typing", async (args) => { // please dont emit on every keystroke please
+      try {
+        const { room, token } = JSON.parse(args);
+
+        const session = await auth.api.getSession({
+          headers: new Headers({
+            authorization: "Bearer " + token
+          })
+        });
+
+        const userId = session.session.userId;
+        const username = session.user.name;
+
+        socket.to(room).emit("clatter.channel.typing", {
+          userId,
+          username,
+          room,
+          typing: true,
+        });
+      } catch (err) {
+        socket.emit("clatter.channel.typing.response", "Failed to send typing notification.");
+      }
+    });
+
+    socket.on("clatter.channel.stoptyping", async (args) => { // only emit after 3 seconds without typing :3
+      try {
+        const { room, token } = JSON.parse(args);
+
+        const session = await auth.api.getSession({
+          headers: new Headers({
+            authorization: "Bearer " + token
+          })
+        });
+
+        const userId = session.session.userId;
+        const username = session.user.name;
+
+        socket.to(room).emit("clatter.channel.typing", {
+          userId,
+          username,
+          room,
+          typing: false,
+        });
+      } catch (err) {
+        socket.emit("clatter.channel.typing.response", "Failed to stop typing notification.")
+      }
+    });
   });
 });
 
