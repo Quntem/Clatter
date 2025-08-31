@@ -27,7 +27,7 @@ const channelCreationLimiter = rateLimit({
 // });
 
 const messageRateLimiter = rateLimit({
-  windowMs: 1000, // 1 second
+  windowMs: 1500, // 1 and a half seconds
   max: 5, // limit each key to 5 requests per windowMs
   message: "Too many messages sent. Please wait a moment.",
   keyGenerator: (req) => req.headers.authorization || req.ip,
