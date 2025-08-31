@@ -648,3 +648,9 @@ app.post("/api/status/set", async (req, res) => {
     // console.log(err)
   }
 })
+
+// centralized error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Internal Server Error" });
+});
