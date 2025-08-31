@@ -95,7 +95,7 @@ app.post("/api/channels/create", channelCreationLimiter, async (req, res) => {
     const orgmember = await auth.api.getActiveMember({
       headers: fromNodeHeaders(req.headers),
     });
-    if( orgmember.role = "owner") {
+    if (orgmember.role === "owner") {
       var newchannel = await prisma.channel.create({
         data: {
           parentworkspace: session.session.activeOrganizationId,
@@ -247,7 +247,7 @@ app.post("/api/workspace/users/add", async (req, res) => {
     const orgmember = await auth.api.getActiveMember({
       headers: fromNodeHeaders(req.headers),
     });
-    if( orgmember.role = "owner") {
+    if (orgmember.role === "owner") {
       const x = await auth.api.addMember({
         body: {
           userId: req.query.id,
