@@ -38,6 +38,7 @@ const prisma = new PrismaClient()
 const io = new Server(server, {
     cors: {
         origin: "*",
+        credentials: "*"
     },
 })
 const socketMsgTimestamps = new Map();
@@ -67,7 +68,7 @@ function canSendSocketMessage(userId) {
 
 app.use(
     cors({
-      origin: "*", // Replace with your frontend's origin
+      origin: true, // Replace with your frontend's origin
       methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
       credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     })
@@ -102,11 +103,13 @@ app.post("/api/channels/create", channelCreationLimiter, async (req, res) => {
         },
       })
       res.send("done")
+      console.log(newchannel)
     } else {
       res.send("not permitted")
+      console.log("not permitted")
     }
   } catch(err) {
-    // console.log(err)
+    console.log(err)
   }
 })
 
@@ -149,6 +152,9 @@ app.get("/api/channels/list", async (req, res) => {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
     });
+    if (!session) {
+      return res.json(session)
+    }
     var channellist = await prisma.channel.findMany({
       where: {
         parentworkspace: {
@@ -173,7 +179,7 @@ app.get("/api/channels/list", async (req, res) => {
     })
     res.json(channellist)
   } catch(err) {
-    // console.log(err)
+    res.send(err)
   }
 })
 
@@ -540,3 +546,57 @@ server.listen(3000)
 ViteExpress.bind(app, server)
 
 // ViteExpress.listen(app, 3000, () => // console.log("Server is listening..."));
+
+app.get("/api/status/s/:userid/get", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var user = await prisma.userstatus.findUnique({
+      where: {
+        user: req.params.userid
+      }
+    })
+    if (!user) {
+      user = await prisma.userstatus.create({
+        data: {
+          user: req.params.userid,
+        }
+      })
+    }
+    res.json(user)
+  } catch(err) {
+    // console.log(err)
+  }
+})
+
+app.post("/api/status/set", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var user = await prisma.userstatus.findUnique({
+      where: {
+        user: session.user.id
+      }
+    })
+    if (!user) {
+      user = await prisma.userstatus.create({
+        data: {
+          user: session.user.id,
+        }
+      })
+    }
+    await prisma.userstatus.update({
+      where: {
+        user: session.user.id
+      },
+      data: {
+        status: req.body.status
+      }
+    })
+    res.json(user)
+  } catch(err) {
+    // console.log(err)
+  }
+})
