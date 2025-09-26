@@ -86,11 +86,10 @@ window.signup = function(button) {
 window.ResetPassword = async function() {
     window.fpoutput = await authClient.forgetPassword({
         email: document.getElementById("email").value,
-        redirectTo: "/authui/resetpassword",
+        redirectTo: "/authui/reset-password",
     });
 
-    console.log(window.fpoutput);
-    window.location.replace("/authui/success");
+    console.log(window.fpoutput)
 }
 
 window.ResetPasswordFinish = async function() {

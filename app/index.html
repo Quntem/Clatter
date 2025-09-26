@@ -16,9 +16,7 @@
         <title>Clatter | Home</title>
         <link rel="icon" type="image/png" href="/favicon.png">
 
-        <link rel="stylesheet" href="/styles.css"/>
-        <link rel="stylesheet" href="/client/global/lucide-font/lucide.css"/>
-        <script src="/selfxss.js"></script>
+        <link rel="stylesheet" href="styles.css"/>
         <script>
             !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
             posthog.init('phc_6PSUoIZsnC4dikeD4BE7zPxzooOBInc5cpRwMtLl3Zs', {
@@ -37,37 +35,25 @@
             <button class="try_web-btn" onclick="window.location = '/authui/?callback=/client/'">Try Web<div class="icon-globe" style="margin-left: 0.5rem; color: white; font-size: .75rem !important; height: .75rem; width: .75rem;"></div></button>
         </header>
 
-        <!--
-            This page uses PostHog for analytics, which is an open source analytics platform.
-            If you want to see our source code for Clatter, it's at www.github.com/Quntem/Clatter.
-            🥚 <- Here's an Easter egg!
-        -->
+        <div class="mainarea">
+            <div class="innermainarea">
+                <h1 class="textAlignLeft" style="padding-top: 6.5rem;">Your Workplace, All In One App</h1>
+                
+                <p class="textAlignLeft" style="max-width: 36rem; margin-top: 1rem;">
+                    All of your workplace's basic features into one app.
+                    Message, upload and share to an opensourced platform for completely free.
+                    From the developers of other closed and opensourced tools such as Quntem Creator, All In One Link and many more.
+                </p>
 
-        <div style="text-align: center;">
-            <div class="beta_badge-div"><div class="icon-code-xml" style="margin-right: .5rem; height: 1rem; width: 1rem;"></div>Beta</div>
-            <h1 class="header-h1">Your Workspace, In <span class="highlighted_h1-span">One <span id="slug_change">App</span></span></h1>
-            <p class="description-p">A <span style="font-weight: 500;">new </span>and <span style="font-weight: 500;">beautifully</span> designed application for workplaces <span style="font-weight: 500;">big</span> and <span style="font-weight: 500;">small</span> alike.
-                <br>We care about <span style="font-weight: 500;">your</span> experience with us, and <span style="font-weight: 500; text-decoration: underline; text-decoration-thickness: 7.5%;">not your data</span>.
-            </p>
-            <div style="display: flex; align-items: center; margin-top: 2rem;">
-                <button class="try_clatter_now-btn" onclick="window.location = '/authui/?callback=/client/'">Try Clatter Now <div class="icon-arrow-up-right" style="color: white; margin-left: .25rem; font-size: .75rem !important;"></div></button>
-                <a href="https://www.github.com/Quntem/Clatter" target="_blank" class="contribute-btn">Contribute<div class="icon-github" style="margin-left: .5rem;"></div></a>
+                <button class="mainareacreate" style="margin-bottom: 5rem;">
+                    <a href="/authui/index.html?callback=/client/" style="color: white; text-decoration: none;">
+                        <span>
+                            Create A Workspace
+                        </span>
+                    </a>
+                </button>
             </div>
-
-            <div class="ticker">
-                <div class="ticker__wrap">
-                  <div class="ticker__content">
-                    <img src="public/client-preview.png" height="240" alt="Clatter Client Preview">
-                    <img src="public/client-preview-bp.png" height="240" alt="Clatter Client: Blurple Theme Preview">
-                    <img src="public/client-preview-cb.png" height="240" alt="Clatter Client: Cherry Blossom Theme Preview">
-                    <img src="public/client-preview-pp.png" height="240" alt="Clatter Client: Purple Theme Preview">
-                    <img src="public/client-preview.png" height="240" alt="Clatter Client Preview">
-                    <img src="public/client-preview-bp.png" height="240" alt="Clatter Client: Blurple Theme Preview">
-                    <img src="public/client-preview-cb.png" height="240" alt="Clatter Client: Cherry Blossom Theme Preview">
-                    <img src="public/client-preview-pp.png" height="240" alt="Clatter Client: Purple Theme Preview">
-                  </div>
-                </div>
-              </div>
+        </div>
 
             <p style="margin: 0; font-weight: .75rem;">Planned Designs.</p>
 
@@ -93,19 +79,6 @@
                         For more information on contributing to Clatter,
                         you can visit our Developer's documentation for Clatter.
                     </p>
-                </div>
-                <div class="open_source_buttons_flex-div">
-                    <a href="https://www.github.com/Quntem/Clatter" target="_blank" style="text-decoration: none;">
-                        <button class="visit_github-btn">
-                            Visit Our GitHub
-                            <div class="icon-github" style="font-size: .75rem !important; color: white; margin-left: .5rem; height: .75rem; width: .75rem;"></div>
-                        </button>
-                    </a>
-                    <a href="https://docs.quntem.co.uk/editing/clatter" target="_blank" style="text-decoration: none;">
-                        <button class="developers_documentation-btn">Developer's Documentation
-                            <div class="icon-book" style="font-size: .75rem !important; color: white; margin-left: .5rem;"></div>
-                        </button>
-                    </a>
                 </div>
             </div>
             <div class="built_for_work-div">
@@ -135,56 +108,45 @@
     </body>
 
     <script>
-        const elements = {
-            slug_change: document.getElementById("slug_change"),
-            header_logo: document.getElementById("header_logo")
-        };
-    
-        const slug_change_texts = [
-            "App",
-            "Platform",
-            "Website",
-            "Software",
-            "Service",
-            "Tool",
-            "Experience"
-        ];
-        
-        window.addEventListener("load", () => {
-            checkBeta();
-            let currentIndex = 1;
+        function includeHTML() {
+            var z, i, elmnt, file, xhttp;
+            /* Loop through a collection of all HTML elements: */
+            z = document.getElementsByTagName("*");
 
-            if (!header_logo.complete) {
-                header_logo.addEventListener('load', handleImageLoad);
-                header_logo.addEventListener('error', handleImageLoad);
-            } else {
-                handleImageLoad();
-            }
-    
-            setInterval(() => {
-                // elements.slug_change.classList.remove("morph-in");
-                // elements.slug_change.classList.add("morph-out");
-                setTimeout(() => {
-                    elements.slug_change.innerHTML = slug_change_texts[currentIndex];
-                    // elements.slug_change.classList.remove("morph-out");
-                    // elements.slug_change.classList.add("morph-in");
-                    currentIndex = (currentIndex + 1) % slug_change_texts.length;
-                }, 300);
-            }, 2000);
-        });
-    
-        const checkBeta = () => {
-            if (window.location.origin === "https://clatterpreview.quntem.co.uk" || window.location.origin === "https://beta.clatter.work") {
-                document.title = "Clatter Beta | Home";
-            } else if (window.location.origin === "http://localhost:3000") {
-                document.title = "Clatter Dev | Home"
+            for (i = 0; i < z.length; i++) {
+                elmnt = z[i];
+                /*search for elements with a certain atrribute:*/
+                file = elmnt.getAttribute("html-snippet");
+                if (file) {
+                    /* Make an HTTP request using the attribute value as the file name: */
+                    xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4) {
+                        if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+                        if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+                        /* Remove the attribute, and call this function once more: */
+                        elmnt.removeAttribute("html-snippet");
+                        includeHTML();
+                        }
+                    }
+                    xhttp.open("GET", file, true);
+                    xhttp.send();
+                    /* Exit the function: */
+                    return;
+                }
             }
         }
 
-        const handleImageLoad = () => {
-        	header_logo.classList.remove('skeleton');
-        	header_logo.removeEventListener('load', handleImageLoad)
-            console.log("Image loaded")
+        includeHTML();
+
+        if(window.location.origin == "https://clatterpreview.quntem.co.uk") {
+            console.log("window.location.origin is" + window.location.origin + "and should be https://clatterpreview.quntem.co.uk.")
+            document.title = "Clatter Beta";
+
+            let headerTitle = document.getElementById("headertitle")
+            headertitle.innerHTML = "Clatter WorkRoom Beta"
+        } else {
+            console.log("Ignored Beta HeaderTitle Update due to window.location.origin being " + window.location.origin)
         }
-    </script>    
+    </script>
 </html>

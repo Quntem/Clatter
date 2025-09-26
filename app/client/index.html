@@ -127,7 +127,7 @@
             }
 
             var CreateChannel = function(name) {
-                fetch("/api/channels/create?channelname=" + encodeURIComponent(name), {
+                fetch("/api/channels/create?channelname=" + name, {
                     "method": "POST",
                 })
                 .then(function (response) {
@@ -142,7 +142,7 @@
             }
 
             var AddUser = function(userid) {
-                fetch("/api/workspace/users/add?id=" + encodeURIComponent(userid), {
+                fetch("/api/workspace/users/add?id=" + userid, {
                     "method": "POST",
                 })
                 .then(function (response) {
@@ -192,22 +192,19 @@
             }
 
             var ToggleSidebar = function() {
-                if ($("#shellsidebar").is(":visible")) {
-                    $("#shellsidebar").hide()
-                } else {
-                    $("#shellsidebar").show()
-                }
+                $("#workspaceswitcher").toggle()
+                $("#shellsidebar").toggle()
             }
         </script>
     </head>
 
     <body>
 
-        <beacon-splash imgsrc="/ClatterMonotoneLogo.svg" awr="true"></beacon-splash>
+        <beacon-splash imgsrc="/public/ClatterLogo.svg" awr="true"></beacon-splash>
 
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 26px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
-            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><span style="font-weight: 500;">Clatter </span>Client</div>
+            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><b>Quntem </b>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
             <!-- <div class="sidebar-profile"></div> -->
@@ -264,7 +261,6 @@
                         <div class="sidebar-listarea-titletext">Channels</div>
                         <div class="icon-chevron-down sidebar-listarea-titlecollapse" onclick="collapsesidebargroup(this)"></div>
                     </div>
-
                     <div class="sidebar-listarea-inner" id="channelssblist">
                     </div>
                 </div>
