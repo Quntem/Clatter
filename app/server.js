@@ -465,10 +465,20 @@ io.on("connection", (socket) => {
       "clatter.channel.message.send.response",
       "Sent Message"
     );
+
+    // Emit message to room
     socket.to(argjson.room).emit(
       "clatter.channel.message.recieve",
       JSON.stringify(argjson)
     );
+
+    // If parentmessageid is not null, emit message to parentmessageid
+    if (argjson.parentmessageid) {
+      socket.to("thread_" + argjson.parentmessageid).emit(
+        "clatter.channel.thread.message.recieve",
+        JSON.stringify(argjson)
+      );
+    }
 
     socket.on("clatter.channel.typing", async (args) => { // please dont emit on every keystroke please
       try {
@@ -517,6 +527,23 @@ io.on("connection", (socket) => {
         socket.emit("clatter.channel.typing.response", "Failed to stop typing notification.")
       }
     });
+  });
+  socket.on("clatter.channel.thread.join", async (data) => {
+    if (typeof data !== "object") {
+      data = JSON.parse(data)
+    }
+    const { messageid, token } = data;
+    const session = await auth.api.getSession({
+      headers: new Headers({
+        authorization: "Bearer " + token
+      })
+    });
+    if (session.user.id != undefined) {
+      socket.join("thread_" + messageid);
+      socket.emit("clatter.channel.thread.join.response", "Joined thread " + messageid);
+    } else {
+      socket.emit("clatter.channel.thread.join.response", "You are not permitted to join this thread.");
+    }
   });
 });
 
