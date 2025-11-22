@@ -7,4 +7,5 @@ body {
     --sidebar_foreground: #FFFFFF; /* Text Colour */
     --sidebar_border: #0F3867;
     --wsinfo_sub_textcolor: #2F98F6;
+    --owner_textcolor: #EBC119;
 }

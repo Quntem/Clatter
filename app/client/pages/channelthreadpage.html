@@ -5,222 +5,465 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            try {
-                var lastsenderid = ""
-            } catch {
-                lastsenderid = ""
+            function scrollMessageAreaToBottom() {
+                const messageArea = document.getElementById("messagearea");
+                messageArea.scrollTop = messageArea.scrollHeight;
+            }
+
+            // Helper: delete a thread message by ID, then remove its DOM node
+            function deleteThreadMessage(event, messageId) {
+                event.stopPropagation(); // Prevent any parent click
+                fetch("/api/channel/" + currentchannelid + "/message/" + messageId + "/delete")
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res === "done") {
+                            // Remove the corresponding .messagebox from the DOM
+                            const msgBox = document.querySelector(
+                                `.messagebox[data-messageid='${messageId}']`
+                            );
+                            if (msgBox) msgBox.remove();
+                        }
+                    });
             }
 
             try {
-                socket.destroy()
-                delete socket
-                socket = io()
+                var lastsenderid = "";
             } catch {
-                var socket = io()
+                lastsenderid = "";
             }
-            socket.off("clatter.channel.message.recieve")
-            socket.off("clatter.channel.join.response")
+
+            try {
+                socket.destroy();
+                delete socket;
+                socket = io();
+            } catch {
+                var socket = io();
+            }
+            socket.off("clatter.channel.message.recieve");
+            socket.off("clatter.channel.join.response");
             socket.on("clatter.channel.join.response", (res) => {
-                console.log(res)
-            })
+                console.log(res);
+            });
             socket.on("clatter.channel.message.recieve", (res) => {
-                console.log(res)
-                element = JSON.parse(res)
-                console.log(element)
-                currentpfp = ""
-                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                console.log(res);
+                const element = JSON.parse(res);
+                console.log(element);
+                let currentpfp = "";
                 const d = new Date(element.DateCreated);
-                console.log(element.parentmessageid,)
                 if (element.parentmessageid == currentmessageid) {
                     if (lastsenderid == element.userid) {
                         $("#messagearea").append(`
-                            <div class="messagebox" style="margin-top: 10px; margin-left: 50px;">
-                                <span class="">
+                            <div class="messagebox" data-messageid="${element.id}">
+                                <span class="mstack">
                                     <span class="message">
-                                        ` + sanitizeHTML(element.content) + `
+                                        ${sanitizeHTML(element.content)}
                                     </span>
                                 </span>
+                                <div class="message-actionbar">
+                                    <div 
+                                        class="icon-trash-2" 
+                                        onclick="deleteThreadMessage(event, '${element.id}')"
+                                    ></div>
+                                </div>
                             </div>
-                        `)
+                        `);
                     } else {
                         fullorg.data.members.forEach(member => {
                             if (member.userId == element.userid) {
-                                console.log("found")
-                                if(member.user.image == null) {
-                                    currentpfp = "/assets/defaultpfp.png"
-                                } else {
-                                    currentpfp = member.user.image
-                                }
+                                console.log("found");
+                                currentpfp = member.user.image || "/assets/defaultpfp.png";
                             }
-                        })
-                        $("#messagearea").append(`
-                            <div class="messagebox">
-                                <img src="` + currentpfp + `" class="messageprofilepicture" />
-                                <span class="message">
-                                    <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                                    <span style="font-size: small;">
-                                        ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
-                                    </span>
-                                    <br>
-                                    <div class="messagetext">
-                                        ` + sanitizeHTML(element.content) + `
-                                    </div>
-                                </span>
-                            </div>
-                        `)
-                    }
-                    lastsenderid = element.userid
-                }
-                
-                // Broken Code
+                        });
 
-                // Notification.requestPermission().then(perm => {
-                    // if (perm === "granted") {
-                        // new Notification(element.sendername, {
-                            // Message Here
-                            // body: element.content
-                        // })
-                    // }
-                // })
-            })
+                        function formatDate(dateStr) {
+                            const now = new Date();
+                            const msgDate = new Date(dateStr);
+                            const diffMs = now - msgDate;
+                            const diffMins = Math.floor(diffMs / 60000);
+
+                            const hours = msgDate.getHours().toString().padStart(2, '0');
+                            const minutes = msgDate.getMinutes().toString().padStart(2, '0');
+
+                            if (diffMins < 1) {
+                                return "Just now";
+                            } else if (diffMins < 60) {
+                                return diffMins === 1 ? "1 minute ago" : `${diffMins} minutes ago`;
+                            }
+
+                            const isToday = now.toDateString() === msgDate.toDateString();
+                            const yesterday = new Date();
+                            yesterday.setDate(now.getDate() - 1);
+                            const isYesterday = yesterday.toDateString() === msgDate.toDateString();
+
+                            if (isToday) {
+                                return `${hours}:${minutes}`;
+                            } else if (isYesterday) {
+                                return `Yesterday ${hours}:${minutes}`;
+                            } else {
+                                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                                return `${monthNames[msgDate.getMonth()]} ${msgDate.getDate()} ${hours}:${minutes}`;
+                            }
+                        }
+
+                        function updateAllTimestamps() {
+                            document.querySelectorAll(".message-timestamp").forEach(el => {
+                                const timestamp = el.getAttribute("data-timestamp");
+                                if (timestamp) {
+                                    el.textContent = formatDate(timestamp);
+                                }
+                            });
+                        }
+
+                        setInterval(updateAllTimestamps, 5000);
+
+                        fullorg.data.members.forEach(member => {
+                            if (member.userId == element.userid) {
+                                const isOwner = member.role === "owner";
+                                const senderNameClass = isOwner
+                                    ? "message-sendername message-sendername-owner"
+                                    : "message-sendername";
+
+                                $("#messagearea").append(`
+                                    <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                        <img 
+                                            src="${currentpfp}" 
+                                            class="messageprofilepicture" 
+                                            onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                        />
+                                        <span class="message mstack">
+                                            <b class="${senderNameClass}">
+                                                ${sanitizeHTML(element.sendername)} 
+                                            </b>
+                                            <span 
+                                                class="message-timestamp" 
+                                                data-timestamp="${element.DateCreated}" 
+                                                style="font-size: small;"
+                                            >
+                                                ${formatDate(element.DateCreated)}
+                                            </span>
+                                            <br>
+                                            <div class="messagetext">
+                                                ${sanitizeHTML(element.content)}
+                                            </div>
+                                        </span>
+                                        <div class="message-actionbar">
+                                            <div 
+                                                class="icon-trash-2" 
+                                                onclick="deleteThreadMessage(event, '${element.id}')"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                `);
+                            }
+                        });
+                    }
+                    lastsenderid = element.userid;
+                }
+
+                scrollMessageAreaToBottom();
+            });
         </script>
     </head>
 
     <body>
         <div class="mainarea-header">
             <div class="sidebar-wsinfoarea-stack">
-                <div id="mainarea-header-title">
-                    Thread
-                </div>
-                <div id="mainarea-header-sub">
-                    <!-- Blank to avoid confusion. -->
-                </div>
+                <div id="mainarea-header-title">Thread</div>
+                <div id="mainarea-header-sub"></div>
             </div>
 
-            <div class="icon-trash-2 sidebar-listitem-icon message-delete-button" style="display: none; margin-right: 25px; margin-left: auto; color: rgb(205, 50, 50);" onclick="deleteMessage()"></div>
+            <div 
+                class="icon-trash-2 sidebar-listitem-icon message-delete-button" 
+                style="display: none; margin-right: 25px; margin-left: auto; color: rgb(205, 50, 50);" 
+                onclick="deleteMessage()"
+            ></div>
 
             <script>
+                function formatDate(dateStr) {
+                    const now = new Date();
+                    const msgDate = new Date(dateStr);
+                    const diffMs = now - msgDate;
+                    const diffMins = Math.floor(diffMs / 60000);
+
+                    const hours = msgDate.getHours().toString().padStart(2, '0');
+                    const minutes = msgDate.getMinutes().toString().padStart(2, '0');
+
+                    if (diffMins < 1) {
+                        return "Just now";
+                    } else if (diffMins < 60) {
+                        return diffMins === 1 ? "1 minute ago" : `${diffMins} minutes ago`;
+                    }
+
+                    const isToday = now.toDateString() === msgDate.toDateString();
+                    const yesterday = new Date();
+                    yesterday.setDate(now.getDate() - 1);
+                    const isYesterday = yesterday.toDateString() === msgDate.toDateString();
+
+                    if (isToday) {
+                        return `${hours}:${minutes}`;
+                    } else if (isYesterday) {
+                        return `Yesterday ${hours}:${minutes}`;
+                    } else {
+                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                        return `${monthNames[msgDate.getMonth()]} ${msgDate.getDate()} ${hours}:${minutes}`;
+                    }
+                }
+
+                function updateAllTimestamps() {
+                    document.querySelectorAll(".message-timestamp").forEach(el => {
+                        const timestamp = el.getAttribute("data-timestamp");
+                        if (timestamp) {
+                            el.textContent = formatDate(timestamp);
+                        }
+                    });
+                }
+
+                setInterval(updateAllTimestamps, 5000);
+
                 var deleteMessage = function() {
                     fetch("/api/channel/" + currentchannelid + "/message/" + currentmessageid + "/delete")
                     .then(res => res.json())
                     .then(res => {
                         if(res === "done") {
-                            NavigatePage('channelpage')
+                            NavigatePage('channelpage');
                         }
-                    })
-                }
+                    });
+                };
                 fetch("/api/channel/" + currentchannelid + "/info")
                 .then(res => res.json())
                 .then(channel => {
-                    $("#mainarea-header-sub").html(channel.name)
-                    socket.emit("clatter.channel.join", JSON.stringify({
-                        "room": currentchannelid
-                    }))
-                })
+                    $("#mainarea-header-sub").html(channel.name);
+                    document.title = "Clatter | " + fullorg.data.name + " - " + channel.name + " - Thread";
+                    socket.emit("clatter.channel.join", JSON.stringify({ room: currentchannelid }));
+                });
 
                 var loadthreadmessagelist = function() {
                     fetch("/api/channel/" + currentchannelid + "/thread/" + currentmessageid + "/messages/list")
                     .then(res => res.json())
                     .then(res => {
-                        currentpfp = ""
-                        lastsenderid = ""
-                        console.log(res)
-                        $("#messagearea").html("")
+                        let currentpfp = "";
+                        lastsenderid = "";
+                        console.log(res);
+                        $("#messagearea").html("");
                         res.forEach(element => {
-                            currentpfp = ""
-                            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                            currentpfp = "";
                             const d = new Date(element.DateCreated);
                             if (element.childmessages.length > 0) {
-                                extramessageui = `<div class="threadviewbutton" onclick="currentmessageid = '` + element.id + `'; NavigatePage('channelthreadpage')">View Thread</div>`
+                                extramessageui = `<div 
+                                    class="threadviewbutton" 
+                                    onclick="currentmessageid='${element.id}'; NavigatePage('channelthreadpage')"
+                                >View Thread</div>`;
                             } else {
-                                extramessageui = ""
+                                extramessageui = "";
                             }
                             if (lastsenderid == element.sender) {
                                 $("#messagearea").append(`
-                                    <div class="messagebox" style="margin-top: 10px; margin-left: 50px;">
-                                        <span class="">
+                                    <div class="messagebox" data-messageid="${element.id}">
+                                        <span class="mstack">
                                             <span class="message">
-                                                ` + sanitizeHTML(element.content) + `
+                                                ${sanitizeHTML(element.content)}
                                             </span>
-                                            ` + extramessageui + `
+                                            ${extramessageui}
                                         </span>
+                                        <div class="message-actionbar">
+                                            <div 
+                                                class="icon-trash-2" 
+                                                onclick="deleteThreadMessage(event, '${element.id}')"
+                                            ></div>
+                                        </div>
                                     </div>
-                                `)
+                                `);
                             } else {
                                 fullorg.data.members.forEach(member => {
                                     if (member.userId == element.sender) {
-                                        console.log("found")
-                                        if(member.user.image == null) {
-                                            currentpfp = "/assets/defaultpfp.png"
+                                        console.log("found");
+                                        currentpfp = member.user.image || "/assets/defaultpfp.png";
+                                    }
+                                });
+
+                                function formatDateInner(dateStr) {
+                                    const nowInner = new Date();
+                                    const msgDateInner = new Date(dateStr);
+                                    const diffMsInner = nowInner - msgDateInner;
+                                    const diffMinsInner = Math.floor(diffMsInner / 60000);
+                                    const hoursInner = msgDateInner.getHours().toString().padStart(2, '0');
+                                    const minutesInner = msgDateInner.getMinutes().toString().padStart(2, '0');
+
+                                    if (diffMinsInner < 1) return "Just now";
+                                    if (diffMinsInner < 60) return diffMinsInner === 1 ? "1 minute ago" : `${diffMinsInner} minutes ago`;
+                                    const isTodayInner = nowInner.toDateString() === msgDateInner.toDateString();
+                                    const yesterdayInner = new Date(); yesterdayInner.setDate(nowInner.getDate() - 1);
+                                    const isYesterdayInner = yesterdayInner.toDateString() === msgDateInner.toDateString();
+                                    if (isTodayInner) return `${hoursInner}:${minutesInner}`;
+                                    if (isYesterdayInner) return `Yesterday ${hoursInner}:${minutesInner}`;
+                                    const monthNamesInner = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                                    return `${monthNamesInner[msgDateInner.getMonth()]} ${msgDateInner.getDate()} ${hoursInner}:${minutesInner}`;
+                                }
+
+                                fullorg.data.members.forEach(memberInner => {
+                                    if (memberInner.userId == element.sender) {
+                                        if (memberInner.role == "owner") {
+                                            $("#messagearea").append(`
+                                                <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                                    <img 
+                                                        src="${currentpfp}" 
+                                                        class="messageprofilepicture" 
+                                                        onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                                    />
+                                                    <span class="message mstack">
+                                                        <b class="message-sendername message-sendername-owner">${sanitizeHTML(element.sendername)} </b>
+                                                        <span 
+                                                            class="message-timestamp" 
+                                                            data-timestamp="${element.DateCreated}" 
+                                                            style="font-size: small;"
+                                                        >
+                                                            ${formatDateInner(element.DateCreated)}
+                                                        </span>
+                                                        <br>
+                                                        <div class="messagetext">
+                                                            ${sanitizeHTML(element.content)}
+                                                        </div>
+                                                        ${extramessageui}
+                                                    </span>
+                                                    <div class="message-actionbar">
+                                                        <div 
+                                                            class="icon-trash-2" 
+                                                            onclick="deleteThreadMessage(event, '${element.id}')"
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            `);
                                         } else {
-                                            currentpfp = member.user.image
+                                            $("#messagearea").append(`
+                                                <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                                    <img 
+                                                        src="${currentpfp}" 
+                                                        class="messageprofilepicture" 
+                                                        onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                                    />
+                                                    <span class="message mstack">
+                                                        <b class="message-sendername">${sanitizeHTML(element.sendername)} </b>
+                                                        <span 
+                                                            class="message-timestamp" 
+                                                            data-timestamp="${element.DateCreated}" 
+                                                            style="font-size: small;"
+                                                        >
+                                                            ${formatDateInner(element.DateCreated)}
+                                                        </span>
+                                                        <br>
+                                                        <div class="messagetext">
+                                                            ${sanitizeHTML(element.content)}
+                                                        </div>
+                                                        ${extramessageui}
+                                                    </span>
+                                                    <div class="message-actionbar">
+                                                        <div 
+                                                            class="icon-trash-2" 
+                                                            onclick="deleteThreadMessage(event, '${element.id}')"
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            `);
                                         }
                                     }
-                                })
-                                $("#messagearea").append(`
-                                    <div class="messagebox">
-                                        <img src="` + currentpfp + `" class="messageprofilepicture" />
-                                        <span class="message">
-                                            <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                                            <span style="font-size: small;">
-                                                ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
-                                            </span>
-                                            <br>
-                                            <div class="messagetext">
-                                                ` + sanitizeHTML(element.content) + `
-                                            </div>
-                                            ` + extramessageui + `
-                                        </span>
-                                    </div>
-                                `)
+                                });
+
+                                setInterval(updateAllTimestamps, 5000);
                             }
-                            lastsenderid = element.sender
+                            lastsenderid = element.sender;
                         });
-                    })
-                }
+                        setTimeout(scrollMessageAreaToBottom, 0);
+                    });
+                };
 
                 var loadoriginalmessage = function() {
                     fetch("/api/channel/" + currentchannelid + "/message/" + currentmessageid + "/info")
                     .then(res => res.json())
                     .then(res => {
-                        currentpfp = ""
-                        lastsenderid = ""
-                        console.log(res)
-                        element = res
-                        $("#messageareaoriginal").html("")
-                        currentpfp = ""
-                        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                        const d = new Date(element.DateCreated);
+                        let currentpfp = "";
+                        lastsenderid = "";
+                        console.log(res);
+                        const element = res;
+                        $("#messageareaoriginal").html("");
                         fullorg.data.members.forEach(member => {
                             if (member.userId == element.sender) {
-                                console.log("found")
-                                if(member.user.image == null) {
-                                    currentpfp = "/assets/defaultpfp.png"
+                                console.log("found");
+                                currentpfp = member.user.image || "/assets/defaultpfp.png";
+                            }
+                        });
+                        if (element.sender == authsession.data.user.id) {
+                            $(".message-delete-button").show();
+                        }
+
+                        fullorg.data.members.forEach(member => {
+                            if (member.userId == element.sender) {
+                                if (member.role == "owner") {
+                                    $("#messageareaoriginal").append(`
+                                        <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                            <img 
+                                                src="${currentpfp}" 
+                                                class="messageprofilepicture" 
+                                                onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                            />
+                                            <span class="message mstack">
+                                                <b class="message-sendername message-sendername-owner">${sanitizeHTML(element.sendername)} </b>
+                                                <span 
+                                                    class="message-timestamp" 
+                                                    data-timestamp="${element.DateCreated}" 
+                                                    style="font-size: small;"
+                                                >
+                                                    ${formatDate(element.DateCreated)}
+                                                </span>
+                                                <br>
+                                                <div class="messagetext">
+                                                    ${sanitizeHTML(element.content)}
+                                                </div>
+                                            </span>
+                                            <div class="message-actionbar">
+                                                <div 
+                                                    class="icon-trash-2" 
+                                                    onclick="deleteThreadMessage(event, '${element.id}')"
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    `);
                                 } else {
-                                    currentpfp = member.user.image
+                                    $("#messageareaoriginal").append(`
+                                        <div class="messagebox expandedmessagebox" data-messageid="${element.id}">
+                                            <img 
+                                                src="${currentpfp}" 
+                                                class="messageprofilepicture" 
+                                                onerror="this.onerror=null;this.src='/profilepicture.png';" 
+                                            />
+                                            <span class="message mstack">
+                                                <b class="message-sendername">${sanitizeHTML(element.sendername)} </b>
+                                                <span 
+                                                    class="message-timestamp" 
+                                                    data-timestamp="${element.DateCreated}" 
+                                                    style="font-size: small;"
+                                                >
+                                                    ${formatDate(element.DateCreated)}
+                                                </span>
+                                                <br>
+                                                <div class="messagetext">
+                                                    ${sanitizeHTML(element.content)}
+                                                </div>
+                                            </span>
+                                            <div class="message-actionbar">
+                                                <div 
+                                                    class="icon-trash-2" 
+                                                    onclick="deleteThreadMessage(event, '${element.id}')"
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    `);
                                 }
                             }
-                        })
-                        if(element.sender == authsession.data.user.id) {
-                            $(".message-delete-button").show()
-                        }
-                        $("#messageareaoriginal").append(`
-                            <div class="messagebox">
-                                <img src="` + currentpfp + `" class="messageprofilepicture" />
-                                <span class="message">
-                                    <b class="message-sendername">` + sanitizeHTML(element.sendername) + ` </b>
-                                    <span style="font-size: small;">
-                                        ` + monthNames[d.getMonth()] + " " + d.getDate().toString() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours().toString() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes().toString() + `
-                                    </span>
-                                    <br>
-                                    <div class="messagetext">
-                                        ` + sanitizeHTML(element.content) + `
-                                    </div>
-                                </span>
-                            </div>
-                        `)
-                    })
-                }
+                        });
+                    });
+                };
 
                 var sendmessage = function(msg) {
                     socket.emit("clatter.channel.message.send", JSON.stringify({
@@ -232,35 +475,32 @@
                         "parentmessageid": currentmessageid,
                         "method": "modern",
                         "token": authsession.data.session.token,
-                    }))
-                }
+                    }));
+                };
 
                 var clearMessageBox = function() {
-                    document.getElementById("messagebox").value = ""
-                }
+                    document.getElementById("messagebox").value = "";
+                };
 
                 var sendbuttonaction = function() {
-                    message = document.getElementById("messagebox").value
-                    if(message.trim().length < 1) {
-                        console.log("No message present.")
+                    const message = document.getElementById("messagebox").value;
+                    if (message.trim().length < 1) {
+                        console.log("No message present.");
                     } else {
-                        // Length Limit (including whitespaces)
-                        var lengthLimit = 500
-
-                        if(message.length < lengthLimit) {
-                            sendmessage(message)
-                            clearMessageBox()
+                        const lengthLimit = 500;
+                        if (message.length < lengthLimit) {
+                            sendmessage(message);
+                            clearMessageBox();
+                            scrollMessageAreaToBottom();
                         } else {
-                            alert("Message over " + lengthLimit + " characters!")
+                            alert("Message over " + lengthLimit + " characters!");
                         }
                     }
-                    
-                    // loadmessagelist()
-                }
+                };
 
                 document.addEventListener('keydown', function(event) {
-                    if(event.keyCode == 13) {
-                        sendbuttonaction()
+                    if (event.keyCode == 13) {
+                        sendbuttonaction();
                     }
                 });
             </script>
@@ -268,11 +508,22 @@
 
         <div style="height: calc(100% - 71px); width: 100%; position: relative;">
             <div style="height: calc(100% - 180px);">
-                <div id="messageareaoriginal" style="min-height: fit-content; overflow-y: scroll; border-bottom: 1px solid #e4e4e7;"></div>
-                <div id="messagearea" style="height: 100%; overflow-y: scroll;"></div>
+                <div 
+                    id="messageareaoriginal" 
+                    style="min-height: fit-content; overflow-y: scroll; border-bottom: 1px solid #e4e4e7;"
+                ></div>
+                <div 
+                    id="messagearea" 
+                    style="height: 100%; overflow-y: scroll;"
+                ></div>
             </div>
             <div class="messagebar">
-                <input id="messagebox" autocomplete="off" maxlength="500" placeholder="Send Message..."/>
+                <input 
+                    id="messagebox" 
+                    autocomplete="off" 
+                    maxlength="500" 
+                    placeholder="Send Message..."
+                />
                 <div id="sendbutton" onclick="sendbuttonaction()">
                     <div class="icon-send"></div>
                 </div>
@@ -280,8 +531,8 @@
         </div>
 
         <script>
-            loadoriginalmessage()
-            loadthreadmessagelist()
+            loadoriginalmessage();
+            loadthreadmessagelist();
         </script>
     </body>
 </html>

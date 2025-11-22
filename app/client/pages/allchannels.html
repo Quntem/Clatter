@@ -54,6 +54,7 @@
                             .then(res => res.json())
                             .then(res => {
                                 console.log(res)
+                                res = res.filter(channel => channel.type.split(".")[1] == "channeltype")
                                 $("#channellistcontainer").html("")
                                 res.forEach(channel => {
                                     $("#channellistcontainer").append(`

@@ -50,6 +50,7 @@
                         await authClient.updateUser({
                             image: dataUrl,
                         })
+                        document.getElementById("profilepicture").src = dataUrl
                     }).catch(error => {
                         console.error('Error uploading file:', error);
                     });
@@ -57,45 +58,150 @@
             </script>
         </div>
 
-        <div style="height: calc(100% - 71px); width: 100%; display: flex; flex-direction: row;">
+        <div style="height: calc(100% - 71px - 4rem); width: calc(100% - 4rem); padding: 2rem;">
             <div class="profilepicturearea">
-                <img src="/public/profilepicture.png" id="profilepicture" />
-                <div class="profilepicturearea-button" onclick="changeProfilePicture()">Change Profile Picture</div>
+                <h2>Settings</h2>
+                <div class="profilepagearea">
+                    <div class="profile-picture-wrapper" onclick="changeProfilePicture()">
+                        <img id="profilepicture" width="42" height="42"/>
+                        <div class="icon-pencil edit-icon"></div>
+                    </div>
+                    <div class="profile-name-wrapper">
+                        <input type="text" class="profile-name-input" placeholder="Name" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="themeswitcherrow">
+                <div class="themeswitcherrow-title">Theme</div>
+                <select id="themeswitcher" onchange="setCustomTheme(this.value)">
+                    <option value="blurple">Blurple</option>
+                    <option value="sea">Sea</option>
+                    <option value="deep-seas">Deep Seas</option>
+                    <option value="cherry-blossom">Cherry Blossom</option>
+                    <option value="default">Default</option>
+                    <option value="ripoff-slack">Ripoff Slack</option>
+                </select>
             </div>
         </div>
         <script>
+            if(localStorage.getItem("customTheme") != null) {
+                $("#themeswitcher").val(localStorage.getItem("customTheme"))
+            } else {
+                $("#themeswitcher").val("sea")
+            }
             authClient.getSession()
                 .then(session => {
                     if (session.data.user.image) {
-                        $("#profilepicture").attr("src", session.data.user.image)
+                        const img = new Image();
+                        img.onload = function() {
+                            $("#profilepicture").attr("src", session.data.user.image);
+                        };
+                        img.src = session.data.user.image;
                     } else {
-                        $("#profilepicture").attr("src", "/public/profilepicture.png")
+                        const img = new Image();
+                        img.onload = function() {
+                            $("#profilepicture").attr("src", "/profilepicture.png");
+                        };
+                        img.src = "/profilepicture.png";
+                    }
+
+                    if (session.data.user.name) {
+                        $(".profile-name-input").val(session.data.user.name);
+                    } else {
+                        $(".profile-name-input").val("legend says that you have no name and are hacking so can you please don't?");
                     }
                 })
+
+            document.querySelector(".profile-name-input").addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    const newName = this.value.trim();
+                    if (newName.length > 0) {
+                        authClient.updateUser({
+                            name: newName,
+                        }).then(() => {
+                            console.log("Name updated successfully");
+                            $("#mainarea-header-sub").html(newName);
+                        }).catch((err) => {
+                            console.error("Failed to update name:", err);
+                        });
+                    }
+                }
+            });
         </script>
         <style>
-            .profilepicturearea {
+            h2 {
+                color: #666666;
+                font-size: 2rem;
+                font-weight: 500;
+                margin: 0;
+                margin-bottom: 1.5rem;
+            }
+
+            .profilepagearea {
                 display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 100%;
+                flex-direction: row;
+                gap: 1rem;
+                margin-bottom: 1rem;
             }
 
-            .profilepicturearea img {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                margin-bottom: 20px;
-            }
-
-            .profilepicturearea-button {
-                background-color: #666666;
-                color: white;
-                padding: 10px 20px;
+            #profilepicture {
+                width: 42px;
+                height: 42px;
                 border-radius: 5px;
+                margin-bottom: 1.25rem;
                 cursor: pointer;
+                transition: all 150ms ease;
+                background-color: #666666;
+                border: 1px solid #e4e4e7;
+            }
+
+            #profilepicture:hover,
+            #profilepicture:active,
+            #profilepicture:focus,
+            .profile-picture-wrapper:hover > img {
+                transition: all 150ms ease;
+                filter: brightness(0.75);
+            }
+
+            .profile-picture-wrapper {
+                position: relative;
+                width: 42px;
+                height: 42px;
+            }
+            
+            .edit-icon {
+                opacity: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-size: 1rem;
+                transition: all 150ms ease;
+                cursor: pointer;
+                padding: 0.5rem;
+            }
+
+            .profile-picture-wrapper:hover > .edit-icon {
+                transition: all 150ms ease;
+                opacity: 1;
+                backdrop-filter: blur(2px);
+            }
+
+            .profile-name-wrapper {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .profile-name-input {
+                font-family: 'Figtree', sans-serif;
+                width: calc(100% - 1rem - 2px);
+                height: calc(100% - 1rem - 2px);
+                padding: 0.5rem;
+                font-size: 1rem;
+                border-radius: 4px;
+                border: 1px solid #e4e4e7;
             }
         </style>
     </body>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Meetings</title>
+    </head>
+
+    <body>
+        <div class="mainarea-header">
+            <div class="sidebar-wsinfoarea-stack-nohover">
+                <div id="mainarea-header-title">
+                    Meetings
+                </div>
+
+                <div id="mainarea-header-sub">
+                    .
+                </div>
+            </div>
+        </div>
+        <div style="height: calc(100% - 71px); padding-top: 20px; overflow-y: scroll; width: 100%;">
+            <div class="promobox" style="margin-top: 20px;">
+                <div class="promobox-icon">
+                    <i class="icon-video"></i>
+                </div>
+                <div class="promobox-text">
+                    <div class="promobox-text-title">
+                        New: Meetings are here!
+                    </div>
+                    <div class="promobox-text-description">
+                        Start a meeting in a channel to connect with your team in real-time.
+                    </div>
+                </div>
+            </div>
+            <div class="channellistcontainer" id="channellistcontainer">
+
+            </div>
+        </div>
+        <script>
+            authClient.organization.getActiveMember()
+                .then(res => {
+                    if (res.data.role == "owner") {
+                        $("#addchannelbutton").show()
+                    }
+                })
+
+            var CreateChannelPrompt = function() {
+                chname = prompt(`Channel Name`)
+                if (chname == "") {
+                    chname = "New Channel"
+                }
+                CreateChannel(chname)
+                setTimeout(() => {
+                    GetChannels()
+                    ChannelPageLoadList()
+                }, 2000)
+            }
+
+            var ChannelPageLoadList = function() {
+                authClient.organization.getFullOrganization()
+                    .then(ao => {
+                        $("#mainarea-header-sub").html(ao.data.name)
+                        fetch("/api/channels/list")
+                            .then(res => res.json())
+                            .then(res => {
+                                console.log(res)
+                                $("#channellistcontainer").html("")
+                                res = res.filter(channel => channel.type.split(".")[1] == "channeltype")
+                                res.forEach(channel => {
+                                    $("#channellistcontainer").append(`
+                                        <div class="channellistitem" onclick="currentchannelid = '` + channel.id + `'; NavigatePage('meetingpage')">
+                                            <div class="icon-hash channellistitem-icon"></div>
+                                            <div class="channellistitem-text">` + sanitizeHTML(channel.name) + `</div>
+                                        </div>
+                                    `)
+                                })
+                            })
+                    })
+            }
+            ChannelPageLoadList()
+        </script>
+    </body>
+</html>

@@ -1,0 +1,64 @@
+<qcl-header main="true"></qcl-header>
+<script src="/starship/routines/channelPage.js" type="module"></script>
+<script>
+    setTimeout(() => {
+        window.currentChat = new window.channelConnector({channelid: window.location.pathname.split("/")[3], view: document.getElementById("mainview"), type: "thread", messageid: window.location.pathname.split("/")[5]})
+        window.currentChat.initalise().then(async() => {
+            window.currentChat.setPageTitle()
+            var message = await window.currentChat.getMessage(window.location.pathname.split("/")[5])
+            var users = (await authClient.organization.getFullOrganization()).data.members
+            users.forEach(item => {
+                if (item.user.id == message.sender) {
+                    message.sendername = item.user.name
+                    message.avatar = item.user.image
+                }
+            })
+            var originalmessage = document.createElement("clatter-message")
+            originalmessage.setAttribute("id", message.id)
+            originalmessage.setAttribute("senderid", message.sender)
+            originalmessage.setAttribute("username", message.sendername)
+            originalmessage.setAttribute("avatar", message.avatar)
+            originalmessage.innerText = message.content
+            document.querySelector(".threadheader").appendChild(originalmessage)
+            window.currentChat.loadMessages().then(async (messages) => {
+                window.lastuserid = ""
+                var users = (await authClient.organization.getFullOrganization()).data.members
+                messages.forEach((message) => {
+                    var avatar = ""
+                    users.forEach(item => {
+                        if (item.user.id == message.sender) {
+                            avatar = item.user.image
+                        }
+                    })
+                    var messageElement = document.createElement("clatter-message")
+                    if (message.sender != window.lastuserid) {
+                        messageElement.setAttribute("avatar", avatar)
+                        messageElement.setAttribute("username", message.sendername)
+                        window.lastuserid = message.sender
+                    }
+                    messageElement.setAttribute("id", message.id)
+                    messageElement.setAttribute("senderid", message.sender)
+                    messageElement.innerText = message.content
+                    document.querySelector(".chatarea").appendChild(messageElement)
+                })
+                window.currentChat.bindMessageBox(document.querySelector(".inputbar"))
+                window.currentChat.view.querySelector(".headertitletext").addEventListener("click", () => {
+                    window.history.back()
+                })
+                window.currentChat.view.querySelector(".headertitletext").style.cursor = "pointer"
+            })
+        })
+    }, 50)
+</script>
+<div class="thread-wrapper">
+    <div class="threadheader"></div>
+    <div class="chatarea-thread chatarea"></div>
+    <div class="inputarea">
+        <div class="inputbar">
+            <input type="text" autocomplete="off" class="messageinput">
+            <div class="sendbutton">
+                <i class="icon-send sendbutton-icon"></i>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,9 +5,34 @@ import { auth } from "./auth.js";
 import cors from "cors"
 import { PrismaClient } from "@prisma/client";
 import { Server } from "socket.io";
-import { createServer } from "http"
+import { createServer } from "http";
+import rateLimit from "express-rate-limit";
 
 const app = express();
+
+const channelCreationLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5,
+  message: "Too many channels created from this user. Try again in an hour.",
+  keyGenerator: (req) => req.headers.authorization || req.ip,
+});
+
+// Will be used for workspace creation API endpoint in the future
+
+// const workspaceCreationLimiter = rateLimit({
+//   windowMs: 24 * 60 * 60 * 1000,
+//   max: 1,
+//   message: "Too many workspaces created from this user. Try again tomorrow.",
+//   keyGenerator: (req) => req.headers.authorization || req.ip,
+// });
+
+const messageRateLimiter = rateLimit({
+  windowMs: 1000, // 1 second
+  max: 5, // limit each key to 5 requests per windowMs
+  message: "Too many messages sent. Please wait a moment.",
+  keyGenerator: (req) => req.headers.authorization || req.ip,
+});
+
 const server = createServer(app)
 const prisma = new PrismaClient()
 const io = new Server(server, {
@@ -15,6 +40,30 @@ const io = new Server(server, {
         origin: "*",
     },
 })
+const socketMsgTimestamps = new Map();
+
+function canSendSocketMessage(userId) {
+  const now = Date.now();
+  const windowStart = now - 1000; // 1 second
+
+  if (!socketMsgTimestamps.has(userId)) {
+    socketMsgTimestamps.set(userId, []);
+  }
+
+  const timestamps = socketMsgTimestamps.get(userId);
+
+  while (timestamps.length && timestamps[0] < windowStart) {
+    timestamps.shift();
+  }
+
+  if (timestamps.length >= 5) {
+    return false;
+  }
+
+  // Record this send
+  timestamps.push(now);
+  return true;
+}
 
 app.use(
     cors({
@@ -36,7 +85,7 @@ app.get("/api/test", async (req, res) => {
   res.json(session)
 })
 
-app.post("/api/channels/create", async (req, res) => {
+app.post("/api/channels/create", channelCreationLimiter, async (req, res) => {
   try {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
@@ -61,6 +110,40 @@ app.post("/api/channels/create", async (req, res) => {
   }
 })
 
+const directCreationLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: "Too many direct channels created. Try again later.",
+  keyGenerator: (req) => req.headers.authorization || req.ip,
+});
+
+
+app.post(
+  "/api/direct/create1x1",
+  directCreationLimiter,
+  async (req, res) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+      });
+      const direct = await prisma.channel.create({
+        data: {
+          parentworkspace: session.session.activeOrganizationId,
+          type: "clatter.directtype.1x1",
+          name: "Direct Message",
+          public: false,
+          members: {
+            set: [session.session.userId, req.query.recipientid],
+          },
+        },
+      });
+      return res.send(direct);
+    } catch (err) {
+      return res.status(500).send("Server Error");
+    }
+  }
+);
+
 app.get("/api/channels/list", async (req, res) => {
   try {
     const session = await auth.api.getSession({
@@ -68,7 +151,24 @@ app.get("/api/channels/list", async (req, res) => {
     });
     var channellist = await prisma.channel.findMany({
       where: {
-        parentworkspace: session.session.activeOrganizationId
+        parentworkspace: {
+          equals: session.session.activeOrganizationId
+        },
+        OR: [
+          {
+            members: {
+              has: session.session.userId
+            },
+            public: {
+              equals: false
+            }
+          },
+          {
+            public: {
+              equals: true
+            }
+          }
+        ]
       }
     })
     res.json(channellist)
@@ -101,7 +201,8 @@ app.get("/api/documents/listown", async (req, res) => {
     });
     var channellist = await prisma.document.findMany({
       where: {
-        owner: session.user.id
+        owner: session.user.id,
+        parentworkspace: session.session.activeOrganizationId
       }
     })
     res.json(channellist)
@@ -114,11 +215,17 @@ app.get("/api/channel/:channelid/messages/list", async (req, res) => {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   });
+  var where = {
+    parentid: req.params.channelid,
+    parentmessageid: null
+  }
+  if(req.query.all == "true") {
+    where = {
+      parentid: req.params.channelid
+    }
+  }
   var messages = await prisma.message.findMany({
-    where: {
-      parentid: req.params.channelid,
-      parentmessageid: null
-    },
+    where,
     include: {
       childmessages: true
     }
@@ -137,9 +244,9 @@ app.post("/api/workspace/users/add", async (req, res) => {
     if( orgmember.role = "owner") {
       const x = await auth.api.addMember({
         body: {
-            userId: req.query.id,
-            organizationId: session.session.activeOrganizationId,
-            role: "member"
+          userId: req.query.id,
+          organizationId: session.session.activeOrganizationId,
+          role: "member"
         }
       })
       res.json(x)
@@ -151,36 +258,79 @@ app.post("/api/workspace/users/add", async (req, res) => {
   }
 })
 
-app.post("/api/channel/:channelid/messages/send", async (req, res) => {
-  const session = await auth.api.getSession({
-    headers: fromNodeHeaders(req.headers),
-  });
-  var message = await prisma.message.create({
-    data: {
-      content: req.query.message,
-      sender: session.session.userId,
-      parentid: req.params.channelid,
-      sendername: session.user.name
+app.get("/api/document/create", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var doccount = await prisma.document.count({
+      where: {
+        parentworkspace: session.session.activeOrganizationId
+      }
+    })
+    if (doccount >= 50) {
+      res.json({done: false})
     }
-  })
-  res.json(message)
+    var document = await prisma.document.create({
+      data: {
+        name: req.query.name,
+        owner: session.user.id,
+        content: {},
+        parentworkspace: session.session.activeOrganizationId,
+      }
+    })
+    res.json({done: true, document: document})
+  } catch(err) {
+    res.json({done: false})
+  }
 })
 
-app.post("/api/channel/:channelid/thread/:messageid/send", async (req, res) => {
-  const session = await auth.api.getSession({
-    headers: fromNodeHeaders(req.headers),
-  });
-  var message = await prisma.message.create({
-    data: {
-      content: req.query.message,
-      sender: session.session.userId,
-      parentid: req.params.channelid,
-      sendername: session.user.name,
-      parentmessageid: req.params.messageid,
+app.post(
+  "/api/channel/:channelid/messages/send",
+  messageRateLimiter,
+  async (req, res) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+      });
+      const message = await prisma.message.create({
+        data: {
+          content: req.query.message,
+          sender: session.session.userId,
+          parentid: req.params.channelid,
+          sendername: session.user.name,
+        },
+      });
+      return res.json(message);
+    } catch (err) {
+      return res.status(500).send("server error");
     }
-  })
-  res.json(message)
-})
+  }
+);
+
+app.post(
+  "/api/channel/:channelid/thread/:messageid/send",
+  messageRateLimiter,
+  async (req, res) => {
+    try {
+      const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+      });
+      const message = await prisma.message.create({
+        data: {
+          content: req.query.message,
+          sender: session.session.userId,
+          parentid: req.params.channelid,
+          sendername: session.user.name,
+          parentmessageid: req.params.messageid,
+        },
+      });
+      return res.json(message);
+    } catch (err) {
+      return res.status(500).send("server error");
+    }
+  }
+);
 
 app.get("/api/channel/:channelid/thread/:messageid/messages/list", async (req, res) => {
   const session = await auth.api.getSession({
@@ -250,37 +400,140 @@ io.on("connection", (socket) => {
     socket.emit("clatter.channel.join.response", "Joined " + argjson.room)
   }) 
   socket.on("clatter.channel.message.send", async (args) => {
-    var argjson = JSON.parse(args)
+    const argjson = JSON.parse(args);
 
-    argjson.DateCreated = new Date().toISOString()
-    
-    if(argjson.method === "modern") {
-      const session = await auth.api.getSession({
-        headers: new Headers({
-          authorization: "Bearer " + argjson.token
-        })
-      });
-      if(argjson.parentmessageid) {
-        var parentid = argjson.parentmessageid
-      } else {
-        var parentid = null
+    argjson.DateCreated = new Date().toISOString();
+
+    // Only throttle if using "modern" (i.e. authenticated) path:
+    if (argjson.method === "modern") {
+      let session;
+      try {
+        session = await auth.api.getSession({
+          headers: new Headers({
+            authorization: "Bearer " + argjson.token
+          })
+        });
+      } catch {
+        return socket.emit(
+          "clatter.channel.message.send.response",
+          "Authentication failed."
+        );
       }
-      var message = await prisma.message.create({
-        data: {
-          content: argjson.content,
-          sender: session.session.userId,
-          parentid: argjson.room,
-          parentmessageid: parentid,
-          sendername: session.user.name
-        }
-      })
-      argjson.id = message.id
+
+      const userId = session.session.userId;
+
+      // Throttle check: allow up to 5 messages per second
+      if (!canSendSocketMessage(userId)) {
+        return socket.emit(
+          "clatter.channel.message.send.response",
+          "Too many messages—please slow down."
+        );
+      }
+
+      // Determine parentmessageid (if any)
+      const parentid = argjson.parentmessageid || null;
+
+      // Create message in DB
+      let message;
+      try {
+        message = await prisma.message.create({
+          data: {
+            content: argjson.content,
+            sender: userId,
+            parentid: argjson.room,
+            parentmessageid: parentid,
+            sendername: session.user.name
+          }
+        });
+        argjson.id = message.id;
+      } catch (err) {
+        return socket.emit(
+          "clatter.channel.message.send.response",
+          "Error saving message."
+        );
+      }
     }
-    
-    socket.emit("clatter.channel.message.send.response", "Sent Message")
-    socket.to(argjson.room).emit("clatter.channel.message.recieve", JSON.stringify(argjson))
-  }) 
+
+    // Emit responses (same as before)
+    socket.emit(
+      "clatter.channel.message.send.response",
+      "Sent Message"
+    );
+    socket.to(argjson.room).emit(
+      "clatter.channel.message.recieve",
+      JSON.stringify(argjson)
+    );
+  });
 });
+
+app.get("/api/document/:documentid/content", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var document = await prisma.document.findUnique({
+      where: {
+        id: req.params.documentid,
+        parentworkspace: session.session.activeOrganizationId,
+        OR: [
+          {
+            owner: session.session.userId
+          },
+          {
+            allowedusers: {
+              has: session.session.userId
+            }
+          },
+          {
+            public: true
+          }
+        ]
+      }
+    })
+    res.json(document)
+  } catch(err) {
+    // console.log(err)
+  }
+})
+
+app.post("/api/document/:documentid/content", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var document = await prisma.document.findUnique({
+      where: {
+        id: req.params.documentid,
+        parentworkspace: session.session.activeOrganizationId,
+        OR: [
+          {
+            owner: session.session.userId
+          },
+          {
+            allowedusers: {
+              has: session.session.userId
+            }
+          },
+          {
+            public: true
+          }
+        ]
+      }
+    })
+    document.content = req.body.content
+    await prisma.document.update({
+      where: {
+        id: req.params.documentid
+      },
+      data: {
+        content: req.body.content
+      }
+    })
+    res.json(document)
+  } catch(err) {
+    // console.log(err)
+  }
+})
 
 server.listen(3000)
 

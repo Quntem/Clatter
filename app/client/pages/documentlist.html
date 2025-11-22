@@ -3,13 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
-        <style>
-            body {
-                --ag-background-color: rgba(255, 255, 255, 0)
-            }
-        </style>
-        <title>All Channels</title>
+        <title>All Documents</title>
     </head>
 
     <body>
@@ -23,36 +17,48 @@
                     .
                 </div>
             </div>
+
+            <div id="addchannelbutton" class="icon-plus sidebar-listitem-icon" style="display: block; margin-right: 25px; margin-left: auto; color: #666666;" onclick="CreateDocumentPrompt()"></div>
+
         </div>
-        <div style="height: calc(100%); width: 100%;" id="doclist">
-        
+        <div style="height: calc(100% - 71px); padding-top: 20px; overflow-y: scroll; width: 100%;">
+            <div class="channellistcontainer" id="channellistcontainer">
+
+            </div>
         </div>
         <script>
-            authClient.organization.getFullOrganization()
-            .then(ao => {
-                $("#mainarea-header-sub").html(ao.data.name)
-                var gridOptions = {
-                    rowData: [
-                        {name: "testdoc1", DateModified: "date"}
-                    ],
-                    columnDefs: [
-                        { field: "name" },
-                        { field: "DateModified" },
-                    ],
-                    autoSizeStrategy: {
-                        type: 'fitGridWidth',
-                        defaultMinWidth: 100,
-                    },
-                }
-                fetch("/api/documents/listown")
-                    .then(res => res.json())
-                    .then(res => {
-                        console.log(res)
-                        gridOptions.rowData = res
-                        doclist = document.querySelector('#doclist');
-                        agGrid.createGrid(doclist, gridOptions);
+            var DocumentPageLoadList = function() {
+                authClient.organization.getFullOrganization()
+                    .then(ao => {
+                        $("#mainarea-header-sub").html(ao.data.name)
+                        fetch("/api/documents/listown")
+                            .then(res => res.json())
+                            .then(res => {
+                                console.log(res)
+                                $("#channellistcontainer").html("")
+                                res.forEach(doc => {
+                                    $("#channellistcontainer").append(`
+                                        <div class="channellistitem" onclick="currentdocumentid = '` + doc.id + `'; NavigatePage('documenteditor')">
+                                            <div class="icon-file-text channellistitem-icon"></div>
+                                            <div class="channellistitem-text">` + sanitizeHTML(doc.name) + `</div>
+                                        </div>
+                                    `)
+                                })
+                            })
                     })
-            })
+            }
+
+            var CreateDocumentPrompt = async function() {
+                chname = prompt(`Document Name`)
+                console.log(chname)
+                if (chname != "") {
+                    var x = await fetch("/api/document/create?name=" + encodeURIComponent(chname))
+                    x = await x.json()
+                    console.log(x)
+                    DocumentPageLoadList()
+                }
+            }
+            DocumentPageLoadList()
         </script>
     </body>
 </html>
