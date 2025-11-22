@@ -27,7 +27,7 @@ const channelCreationLimiter = rateLimit({
 // });
 
 const messageRateLimiter = rateLimit({
-  windowMs: 1000, // 1 second
+  windowMs: 1500, // 1 and a half seconds
   max: 5, // limit each key to 5 requests per windowMs
   message: "Too many messages sent. Please wait a moment.",
   keyGenerator: (req) => req.headers.authorization || req.ip,
@@ -38,6 +38,7 @@ const prisma = new PrismaClient()
 const io = new Server(server, {
     cors: {
         origin: "*",
+        credentials: "*"
     },
 })
 const socketMsgTimestamps = new Map();
@@ -67,7 +68,7 @@ function canSendSocketMessage(userId) {
 
 app.use(
     cors({
-      origin: "*", // Replace with your frontend's origin
+      origin: true, // Replace with your frontend's origin
       methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
       credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     })
@@ -94,7 +95,7 @@ app.post("/api/channels/create", channelCreationLimiter, async (req, res) => {
     const orgmember = await auth.api.getActiveMember({
       headers: fromNodeHeaders(req.headers),
     });
-    if( orgmember.role = "owner") {
+    if (orgmember.role === "owner") {
       var newchannel = await prisma.channel.create({
         data: {
           parentworkspace: session.session.activeOrganizationId,
@@ -102,11 +103,13 @@ app.post("/api/channels/create", channelCreationLimiter, async (req, res) => {
         },
       })
       res.send("done")
+      console.log(newchannel)
     } else {
       res.send("not permitted")
+      console.log("not permitted")
     }
   } catch(err) {
-    // console.log(err)
+    console.log(err)
   }
 })
 
@@ -149,6 +152,9 @@ app.get("/api/channels/list", async (req, res) => {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
     });
+    if (!session) {
+      return res.json(session)
+    }
     var channellist = await prisma.channel.findMany({
       where: {
         parentworkspace: {
@@ -173,7 +179,7 @@ app.get("/api/channels/list", async (req, res) => {
     })
     res.json(channellist)
   } catch(err) {
-    // console.log(err)
+    res.send(err)
   }
 })
 
@@ -241,7 +247,7 @@ app.post("/api/workspace/users/add", async (req, res) => {
     const orgmember = await auth.api.getActiveMember({
       headers: fromNodeHeaders(req.headers),
     });
-    if( orgmember.role = "owner") {
+    if (orgmember.role === "owner") {
       const x = await auth.api.addMember({
         body: {
           userId: req.query.id,
@@ -459,10 +465,85 @@ io.on("connection", (socket) => {
       "clatter.channel.message.send.response",
       "Sent Message"
     );
+
+    // Emit message to room
     socket.to(argjson.room).emit(
       "clatter.channel.message.recieve",
       JSON.stringify(argjson)
     );
+
+    // If parentmessageid is not null, emit message to parentmessageid
+    if (argjson.parentmessageid) {
+      socket.to("thread_" + argjson.parentmessageid).emit(
+        "clatter.channel.thread.message.recieve",
+        JSON.stringify(argjson)
+      );
+    }
+
+    socket.on("clatter.channel.typing", async (args) => { // please dont emit on every keystroke please
+      try {
+        const { room, token } = JSON.parse(args);
+
+        const session = await auth.api.getSession({
+          headers: new Headers({
+            authorization: "Bearer " + token
+          })
+        });
+
+        const userId = session.session.userId;
+        const username = session.user.name;
+
+        socket.to(room).emit("clatter.channel.typing", {
+          userId,
+          username,
+          room,
+          typing: true,
+        });
+      } catch (err) {
+        socket.emit("clatter.channel.typing.response", "Failed to send typing notification.");
+      }
+    });
+
+    socket.on("clatter.channel.stoptyping", async (args) => { // only emit after 3 seconds without typing :3
+      try {
+        const { room, token } = JSON.parse(args);
+
+        const session = await auth.api.getSession({
+          headers: new Headers({
+            authorization: "Bearer " + token
+          })
+        });
+
+        const userId = session.session.userId;
+        const username = session.user.name;
+
+        socket.to(room).emit("clatter.channel.typing", {
+          userId,
+          username,
+          room,
+          typing: false,
+        });
+      } catch (err) {
+        socket.emit("clatter.channel.typing.response", "Failed to stop typing notification.")
+      }
+    });
+  });
+  socket.on("clatter.channel.thread.join", async (data) => {
+    if (typeof data !== "object") {
+      data = JSON.parse(data)
+    }
+    const { messageid, token } = data;
+    const session = await auth.api.getSession({
+      headers: new Headers({
+        authorization: "Bearer " + token
+      })
+    });
+    if (session.user.id != undefined) {
+      socket.join("thread_" + messageid);
+      socket.emit("clatter.channel.thread.join.response", "Joined thread " + messageid);
+    } else {
+      socket.emit("clatter.channel.thread.join.response", "You are not permitted to join this thread.");
+    }
   });
 });
 
@@ -540,3 +621,63 @@ server.listen(3000)
 ViteExpress.bind(app, server)
 
 // ViteExpress.listen(app, 3000, () => // console.log("Server is listening..."));
+
+app.get("/api/status/s/:userid/get", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var user = await prisma.userstatus.findUnique({
+      where: {
+        user: req.params.userid
+      }
+    })
+    if (!user) {
+      user = await prisma.userstatus.create({
+        data: {
+          user: req.params.userid,
+        }
+      })
+    }
+    res.json(user)
+  } catch(err) {
+    // console.log(err)
+  }
+})
+
+app.post("/api/status/set", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    var user = await prisma.userstatus.findUnique({
+      where: {
+        user: session.user.id
+      }
+    })
+    if (!user) {
+      user = await prisma.userstatus.create({
+        data: {
+          user: session.user.id,
+        }
+      })
+    }
+    await prisma.userstatus.update({
+      where: {
+        user: session.user.id
+      },
+      data: {
+        status: req.body.status
+      }
+    })
+    res.json(user)
+  } catch(err) {
+    // console.log(err)
+  }
+})
+
+// centralized error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Internal Server Error" });
+});

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <div class="mainarea-header">
+            <div class="sidebar-wsinfoarea-stack-nohover">
+                <div id="mainarea-header-title">
+                    Set Status
+                </div>
+                <div id="mainarea-header-sub">
+                    .
+                </div>
+            </div>
+
+            <script>
+                $("#mainarea-header-sub").html(authsession.data.user.email)
+            </script>
+        </div>
+
+        <div style="height: calc(100% - 71px); padding-top: 20px; overflow-y: scroll; width: 100%;">
+            <div class="promobox" style="margin-top: 0px;">
+                <div class="promobox-icon">
+                    <i class="icon-eye"></i>
+                </div>
+                <div class="promobox-text">
+                    <div class="promobox-text-title">
+                        Manage Status
+                    </div>
+                    <div class="promobox-text-description">
+                        Set your status to anything to help keep your team informed.
+                    </div>
+                </div>
+            </div>
+            <div class="statusentrybox">
+                <input type="text" id="statusinput" placeholder="Status">
+                <button onclick="setstatus()" id="setstatusbutton">Set Status</button>
+            </div>
+        </div>
+        <style>
+            .statusentrybox {
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-top: 10px;
+                font-family: 'Figtree', sans-serif;
+            }
+            .statusentrybox input:focus {
+                outline: none !important;
+            }
+            .statusentrybox input {
+                flex: 1;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #e4e4e7;
+                color: #666666;
+                font-family: 'Figtree', sans-serif;
+            }
+            .statusentrybox button {
+                padding: 10px;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-radius: 10px;
+                font-family: 'Figtree', sans-serif;
+                border: none;
+                background-color: #666666;
+                color: white;
+                margin-left: 10px;
+                transition: all 150ms ease;
+            }
+            .statusentrybox button:hover {
+                background-color: #555555;
+                cursor: pointer;
+            }
+            .statusentrybox button:active {
+                background-color: #444444;
+                transform: scale(0.95);
+            }
+        </style>
+        <script>
+            function setstatus() {
+                let status = document.getElementById("statusinput").value;
+                fetch("/api/status/set", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + authsession.data.token
+                    },
+                    body: JSON.stringify({
+                        "status": status
+                    })
+                })
+            }
+            async function getstatus() {
+                var response = await fetch("/api/status/s/" + authsession.data.user.id + "/get", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + authsession.data.token
+                    }
+                })
+                return response.json()
+            }
+            getstatus().then(function (data) {
+                document.getElementById("statusinput").value = data.status
+            })
+        </script>
+    </body>
+</html>

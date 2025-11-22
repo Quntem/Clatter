@@ -77,9 +77,9 @@
                     $("#messagearea").append(`
                             <div class="messagebox" data-messageid="${element.id}">
                                 <span class="mstack">
-                                    <span class="message">
+                                    <md-span class="message">
                                         ${sanitizeHTML(element.content)}
-                                    </span>
+                                    </md-span>
                                 </span>
                                 <div class="message-actionbar">
                                     <div
@@ -189,9 +189,9 @@
                                                 ${formatDate(element.DateCreated)}
                                             </span>
                                             <br />
-                                            <div class="messagetext">
+                                            <md-span class="messagetext">
                                                 ${sanitizeHTML(element.content)}
-                                            </div>
+                                            </md-span>
                                             ${extramessageui}
                                         </span>
                                         <div class="message-actionbar">
@@ -293,9 +293,9 @@
                                             ${extramessageui ? "isthread='true'" : ""}
                                         >
                                             <span class="mstack">
-                                                <span class="messagetext">
+                                                <md-span class="messagetext">
                                                     ${sanitizeHTML(element.content)}
-                                                </span>
+                                                </md-span>
                                             </span>
                                             <div class="message-actionbar">
                                                 <div
@@ -412,9 +412,9 @@
                                                             ${formatDate(element.DateCreated)}
                                                         </span>
                                                         <br />
-                                                        <div class="messagetext">
+                                                        <md-span class="messagetext">
                                                             ${sanitizeHTML(element.content)}
-                                                        </div>
+                                                        </md-span>
                                                         ${extramessageui}
                                                     </span>
                                                     <div class="message-actionbar">

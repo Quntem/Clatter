@@ -20,6 +20,9 @@
         </script>
         <link rel="stylesheet" href="/client/global/styles.css" />
         <script src="/client/global/shell.js"></script>
+        <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked-mangle/lib/index.umd.js"></script>
         <!-- <link rel="stylesheet" href="/client/global/themes/sea.css" /> -->
         <script src="https://int_jitsi.qplus.cloud/external_api.js"></script>
         <link href="/client/global/lucide-font/lucide.css" rel="stylesheet" />
@@ -207,11 +210,12 @@
 
         <header>
             <div class="icon-panel-left sidebar-listitem-icon" style="margin-left: 26px; color: var(--sidebar_foreground);" id="sidebartogglebutton" onclick="ToggleSidebar()" data-tooltip="Close Sidebar"></div>
-            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><span style="font-weight: 500;">Clatter </span>Client</div>
+            <div style="color: var(--sidebar_foreground); margin-left: 26px;"><span style="font-weight: 500;">Quntem </span>Clatter</div>
             <!-- <input class="searchbox"></input>
             <div id="user-button" style="margin-right: 10px;"></div> -->
             <!-- <div class="sidebar-profile"></div> -->
             <div class="icon-user-round-cog sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px; margin-left: auto;" onclick="NavigatePage(`usersettings`)"></div>
+            <div class="icon-eye sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px;" onclick="NavigatePage(`status`)"></div>
             <div class="icon-log-out sidebar-listitem-icon" style="color: var(--sidebar_foreground); margin-right: 12px;" onclick="authClient.signOut().then(() => location.reload())"></div>
         </header>
 

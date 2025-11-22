@@ -70,3 +70,13 @@ model document {
   allowedusers       String[]
   public             Boolean @default(false)
 }
+
+model userstatus {
+    id                 String @id @default(uuid())
+    user               String @unique
+    status             String?
+    online             Boolean @default(false)
+    DateCreated        DateTime @default(now())
+    DateModified       DateTime @default(now()) @updatedAt
+    lastseen           DateTime @default(now())
+}
