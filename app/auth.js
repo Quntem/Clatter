@@ -469,5 +469,5 @@ export const auth = betterAuth({
         expo(),
 	    bearer(),
     ],
-    trustedOrigins: [process.env.BETTER_AUTH_URL],
+    trustedOrigins: [process.env.BETTER_AUTH_URL, process.env.FRONTEND_URL],
 })

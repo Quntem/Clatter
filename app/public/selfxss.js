@@ -6,5 +6,4 @@ function showConsoleWarning() {
 
 if (window.location.host != "localhost:3000") {
     showConsoleWarning();
-    setInterval(showConsoleWarning, 10000);
 }
