@@ -36,7 +36,7 @@
 | ![Oscar May](https://avatars.githubusercontent.com/u/67429870?v=4) | ![Sabio Tang](https://avatars.githubusercontent.com/u/124608899?v=4)
 | --- | --- |
 | [Oscar May](https://github.com/oscarmayreal) | [Sabio Tang](https://github.com/sabioofficial)
-| Founder | Developer |
+| Founder | Co-Founder |
 
 ### FaQ
 ## Are there any reused code?
