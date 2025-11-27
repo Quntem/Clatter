@@ -13,7 +13,7 @@
         <meta property="og:url" content="https://clatter.work">
         <meta name="twitter:card" content="/client-preview.png">
         
-        <title>Clatter | Home</title>
+        <title>Clatter • Home</title>
         <link rel="icon" type="image/png" href="/favicon.png">
 
         <link rel="stylesheet" href="/styles.css"/>
@@ -126,7 +126,7 @@
         </div>
 
         <footer>
-            <p>Made by Quntem OpenSource with care. ❤️</p>
+            <p>Made by Quntem OpenSource with care. ❤️ • Build <a class="build-ver" id="build_ver_anchor" target="_blank"><span id="build_ver"></span></href></p>
             <div class="footer-links">
                 <a href="/legal/" class="footer-link">Legal</a>
                 <a href="https://clatter.work/" class="footer-link">Main Website</a>
@@ -137,7 +137,9 @@
     <script>
         const elements = {
             slug_change: document.getElementById("slug_change"),
-            header_logo: document.getElementById("header_logo")
+            header_logo: document.getElementById("header_logo"),
+            build_ver: document.getElementById("build_ver"),
+            build_ver_anchor: document.getElementById("build_ver_anchor")
         };
     
         const slug_change_texts = [
@@ -160,6 +162,8 @@
             } else {
                 handleImageLoad();
             }
+
+            updateBuildVer()
     
             setInterval(() => {
                 // elements.slug_change.classList.remove("morph-in");
@@ -173,6 +177,40 @@
             }, 2000);
         });
     
+        async function updateBuildVer() {
+            if (window.location.origin === "https://clatter.work") {
+                const url = "https://api.github.com/repos/Quntem/Clatter/commits/main";
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    elements.build_ver.textContent = result.sha.slice(0, 7);
+                    elements.build_ver_anchor.href = result.html_url;
+                } catch (error) {
+                    console.error(error.message);
+                }
+            } else if (window.location.origin === "https://clatterpreview.quntem.co.uk" || window.location.origin === "https://beta.clatter.work") {
+                const url = "https://api.github.com/repos/Quntem/Clatter/commits/workflow_beta";
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    elements.build_ver.textContent = result.sha.slice(0, 7);
+                    elements.build_ver_anchor.href = result.html_url;
+                } catch (error) {
+                    console.error(error.message);
+                }
+            } else {
+                elements.build_ver.textContent = "d3vv3r" // dev ver!
+            }
+        }
+
         const checkBeta = () => {
             if (window.location.origin === "https://clatterpreview.quntem.co.uk" || window.location.origin === "https://beta.clatter.work") {
                 document.title = "Clatter Beta • Home";

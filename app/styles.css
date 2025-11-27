@@ -350,6 +350,15 @@ footer {
 	text-align: center;
 }
 
+.build-ver {
+	text-decoration: underline;
+	text-decoration-thickness: 10%;
+	text-decoration-color: rgba(102, 102, 102, 0.5);
+	text-underline-offset: 0.15rem;
+	font-weight: 500;
+	cursor: pointer;
+}
+
 .footer-links {
 	display: flex;
 	flex-direction: row;
