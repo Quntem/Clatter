@@ -235,7 +235,7 @@
                 .then(res => res.json())
                 .then(channel => {
                     $("#mainarea-header-sub").html(channel.name);
-                    document.title = "Clatter | " + fullorg.data.name + " - " + channel.name + " - Thread";
+                    document.title = "Clatter • " + fullorg.data.name + " - " + channel.name + " - Thread";
                     socket.emit("clatter.channel.join", JSON.stringify({ room: currentchannelid }));
                 });
 
