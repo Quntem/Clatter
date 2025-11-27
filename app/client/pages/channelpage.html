@@ -243,7 +243,7 @@
                 .then((channel) => {
                     $("#mainarea-header-title").html(channel.name);
                     document.title =
-                        "Clatter | " + fullorg.data.name + " - " + channel.name;
+                        "Clatter • " + fullorg.data.name + " - " + channel.name;
                     socket.emit(
                         "clatter.channel.join",
                         JSON.stringify({
